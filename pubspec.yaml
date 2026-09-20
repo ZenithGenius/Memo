@@ -1,0 +1,6 @@
+name: memo_workspace
+publish_to: none
+environment:
+  sdk: ^3.11.0
+workspace:
+  - apps/memo_app
