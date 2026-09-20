@@ -105,6 +105,174 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Memo'**
   String get homeTitle;
+
+  /// No description provided for @messageEmptyHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Touchez un pictogramme pour commencer'**
+  String get messageEmptyHint;
+
+  /// No description provided for @speakButton.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lire le message'**
+  String get speakButton;
+
+  /// No description provided for @clearButton.
+  ///
+  /// In fr, this message translates to:
+  /// **'Effacer'**
+  String get clearButton;
+
+  /// No description provided for @removeItem.
+  ///
+  /// In fr, this message translates to:
+  /// **'Retirer {label}'**
+  String removeItem(String label);
+
+  /// No description provided for @settingsTooltip.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réglages'**
+  String get settingsTooltip;
+
+  /// No description provided for @favoritesTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mes favoris'**
+  String get favoritesTitle;
+
+  /// No description provided for @favoritesEmpty.
+  ///
+  /// In fr, this message translates to:
+  /// **'Appuyez longuement sur un pictogramme pour l\'ajouter à vos favoris'**
+  String get favoritesEmpty;
+
+  /// No description provided for @boardTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mon tableau'**
+  String get boardTitle;
+
+  /// No description provided for @boardEdit.
+  ///
+  /// In fr, this message translates to:
+  /// **'Modifier le tableau'**
+  String get boardEdit;
+
+  /// No description provided for @boardDone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Terminer'**
+  String get boardDone;
+
+  /// No description provided for @boardEmptyCell.
+  ///
+  /// In fr, this message translates to:
+  /// **'Case vide'**
+  String get boardEmptyCell;
+
+  /// No description provided for @boardClearCell.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vider la case'**
+  String get boardClearCell;
+
+  /// No description provided for @noVoiceTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Voix française introuvable'**
+  String get noVoiceTitle;
+
+  /// No description provided for @noVoiceBody.
+  ///
+  /// In fr, this message translates to:
+  /// **'Installez une voix française dans les réglages de synthèse vocale du téléphone pour entendre les messages sans connexion.'**
+  String get noVoiceBody;
+
+  /// No description provided for @onboardingWelcome.
+  ///
+  /// In fr, this message translates to:
+  /// **'Bienvenue dans Memo'**
+  String get onboardingWelcome;
+
+  /// No description provided for @onboardingWho.
+  ///
+  /// In fr, this message translates to:
+  /// **'Qui va utiliser Memo ?'**
+  String get onboardingWho;
+
+  /// No description provided for @profileChild.
+  ///
+  /// In fr, this message translates to:
+  /// **'Enfant'**
+  String get profileChild;
+
+  /// No description provided for @profileTeen.
+  ///
+  /// In fr, this message translates to:
+  /// **'Adolescent'**
+  String get profileTeen;
+
+  /// No description provided for @profileAdult.
+  ///
+  /// In fr, this message translates to:
+  /// **'Adulte'**
+  String get profileAdult;
+
+  /// No description provided for @profileCaregiver.
+  ///
+  /// In fr, this message translates to:
+  /// **'Accompagnant'**
+  String get profileCaregiver;
+
+  /// No description provided for @onboardingLevel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisissez un niveau'**
+  String get onboardingLevel;
+
+  /// No description provided for @levelBeginner.
+  ///
+  /// In fr, this message translates to:
+  /// **'Débutant'**
+  String get levelBeginner;
+
+  /// No description provided for @levelIntermediate.
+  ///
+  /// In fr, this message translates to:
+  /// **'Intermédiaire'**
+  String get levelIntermediate;
+
+  /// No description provided for @levelAdvanced.
+  ///
+  /// In fr, this message translates to:
+  /// **'Avancé'**
+  String get levelAdvanced;
+
+  /// No description provided for @onboardingStart.
+  ///
+  /// In fr, this message translates to:
+  /// **'Commencer'**
+  String get onboardingStart;
+
+  /// No description provided for @next.
+  ///
+  /// In fr, this message translates to:
+  /// **'Suivant'**
+  String get next;
+
+  /// No description provided for @settingsTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réglages'**
+  String get settingsTitle;
+
+  /// No description provided for @levelSetting.
+  ///
+  /// In fr, this message translates to:
+  /// **'Niveau'**
+  String get levelSetting;
 }
 
 class _AppLocalizationsDelegate
