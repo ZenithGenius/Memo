@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:memo/features/catalog/domain/catalog.dart';
 import 'package:memo/features/catalog/presentation/catalog_providers.dart';
 import 'package:memo/features/catalog/presentation/category_icons.dart';
 import 'package:memo/features/catalog/presentation/pictogram_tile.dart';
@@ -24,37 +25,52 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final categories = ref.watch(categoriesProvider);
+    final voiceMissing = ref.watch(voiceAvailableProvider).value == false;
     return Scaffold(
       appBar: AppBar(title: Text(l10n.homeTitle), actions: actions),
-      body: categories.when(
-        data: (list) => GridView.count(
-          crossAxisCount: 3,
-          mainAxisSpacing: 12,
-          crossAxisSpacing: 12,
-          padding: const EdgeInsets.all(16),
-          children: [
-            for (final c in list)
-              PictogramTile(
-                label: c.label,
-                icon: categoryIcon(c.iconName),
-                onTap: () => onOpenCategory(c.code),
-              ),
-            PictogramTile(
-              label: l10n.favoritesTitle,
-              icon: Icons.star_outline,
-              onTap: onOpenFavorites,
+      body: Column(
+        children: [
+          if (voiceMissing)
+            MaterialBanner(
+              leading: const Icon(Icons.volume_off_outlined),
+              content: Text('${l10n.noVoiceTitle}. ${l10n.noVoiceBody}'),
+              actions: const [SizedBox.shrink()],
             ),
-            PictogramTile(
-              label: l10n.boardTitle,
-              icon: Icons.dashboard_customize_outlined,
-              onTap: onOpenBoard,
-            ),
-          ],
-        ),
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('$e')),
+          Expanded(child: _grid(l10n, categories)),
+        ],
       ),
       bottomNavigationBar: const MessageBar(),
+    );
+  }
+
+  Widget _grid(AppLocalizations l10n, AsyncValue<List<Category>> categories) {
+    return categories.when(
+      data: (list) => GridView.count(
+        crossAxisCount: 3,
+        mainAxisSpacing: 12,
+        crossAxisSpacing: 12,
+        padding: const EdgeInsets.all(16),
+        children: [
+          for (final c in list)
+            PictogramTile(
+              label: c.label,
+              icon: categoryIcon(c.iconName),
+              onTap: () => onOpenCategory(c.code),
+            ),
+          PictogramTile(
+            label: l10n.favoritesTitle,
+            icon: Icons.star_outline,
+            onTap: onOpenFavorites,
+          ),
+          PictogramTile(
+            label: l10n.boardTitle,
+            icon: Icons.dashboard_customize_outlined,
+            onTap: onOpenBoard,
+          ),
+        ],
+      ),
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (e, _) => Center(child: Text('$e')),
     );
   }
 }

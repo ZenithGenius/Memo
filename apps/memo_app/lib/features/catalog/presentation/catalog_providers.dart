@@ -3,6 +3,7 @@ import 'package:memo/features/board/domain/board_repository.dart';
 import 'package:memo/features/catalog/domain/catalog.dart';
 import 'package:memo/features/catalog/domain/catalog_repository.dart';
 import 'package:memo/features/favorites/domain/favorites_repository.dart';
+import 'package:memo/features/message/presentation/message_notifier.dart';
 import 'package:memo/features/profiles/domain/profile.dart';
 import 'package:memo/features/profiles/domain/profile_repository.dart';
 
@@ -77,4 +78,11 @@ final boardPictogramsProvider = StreamProvider<Map<int, Pictogram>>((ref) {
       .watch(catalogRepositoryProvider)
       .watchByIds(board.cells.values.toList(), profile.language)
       .map((list) => {for (final p in list) p.id: p});
+});
+
+/// `false` uniquement si la voix de la langue du profil est absente.
+/// Une erreur du moteur vocal n'affiche pas d'avertissement.
+final voiceAvailableProvider = FutureProvider<bool>((ref) {
+  final language = ref.watch(activeProfileProvider).value?.language ?? 'fr';
+  return ref.watch(speechServiceProvider).isLanguageAvailable(language);
 });

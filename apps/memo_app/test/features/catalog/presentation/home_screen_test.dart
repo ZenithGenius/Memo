@@ -19,8 +19,10 @@ import '../../../support/fakes.dart';
 void main() {
   late AppDatabase db;
   late ProviderContainer container;
+  late FakeSpeechService speech;
 
   setUp(() async {
+    speech = FakeSpeechService();
     db = AppDatabase.forTesting();
     await ContentImporter(db).importIfNeeded(
       ContentPack.fromJson({
@@ -64,7 +66,7 @@ void main() {
       overrides: [
         catalogRepositoryProvider.overrideWithValue(DriftCatalogRepository(db)),
         profileRepositoryProvider.overrideWithValue(profiles),
-        speechServiceProvider.overrideWithValue(FakeSpeechService()),
+        speechServiceProvider.overrideWithValue(speech),
       ],
     );
   });
@@ -108,5 +110,38 @@ void main() {
     await tester.tap(find.text('Je veux').first);
     await tester.pump();
     expect(container.read(messageProvider).map((p) => p.code), ['A1']);
+  });
+
+  testWidgets("l'accueil avertit quand la voix française est absente", (
+    tester,
+  ) async {
+    speech.available = false;
+    await tester.pumpWidget(
+      host(
+        HomeScreen(
+          onOpenCategory: (_) {},
+          onOpenFavorites: () {},
+          onOpenBoard: () {},
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Voix française introuvable'), findsOneWidget);
+  });
+
+  testWidgets("pas d'avertissement quand la voix est disponible", (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      host(
+        HomeScreen(
+          onOpenCategory: (_) {},
+          onOpenFavorites: () {},
+          onOpenBoard: () {},
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Voix française introuvable'), findsNothing);
   });
 }
