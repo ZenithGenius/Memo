@@ -2,3 +2,4 @@
 docs/
 guides/
 design/mocks/memo-*.html
+.dart_tool/
