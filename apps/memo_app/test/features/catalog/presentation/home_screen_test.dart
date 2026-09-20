@@ -144,4 +144,38 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.textContaining('Voix française introuvable'), findsNothing);
   });
+
+  Widget home() => HomeScreen(
+    onOpenCategory: (_) {},
+    onOpenFavorites: () {},
+    onOpenBoard: () {},
+  );
+
+  testWidgets("l'accueil respecte les zones tactiles et le contraste", (
+    tester,
+  ) async {
+    final handle = tester.ensureSemantics();
+    await tester.pumpWidget(host(home()));
+    await tester.pumpAndSettle();
+    await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
+    await expectLater(tester, meetsGuideline(labeledTapTargetGuideline));
+    await expectLater(tester, meetsGuideline(textContrastGuideline));
+    handle.dispose();
+  });
+
+  testWidgets("l'accueil reste utilisable avec un texte agrandi à 200 %", (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      host(
+        MediaQuery(
+          data: const MediaQueryData(textScaler: TextScaler.linear(2)),
+          child: home(),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+    expect(find.text('Mes besoins'), findsOneWidget);
+  });
 }
