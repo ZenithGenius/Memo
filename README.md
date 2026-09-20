@@ -13,7 +13,7 @@ Application mobile de communication alternative et améliorée (CAA) par pictogr
 
 ## Démarrage
 
-Prérequis : Flutter 3.41.5 (Dart 3.11.3), SDK Android.
+Prérequis : Flutter 3.47.5 (Dart 3.13.4), SDK Android.
 
 ```bash
 cd apps/memo_app
