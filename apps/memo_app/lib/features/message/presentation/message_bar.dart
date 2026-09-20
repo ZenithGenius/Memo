@@ -70,10 +70,14 @@ class MessageBar extends ConsumerWidget {
                     child: FilledButton.icon(
                       onPressed: items.isEmpty
                           ? null
-                          : () => ref.read(speechServiceProvider).speak(
-                                ref.read(phraseComposerProvider).compose(items),
-                                language: language,
-                              ),
+                          : () => ref
+                                .read(speechServiceProvider)
+                                .speak(
+                                  ref
+                                      .read(phraseComposerProvider)
+                                      .compose(items),
+                                  language: language,
+                                ),
                       style: FilledButton.styleFrom(
                         backgroundColor: AppColors.teal,
                       ),

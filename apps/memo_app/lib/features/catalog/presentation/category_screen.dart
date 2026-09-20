@@ -13,9 +13,12 @@ class CategoryScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final categories = ref.watch(categoriesProvider).value ?? const [];
-    final title =
-        categories.where((c) => c.code == code).map((c) => c.label).firstOrNull;
+    final title = categories
+        .where((c) => c.code == code)
+        .map((c) => c.label)
+        .firstOrNull;
     final pictograms = ref.watch(pictogramsProvider(code));
+    final favoriteIds = ref.watch(favoriteIdsProvider).value ?? const <int>{};
     return Scaffold(
       appBar: AppBar(title: Text(title ?? '')),
       body: pictograms.when(
@@ -30,7 +33,15 @@ class CategoryScreen extends ConsumerWidget {
                 label: p.label,
                 imageAsset: p.imageAsset,
                 icon: Icons.chat_bubble_outline,
+                selected: favoriteIds.contains(p.id),
                 onTap: () => ref.read(messageProvider.notifier).add(p),
+                onLongPress: () {
+                  final profile = ref.read(activeProfileProvider).value;
+                  if (profile == null) return;
+                  ref
+                      .read(favoritesRepositoryProvider)
+                      .toggle(profile.id, p.id);
+                },
               ),
           ],
         ),

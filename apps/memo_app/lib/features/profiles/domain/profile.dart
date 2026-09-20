@@ -8,11 +8,11 @@ enum ProfileType {
   caregiver;
 
   Audience get audience => switch (this) {
-        ProfileType.child => Audience.child,
-        ProfileType.teen => Audience.teen,
-        ProfileType.adult => Audience.adult,
-        ProfileType.caregiver => Audience.all,
-      };
+    ProfileType.child => Audience.child,
+    ProfileType.teen => Audience.teen,
+    ProfileType.adult => Audience.adult,
+    ProfileType.caregiver => Audience.all,
+  };
 }
 
 class Profile extends Equatable {

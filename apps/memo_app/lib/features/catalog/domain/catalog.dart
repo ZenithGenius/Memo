@@ -48,14 +48,14 @@ class Pictogram extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        code,
-        categoryId,
-        label,
-        spokenText,
-        imageAsset,
-        minLevel,
-        audience,
-        sortOrder,
-      ];
+    id,
+    code,
+    categoryId,
+    label,
+    spokenText,
+    imageAsset,
+    minLevel,
+    audience,
+    sortOrder,
+  ];
 }

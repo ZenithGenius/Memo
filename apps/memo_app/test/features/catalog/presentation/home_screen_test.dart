@@ -75,16 +75,17 @@ void main() {
   });
 
   Widget host(Widget child) => UncontrolledProviderScope(
-        container: container,
-        child: MaterialApp(
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          home: child,
-        ),
-      );
+    container: container,
+    child: MaterialApp(
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      home: child,
+    ),
+  );
 
-  testWidgets("l'accueil affiche les catégories et les raccourcis",
-      (tester) async {
+  testWidgets("l'accueil affiche les catégories et les raccourcis", (
+    tester,
+  ) async {
     await tester.pumpWidget(
       host(
         HomeScreen(

@@ -53,8 +53,8 @@ class ContentPack {
             code: c['code']! as String,
             sortOrder: c['sortOrder']! as int,
             iconName: c['icon'] as String?,
-            labels:
-                (c['labels']! as Map<String, Object?>).cast<String, String>(),
+            labels: (c['labels']! as Map<String, Object?>)
+                .cast<String, String>(),
           ),
         )
         .toList();

@@ -4,29 +4,29 @@ import 'package:memo/data/content/content_pack.dart';
 import 'package:memo/data/db/app_database.dart';
 
 ContentPack samplePack({int version = 1}) => ContentPack.fromJson({
-      'version': version,
-      'categories': [
-        {
-          'code': 'CBE',
-          'sortOrder': 1,
-          'icon': 'bubble',
-          'labels': {'fr': 'Mes besoins'},
-        },
-      ],
-      'pictograms': [
-        {
-          'code': 'CAA-CR-CBE-001',
-          'category': 'CBE',
-          'level': 0,
-          'audience': 'all',
-          'sortOrder': 1,
-          'image': null,
-          'labels': {
-            'fr': {'label': 'Je veux', 'spoken': 'je veux'},
-          },
-        },
-      ],
-    });
+  'version': version,
+  'categories': [
+    {
+      'code': 'CBE',
+      'sortOrder': 1,
+      'icon': 'bubble',
+      'labels': {'fr': 'Mes besoins'},
+    },
+  ],
+  'pictograms': [
+    {
+      'code': 'CAA-CR-CBE-001',
+      'category': 'CBE',
+      'level': 0,
+      'audience': 'all',
+      'sortOrder': 1,
+      'image': null,
+      'labels': {
+        'fr': {'label': 'Je veux', 'spoken': 'je veux'},
+      },
+    },
+  ],
+});
 
 void main() {
   late AppDatabase db;

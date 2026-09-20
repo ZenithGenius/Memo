@@ -10,13 +10,13 @@ import 'package:memo/l10n/app_localizations.dart';
 import '../../../support/fakes.dart';
 
 Widget host(ProviderContainer container) => UncontrolledProviderScope(
-      container: container,
-      child: const MaterialApp(
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        home: Scaffold(bottomNavigationBar: MessageBar()),
-      ),
-    );
+  container: container,
+  child: const MaterialApp(
+    localizationsDelegates: AppLocalizations.localizationsDelegates,
+    supportedLocales: AppLocalizations.supportedLocales,
+    home: Scaffold(bottomNavigationBar: MessageBar()),
+  ),
+);
 
 void main() {
   late FakeSpeechService speech;

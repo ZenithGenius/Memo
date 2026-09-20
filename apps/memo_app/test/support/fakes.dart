@@ -17,12 +17,12 @@ class FakeSpeechService implements SpeechService {
 }
 
 Pictogram pictogram(int id, String label, {String? spoken}) => Pictogram(
-      id: id,
-      code: 'P$id',
-      categoryId: 1,
-      label: label,
-      spokenText: spoken ?? label.toLowerCase(),
-      minLevel: Level.beginner,
-      audience: Audience.all,
-      sortOrder: id,
-    );
+  id: id,
+  code: 'P$id',
+  categoryId: 1,
+  label: label,
+  spokenText: spoken ?? label.toLowerCase(),
+  minLevel: Level.beginner,
+  audience: Audience.all,
+  sortOrder: id,
+);

@@ -15,20 +15,19 @@ class DriftCatalogRepository implements CatalogRepository {
         _db.categoryTranslations.categoryId.equalsExp(_db.categories.id) &
             _db.categoryTranslations.lang.equals(lang),
       ),
-    ])
-      ..orderBy([OrderingTerm.asc(_db.categories.sortOrder)]);
+    ])..orderBy([OrderingTerm.asc(_db.categories.sortOrder)]);
     return query.watch().map(
-          (rows) => [
-            for (final r in rows)
-              Category(
-                id: r.readTable(_db.categories).id,
-                code: r.readTable(_db.categories).code,
-                sortOrder: r.readTable(_db.categories).sortOrder,
-                iconName: r.readTable(_db.categories).iconName,
-                label: r.readTable(_db.categoryTranslations).label,
-              ),
-          ],
-        );
+      (rows) => [
+        for (final r in rows)
+          Category(
+            id: r.readTable(_db.categories).id,
+            code: r.readTable(_db.categories).code,
+            sortOrder: r.readTable(_db.categories).sortOrder,
+            iconName: r.readTable(_db.categories).iconName,
+            label: r.readTable(_db.categoryTranslations).label,
+          ),
+      ],
+    );
   }
 
   @override
@@ -75,18 +74,17 @@ class DriftCatalogRepository implements CatalogRepository {
   }
 
   List<Pictogram> _mapRows(List<TypedResult> rows) => [
-        for (final r in rows)
-          Pictogram(
-            id: r.readTable(_db.pictograms).id,
-            code: r.readTable(_db.pictograms).code,
-            categoryId: r.readTable(_db.pictograms).categoryId,
-            imageAsset: r.readTable(_db.pictograms).imageAsset,
-            minLevel: Level.values[r.readTable(_db.pictograms).minLevel],
-            audience:
-                Audience.values.byName(r.readTable(_db.pictograms).audience),
-            sortOrder: r.readTable(_db.pictograms).sortOrder,
-            label: r.readTable(_db.pictogramTranslations).label,
-            spokenText: r.readTable(_db.pictogramTranslations).spokenText,
-          ),
-      ];
+    for (final r in rows)
+      Pictogram(
+        id: r.readTable(_db.pictograms).id,
+        code: r.readTable(_db.pictograms).code,
+        categoryId: r.readTable(_db.pictograms).categoryId,
+        imageAsset: r.readTable(_db.pictograms).imageAsset,
+        minLevel: Level.values[r.readTable(_db.pictograms).minLevel],
+        audience: Audience.values.byName(r.readTable(_db.pictograms).audience),
+        sortOrder: r.readTable(_db.pictograms).sortOrder,
+        label: r.readTable(_db.pictogramTranslations).label,
+        spokenText: r.readTable(_db.pictogramTranslations).spokenText,
+      ),
+  ];
 }

@@ -29,18 +29,23 @@ class DriftProfileRepository implements ProfileRepository {
     required ProfileType type,
     required Level level,
   }) async {
-    final id = await _db.into(_db.profiles).insert(
+    final id = await _db
+        .into(_db.profiles)
+        .insert(
           ProfilesCompanion.insert(
             name: name,
             type: type.name,
             level: level.index,
           ),
         );
-    await _db.into(_db.settings).insertOnConflictUpdate(
+    await _db
+        .into(_db.settings)
+        .insertOnConflictUpdate(
           SettingsCompanion.insert(key: _activeKey, value: '$id'),
         );
-    final row = await (_db.select(_db.profiles)..where((p) => p.id.equals(id)))
-        .getSingle();
+    final row = await (_db.select(
+      _db.profiles,
+    )..where((p) => p.id.equals(id))).getSingle();
     return _toDomain(row);
   }
 
@@ -51,10 +56,10 @@ class DriftProfileRepository implements ProfileRepository {
   }
 
   Profile _toDomain(ProfileRow row) => Profile(
-        id: row.id,
-        name: row.name,
-        type: ProfileType.values.byName(row.type),
-        level: Level.values[row.level],
-        language: row.language,
-      );
+    id: row.id,
+    name: row.name,
+    type: ProfileType.values.byName(row.type),
+    level: Level.values[row.level],
+    language: row.language,
+  );
 }

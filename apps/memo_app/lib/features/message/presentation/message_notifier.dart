@@ -34,11 +34,14 @@ class MessageNotifier extends Notifier<List<Pictogram>> {
   void clear() => state = const [];
 }
 
-final messageProvider =
-    NotifierProvider<MessageNotifier, List<Pictogram>>(MessageNotifier.new);
+final messageProvider = NotifierProvider<MessageNotifier, List<Pictogram>>(
+  MessageNotifier.new,
+);
 
-final phraseComposerProvider =
-    Provider<PhraseComposer>((ref) => const SimplePhraseComposer());
+final phraseComposerProvider = Provider<PhraseComposer>(
+  (ref) => const SimplePhraseComposer(),
+);
 
-final speechServiceProvider =
-    Provider<SpeechService>((ref) => FlutterTtsSpeechService());
+final speechServiceProvider = Provider<SpeechService>(
+  (ref) => FlutterTtsSpeechService(),
+);

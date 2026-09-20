@@ -6,10 +6,10 @@ class FlutterTtsSpeechService implements SpeechService {
   final FlutterTts _tts;
 
   static String _locale(String language) => switch (language) {
-        'fr' => 'fr-FR',
-        'en' => 'en-US',
-        _ => language,
-      };
+    'fr' => 'fr-FR',
+    'en' => 'en-US',
+    _ => language,
+  };
 
   @override
   Future<bool> isLanguageAvailable(String language) async {

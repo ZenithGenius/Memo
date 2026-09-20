@@ -12,9 +12,9 @@ class ContentImporter {
 
   /// Retourne `true` si un import a eu lieu.
   Future<bool> importIfNeeded(ContentPack pack) async {
-    final installed = await (_db.select(_db.contentMeta)
-          ..where((m) => m.id.equals(1)))
-        .getSingleOrNull();
+    final installed = await (_db.select(
+      _db.contentMeta,
+    )..where((m) => m.id.equals(1))).getSingleOrNull();
     if (installed != null && installed.version >= pack.version) return false;
 
     await _db.transaction(() async {
@@ -25,7 +25,9 @@ class ContentImporter {
           sortOrder: c.sortOrder,
           iconName: Value(c.iconName),
         );
-        await _db.into(_db.categories).insert(
+        await _db
+            .into(_db.categories)
+            .insert(
               category,
               onConflict: DoUpdate(
                 (_) => category,
@@ -35,7 +37,9 @@ class ContentImporter {
         final id = await _categoryId(c.code);
         categoryIds[c.code] = id;
         for (final e in c.labels.entries) {
-          await _db.into(_db.categoryTranslations).insertOnConflictUpdate(
+          await _db
+              .into(_db.categoryTranslations)
+              .insertOnConflictUpdate(
                 CategoryTranslationsCompanion.insert(
                   categoryId: id,
                   lang: e.key,
@@ -53,7 +57,9 @@ class ContentImporter {
           sortOrder: p.sortOrder,
           imageAsset: Value(p.imageAsset),
         );
-        await _db.into(_db.pictograms).insert(
+        await _db
+            .into(_db.pictograms)
+            .insert(
               pictogram,
               onConflict: DoUpdate(
                 (_) => pictogram,
@@ -62,7 +68,9 @@ class ContentImporter {
             );
         final id = await _pictogramId(p.code);
         for (final e in p.labels.entries) {
-          await _db.into(_db.pictogramTranslations).insertOnConflictUpdate(
+          await _db
+              .into(_db.pictogramTranslations)
+              .insertOnConflictUpdate(
                 PictogramTranslationsCompanion.insert(
                   pictogramId: id,
                   lang: e.key,
@@ -72,7 +80,9 @@ class ContentImporter {
               );
         }
       }
-      await _db.into(_db.contentMeta).insertOnConflictUpdate(
+      await _db
+          .into(_db.contentMeta)
+          .insertOnConflictUpdate(
             ContentMetaCompanion.insert(
               id: const Value(1),
               version: pack.version,
@@ -84,14 +94,10 @@ class ContentImporter {
   }
 
   Future<int> _categoryId(String code) async => (await (_db.select(
-            _db.categories,
-          )..where((c) => c.code.equals(code)))
-          .getSingle())
-      .id;
+    _db.categories,
+  )..where((c) => c.code.equals(code))).getSingle()).id;
 
   Future<int> _pictogramId(String code) async => (await (_db.select(
-            _db.pictograms,
-          )..where((p) => p.code.equals(code)))
-          .getSingle())
-      .id;
+    _db.pictograms,
+  )..where((p) => p.code.equals(code))).getSingle()).id;
 }

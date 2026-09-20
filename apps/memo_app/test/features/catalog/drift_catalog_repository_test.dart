@@ -11,18 +11,17 @@ Map<String, Object?> pict(
   int level, {
   String audience = 'all',
   int order = 1,
-}) =>
-    {
-      'code': code,
-      'category': 'CBE',
-      'level': level,
-      'audience': audience,
-      'sortOrder': order,
-      'image': null,
-      'labels': {
-        'fr': {'label': label, 'spoken': label.toLowerCase()},
-      },
-    };
+}) => {
+  'code': code,
+  'category': 'CBE',
+  'level': level,
+  'audience': audience,
+  'sortOrder': order,
+  'image': null,
+  'labels': {
+    'fr': {'label': label, 'spoken': label.toLowerCase()},
+  },
+};
 
 void main() {
   late AppDatabase db;

@@ -19,9 +19,7 @@ void main() {
   });
 
   test('utilise le texte parlé et non le libellé', () {
-    final text = composer.compose([
-      pictogram(1, 'EAU', spoken: "de l'eau"),
-    ]);
+    final text = composer.compose([pictogram(1, 'EAU', spoken: "de l'eau")]);
     expect(text, "De l'eau.");
   });
 }
