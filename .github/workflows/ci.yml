@@ -16,8 +16,21 @@ jobs:
           channel: stable
           flutter-version: 3.41.5
           cache: true
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - uses: aquasecurity/setup-trivy@v0.3.1
+      - run: pip install pre-commit
       - run: flutter pub get
       - run: dart run build_runner build --delete-conflicting-outputs
       - run: flutter analyze --fatal-infos
       - run: flutter test --coverage
       - run: flutter build apk --debug
+      # Mêmes contrôles qu'en local, sur tout le dépôt : secrets, format,
+      # vulnérabilités, paquets abandonnés, SDK périmé.
+      - run: pre-commit run --all-files --show-diff-on-failure
+        env:
+          SKIP: flutter-analyze,flutter-test
+        working-directory: .
+      - run: pre-commit run --all-files --hook-stage pre-push
+        working-directory: .

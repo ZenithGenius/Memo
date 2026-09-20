@@ -1,0 +1,69 @@
+# Installation : pre-commit install --install-hooks -t pre-commit -t commit-msg -t pre-push
+default_install_hook_types: [pre-commit, commit-msg, pre-push]
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-merge-conflict
+      - id: detect-private-key
+      - id: check-added-large-files
+        args: [--maxkb=2000]
+      - id: check-yaml
+      - id: check-json
+        exclude: ^design/
+
+  # Secrets : clés API, jetons, mots de passe dans les fichiers suivis.
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.1
+    hooks:
+      - id: gitleaks
+
+  # Messages de commit conventionnels.
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v4.4.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+        args: [feat, fix, docs, test, chore, refactor, perf, ci, build, style, revert]
+
+  - repo: local
+    hooks:
+      - id: dart-format
+        name: dart format
+        entry: bash -c 'cd apps/memo_app && dart format --output=none --set-exit-if-changed lib test integration_test'
+        language: system
+        files: \.dart$
+        pass_filenames: false
+
+      - id: flutter-analyze
+        name: flutter analyze (aucun avertissement toléré)
+        entry: bash -c 'cd apps/memo_app && flutter analyze --no-pub --fatal-infos'
+        language: system
+        files: (\.dart|pubspec\.ya?ml|analysis_options\.yaml)$
+        pass_filenames: false
+
+      - id: flutter-test
+        name: flutter test
+        entry: bash -c 'cd apps/memo_app && flutter test --no-pub'
+        language: system
+        files: (\.dart|\.arb|pubspec\.ya?ml|apps/memo_app/assets/.*)$
+        pass_filenames: false
+
+      # Vulnérabilités connues (HIGH, CRITICAL) et secrets dans les dépendances.
+      - id: trivy-deps
+        name: trivy (vulnérabilités des dépendances, secrets, mauvaises configurations)
+        entry: bash tools/security/trivy_scan.sh
+        language: system
+        always_run: true
+        pass_filenames: false
+        stages: [pre-push]
+
+      # Paquets abandonnés, retirés ou SDK périmé (fin de vie).
+      - id: dependency-eol
+        name: dépendances abandonnées ou fin de vie
+        entry: python3 tools/security/check_eol.py
+        language: system
+        always_run: true
+        pass_filenames: false
+        stages: [pre-push]
