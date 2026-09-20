@@ -1,0 +1,2185 @@
+{
+  "version": 1,
+  "categories": [
+    {
+      "code": "CBE",
+      "sortOrder": 1,
+      "icon": "bubble",
+      "labels": {
+        "fr": "Mes besoins"
+      }
+    },
+    {
+      "code": "ACT",
+      "sortOrder": 2,
+      "icon": "hand",
+      "labels": {
+        "fr": "Actions"
+      }
+    },
+    {
+      "code": "ALI",
+      "sortOrder": 3,
+      "icon": "plate",
+      "labels": {
+        "fr": "Alimentation"
+      }
+    },
+    {
+      "code": "EMO",
+      "sortOrder": 4,
+      "icon": "face",
+      "labels": {
+        "fr": "Mes émotions"
+      }
+    },
+    {
+      "code": "SAN",
+      "sortOrder": 5,
+      "icon": "cross",
+      "labels": {
+        "fr": "Santé"
+      }
+    },
+    {
+      "code": "PER",
+      "sortOrder": 6,
+      "icon": "person",
+      "labels": {
+        "fr": "Personnes"
+      }
+    },
+    {
+      "code": "LIE",
+      "sortOrder": 7,
+      "icon": "house",
+      "labels": {
+        "fr": "Lieux"
+      }
+    },
+    {
+      "code": "HYG",
+      "sortOrder": 8,
+      "icon": "drop",
+      "labels": {
+        "fr": "Hygiène"
+      }
+    }
+  ],
+  "pictograms": [
+    {
+      "code": "CAA-CR-CBE-001",
+      "category": "CBE",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 1,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Je veux",
+          "spoken": "je veux"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-CBE-002",
+      "category": "CBE",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 2,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Je ne veux pas",
+          "spoken": "je ne veux pas"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-CBE-003",
+      "category": "CBE",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 3,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Encore",
+          "spoken": "encore"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-CBE-004",
+      "category": "CBE",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 4,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Fini",
+          "spoken": "fini"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-CBE-005",
+      "category": "CBE",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 5,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Aide-moi",
+          "spoken": "aide-moi"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-CBE-006",
+      "category": "CBE",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 6,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Attends",
+          "spoken": "attends"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-CBE-007",
+      "category": "CBE",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 7,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Oui",
+          "spoken": "oui"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-CBE-008",
+      "category": "CBE",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 8,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Non",
+          "spoken": "non"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-CBE-009",
+      "category": "CBE",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 9,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "S'il te plaît",
+          "spoken": "s'il te plaît"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-CBE-010",
+      "category": "CBE",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 10,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Merci",
+          "spoken": "merci"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-CBE-011",
+      "category": "CBE",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 11,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Stop",
+          "spoken": "stop"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-CBE-012",
+      "category": "CBE",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 12,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Donne-moi",
+          "spoken": "donne-moi"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-CBE-013",
+      "category": "CBE",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 13,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Je veux aller",
+          "spoken": "je veux aller"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-CBE-014",
+      "category": "CBE",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 14,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Je veux rester",
+          "spoken": "je veux rester"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-CBE-015",
+      "category": "CBE",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 15,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Je veux changer",
+          "spoken": "je veux changer"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-CBE-017",
+      "category": "CBE",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 16,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "J'ai besoin",
+          "spoken": "j'ai besoin"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-CBE-018",
+      "category": "CBE",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 17,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Je ne sais pas",
+          "spoken": "je ne sais pas"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-CBE-019",
+      "category": "CBE",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 18,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Je n'ai pas compris",
+          "spoken": "je n'ai pas compris"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-CBE-020",
+      "category": "CBE",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 19,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Laisse-moi",
+          "spoken": "laisse-moi"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-CBE-021",
+      "category": "CBE",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 20,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Viens",
+          "spoken": "viens"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-001",
+      "category": "ACT",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 1,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Manger",
+          "spoken": "manger"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-002",
+      "category": "ACT",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 2,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Boire",
+          "spoken": "boire"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-003",
+      "category": "ACT",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 3,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Dormir",
+          "spoken": "dormir"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-004",
+      "category": "ACT",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 4,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Jouer",
+          "spoken": "jouer"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-005",
+      "category": "ACT",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 5,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Marcher",
+          "spoken": "marcher"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-006",
+      "category": "ACT",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 6,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Courir",
+          "spoken": "courir"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-007",
+      "category": "ACT",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 7,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Lire",
+          "spoken": "lire"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-008",
+      "category": "ACT",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 8,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Écrire",
+          "spoken": "écrire"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-009",
+      "category": "ACT",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 9,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Travailler",
+          "spoken": "travailler"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-010",
+      "category": "ACT",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 10,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Laver",
+          "spoken": "laver"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-011",
+      "category": "ACT",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 11,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "S'habiller",
+          "spoken": "s'habiller"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-012",
+      "category": "ACT",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 12,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Se déshabiller",
+          "spoken": "se déshabiller"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-013",
+      "category": "ACT",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 13,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Attendre",
+          "spoken": "attendre"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-014",
+      "category": "ACT",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 14,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Parler",
+          "spoken": "parler"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-015",
+      "category": "ACT",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 15,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "S'asseoir",
+          "spoken": "s'asseoir"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-016",
+      "category": "ACT",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 16,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Se lever",
+          "spoken": "se lever"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-017",
+      "category": "ACT",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 17,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Ouvrir",
+          "spoken": "ouvrir"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-018",
+      "category": "ACT",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 18,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Fermer",
+          "spoken": "fermer"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-019",
+      "category": "ACT",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 19,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Regarder",
+          "spoken": "regarder"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-020",
+      "category": "ACT",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 20,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Écouter",
+          "spoken": "écouter"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-021",
+      "category": "ACT",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 21,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Prendre",
+          "spoken": "prendre"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-022",
+      "category": "ACT",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 22,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Donner",
+          "spoken": "donner"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-023",
+      "category": "ACT",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 23,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Aller",
+          "spoken": "aller"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-024",
+      "category": "ACT",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 24,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Venir",
+          "spoken": "venir"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-025",
+      "category": "ACT",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 25,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Se reposer",
+          "spoken": "se reposer"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-001",
+      "category": "ALI",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 1,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Eau",
+          "spoken": "eau"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-002",
+      "category": "ALI",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 2,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Lait",
+          "spoken": "lait"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-003",
+      "category": "ALI",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 3,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Jus",
+          "spoken": "jus"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-004",
+      "category": "ALI",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 4,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Pain",
+          "spoken": "pain"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-005",
+      "category": "ALI",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 5,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Riz",
+          "spoken": "riz"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-006",
+      "category": "ALI",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 6,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Plantain",
+          "spoken": "plantain"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-007",
+      "category": "ALI",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 7,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Manioc",
+          "spoken": "manioc"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-008",
+      "category": "ALI",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 8,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Macabo",
+          "spoken": "macabo"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-009",
+      "category": "ALI",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 9,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Igname",
+          "spoken": "igname"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-010",
+      "category": "ALI",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 10,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Maïs",
+          "spoken": "maïs"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-011",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 11,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Haricot",
+          "spoken": "haricot"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-012",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 12,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Arachide",
+          "spoken": "arachide"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-013",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 13,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Poisson",
+          "spoken": "poisson"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-014",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 14,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Poulet",
+          "spoken": "poulet"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-015",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 15,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Viande",
+          "spoken": "viande"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-016",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 16,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Beignet",
+          "spoken": "beignet"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-017",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 17,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Bouillie",
+          "spoken": "bouillie"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-018",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 18,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Ndolé",
+          "spoken": "ndolé"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-019",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 19,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Eru",
+          "spoken": "eru"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-020",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 20,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Bâton de manioc",
+          "spoken": "bâton de manioc"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-021",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 21,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Mangue",
+          "spoken": "mangue"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-022",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 22,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Papaye",
+          "spoken": "papaye"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-023",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 23,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Ananas",
+          "spoken": "ananas"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-024",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 24,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Avocat",
+          "spoken": "avocat"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-025",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 25,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Orange",
+          "spoken": "orange"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-026",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 26,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Pastèque",
+          "spoken": "pastèque"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-027",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 27,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Bonbon",
+          "spoken": "bonbon"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-028",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 28,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Biscuit",
+          "spoken": "biscuit"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-029",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 29,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Glace",
+          "spoken": "glace"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-030",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 30,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Couscous",
+          "spoken": "couscous"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-031",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 31,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Œuf",
+          "spoken": "œuf"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-032",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 32,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Banane",
+          "spoken": "banane"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-EMO-001",
+      "category": "EMO",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 1,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Content",
+          "spoken": "content"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-EMO-002",
+      "category": "EMO",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 2,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Triste",
+          "spoken": "triste"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-EMO-003",
+      "category": "EMO",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 3,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Fâché",
+          "spoken": "fâché"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-EMO-004",
+      "category": "EMO",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 4,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Peur",
+          "spoken": "peur"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-EMO-005",
+      "category": "EMO",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 5,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Fatigué",
+          "spoken": "fatigué"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-EMO-006",
+      "category": "EMO",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 6,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Malade",
+          "spoken": "malade"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-EMO-007",
+      "category": "EMO",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 7,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Calme",
+          "spoken": "calme"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-EMO-008",
+      "category": "EMO",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 8,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Inquiet",
+          "spoken": "inquiet"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-EMO-009",
+      "category": "EMO",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 9,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Surpris",
+          "spoken": "surpris"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-EMO-010",
+      "category": "EMO",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 10,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Ennuyé",
+          "spoken": "ennuyé"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-EMO-011",
+      "category": "EMO",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 11,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Excité",
+          "spoken": "excité"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-EMO-012",
+      "category": "EMO",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 12,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "J'ai chaud",
+          "spoken": "j'ai chaud"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-EMO-013",
+      "category": "EMO",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 13,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "J'ai froid",
+          "spoken": "j'ai froid"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-EMO-014",
+      "category": "EMO",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 14,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "J'ai faim",
+          "spoken": "j'ai faim"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-EMO-015",
+      "category": "EMO",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 15,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "J'ai soif",
+          "spoken": "j'ai soif"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-001",
+      "category": "SAN",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 1,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "J'ai mal",
+          "spoken": "j'ai mal"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-002",
+      "category": "SAN",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 2,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Tête",
+          "spoken": "tête"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-003",
+      "category": "SAN",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 3,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Œil",
+          "spoken": "œil"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-004",
+      "category": "SAN",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 4,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Oreille",
+          "spoken": "oreille"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-005",
+      "category": "SAN",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 5,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Bouche",
+          "spoken": "bouche"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-006",
+      "category": "SAN",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 6,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Dent",
+          "spoken": "dent"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-007",
+      "category": "SAN",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 7,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Gorge",
+          "spoken": "gorge"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-008",
+      "category": "SAN",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 8,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Ventre",
+          "spoken": "ventre"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-009",
+      "category": "SAN",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 9,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Dos",
+          "spoken": "dos"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-010",
+      "category": "SAN",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 10,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Bras",
+          "spoken": "bras"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-011",
+      "category": "SAN",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 11,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Main",
+          "spoken": "main"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-012",
+      "category": "SAN",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 12,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Jambe",
+          "spoken": "jambe"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-013",
+      "category": "SAN",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 13,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Pied",
+          "spoken": "pied"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-014",
+      "category": "SAN",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 14,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Médicament",
+          "spoken": "médicament"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-015",
+      "category": "SAN",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 15,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Médecin",
+          "spoken": "médecin"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-016",
+      "category": "SAN",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 16,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Infirmier ou infirmière",
+          "spoken": "infirmier ou infirmière"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-017",
+      "category": "SAN",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 17,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Hôpital",
+          "spoken": "hôpital"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-018",
+      "category": "SAN",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 18,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Urgence",
+          "spoken": "urgence"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-019",
+      "category": "SAN",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 19,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Poitrine",
+          "spoken": "poitrine"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-020",
+      "category": "SAN",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 20,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Je respire mal",
+          "spoken": "je respire mal"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-PER-001",
+      "category": "PER",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 1,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Moi",
+          "spoken": "moi"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-PER-002",
+      "category": "PER",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 2,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Maman",
+          "spoken": "maman"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-PER-003",
+      "category": "PER",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 3,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Papa",
+          "spoken": "papa"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-PER-004",
+      "category": "PER",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 4,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Frère",
+          "spoken": "frère"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-PER-005",
+      "category": "PER",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 5,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Sœur",
+          "spoken": "sœur"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-PER-006",
+      "category": "PER",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 6,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Grand-mère",
+          "spoken": "grand-mère"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-PER-007",
+      "category": "PER",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 7,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Grand-père",
+          "spoken": "grand-père"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-PER-008",
+      "category": "PER",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 8,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Enfant",
+          "spoken": "enfant"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-PER-009",
+      "category": "PER",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 9,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Ami",
+          "spoken": "ami"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-PER-010",
+      "category": "PER",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 10,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Camarade",
+          "spoken": "camarade"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-PER-011",
+      "category": "PER",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 11,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Maîtresse",
+          "spoken": "maîtresse"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-PER-012",
+      "category": "PER",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 12,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Maître",
+          "spoken": "maître"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-PER-013",
+      "category": "PER",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 13,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Médecin",
+          "spoken": "médecin"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-PER-014",
+      "category": "PER",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 14,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Infirmière",
+          "spoken": "infirmière"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-PER-015",
+      "category": "PER",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 15,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Éducateur",
+          "spoken": "éducateur"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-LIE-001",
+      "category": "LIE",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 1,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Maison",
+          "spoken": "maison"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-LIE-002",
+      "category": "LIE",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 2,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "École",
+          "spoken": "école"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-LIE-003",
+      "category": "LIE",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 3,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Classe",
+          "spoken": "classe"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-LIE-004",
+      "category": "LIE",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 4,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Toilettes",
+          "spoken": "toilettes"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-LIE-005",
+      "category": "LIE",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 5,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Cuisine",
+          "spoken": "cuisine"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-LIE-006",
+      "category": "LIE",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 6,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Chambre",
+          "spoken": "chambre"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-LIE-007",
+      "category": "LIE",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 7,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Cour",
+          "spoken": "cour"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-LIE-008",
+      "category": "LIE",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 8,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Hôpital",
+          "spoken": "hôpital"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-LIE-009",
+      "category": "LIE",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 9,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Marché",
+          "spoken": "marché"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-LIE-010",
+      "category": "LIE",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 10,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Boutique",
+          "spoken": "boutique"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-LIE-011",
+      "category": "LIE",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 11,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Route",
+          "spoken": "route"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-LIE-012",
+      "category": "LIE",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 12,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Terrain de jeu",
+          "spoken": "terrain de jeu"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-LIE-013",
+      "category": "LIE",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 13,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Église",
+          "spoken": "église"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-LIE-014",
+      "category": "LIE",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 14,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Dehors",
+          "spoken": "dehors"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-HYG-001",
+      "category": "HYG",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 1,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Toilettes",
+          "spoken": "toilettes"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-HYG-002",
+      "category": "HYG",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 2,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Douche",
+          "spoken": "douche"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-HYG-003",
+      "category": "HYG",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 3,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Savon",
+          "spoken": "savon"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-HYG-004",
+      "category": "HYG",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 4,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Eau",
+          "spoken": "eau"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-HYG-005",
+      "category": "HYG",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 5,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Serviette",
+          "spoken": "serviette"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-HYG-006",
+      "category": "HYG",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 6,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Se laver les mains",
+          "spoken": "se laver les mains"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-HYG-007",
+      "category": "HYG",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 7,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Se brosser les dents",
+          "spoken": "se brosser les dents"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-HYG-008",
+      "category": "HYG",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 8,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Propre",
+          "spoken": "propre"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-HYG-009",
+      "category": "HYG",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 9,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Sale",
+          "spoken": "sale"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-HYG-010",
+      "category": "HYG",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 10,
+      "image": null,
+      "labels": {
+        "fr": {
+          "label": "Papier toilette",
+          "spoken": "papier toilette"
+        }
+      }
+    }
+  ]
+}
