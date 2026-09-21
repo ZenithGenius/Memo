@@ -10,3 +10,4 @@
 # Secrets locaux : clé privée de signature des licences
 functions/.env
 functions/.env.*
+!functions/.env.example

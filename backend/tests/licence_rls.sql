@@ -1,5 +1,6 @@
 -- Tests du schéma de licence. Exécution :
---   docker exec -i supabase_db_memo psql -U postgres -v ON_ERROR_STOP=1 < backend/tests/licence_rls.sql
+--   docker exec -i "$SUPABASE_DB_CONTAINER" psql -U postgres -v ON_ERROR_STOP=1 < backend/tests/licence_rls.sql
+-- (conteneur : supabase_db_<project_id de config.toml>)
 -- Tout est annulé à la fin (rollback).
 begin;
 
@@ -40,7 +41,10 @@ insert into auth.users (id, email) values
   ('00000000-0000-0000-0000-0000000000ad', 'admin@test.local');
 insert into public.admins values ('00000000-0000-0000-0000-0000000000ad');
 
-select pg_temp.assert_eq((select count(*) from public.accounts), 3, 'fiche compte créée à l''inscription');
+select pg_temp.assert_eq(
+  (select count(*) from public.accounts where user_id in (
+    '00000000-0000-0000-0000-00000000000a', '00000000-0000-0000-0000-00000000000b',
+    '00000000-0000-0000-0000-0000000000ad')), 3, 'fiche compte créée à l''inscription');
 
 -- Un abonné ne peut pas s'activer lui-même.
 select pg_temp.as_user('00000000-0000-0000-0000-00000000000a');
@@ -49,18 +53,22 @@ select pg_temp.expect_error(
      values ('00000000-0000-0000-0000-00000000000a', 'essentiel', now() + interval '30 days')$q$,
   'row-level security');
 select pg_temp.as_service();
-select pg_temp.assert_eq((select count(*) from public.subscriptions), 0, 'auto-activation refusée');
+select pg_temp.assert_eq(
+  (select count(*) from public.subscriptions where user_id = '00000000-0000-0000-0000-00000000000a'), 0,
+  'auto-activation refusée');
 
 -- L'administrateur active A.
 select pg_temp.as_user('00000000-0000-0000-0000-0000000000ad');
 insert into public.subscriptions (user_id, plan_code, valid_until, activated_by)
 values ('00000000-0000-0000-0000-00000000000a', 'essentiel', now() + interval '30 days',
         '00000000-0000-0000-0000-0000000000ad');
-select pg_temp.assert_eq((select count(*) from public.subscriptions), 1, 'administrateur peut activer');
+select pg_temp.assert_eq(
+  (select count(*) from public.subscriptions where user_id = '00000000-0000-0000-0000-00000000000a'), 1,
+  'administrateur peut activer');
 
 -- A voit son abonnement, B ne voit rien.
 select pg_temp.as_user('00000000-0000-0000-0000-00000000000a');
-select pg_temp.assert_eq((select count(*) from public.subscriptions), 1, 'A voit son abonnement');
+select pg_temp.assert_eq((select count(*) from public.subscriptions), 1, 'A voit son abonnement (uniquement le sien)');
 select pg_temp.as_user('00000000-0000-0000-0000-00000000000b');
 select pg_temp.assert_eq((select count(*) from public.subscriptions), 0, 'B ne voit pas celui de A');
 select pg_temp.assert_eq((select count(*) from public.accounts), 1, 'B ne voit que sa fiche');

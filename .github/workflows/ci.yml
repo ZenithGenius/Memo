@@ -26,6 +26,8 @@ jobs:
       - run: flutter analyze --fatal-infos
       - run: flutter test --coverage
       - run: flutter build apk --debug
+      - run: bash backend/tests/run_deno.sh
+        working-directory: .
       # Mêmes contrôles qu'en local, sur tout le dépôt : secrets, format,
       # vulnérabilités, paquets abandonnés, SDK périmé.
       - run: pre-commit run --all-files --show-diff-on-failure

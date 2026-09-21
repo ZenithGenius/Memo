@@ -1,0 +1,5 @@
+{
+  "SUPABASE_URL": "http://10.0.2.2:54321",
+  "SUPABASE_ANON_KEY": "<clé anon affichée par `supabase status`>",
+  "LICENSE_PUBLIC_KEYS": "{\"k1\": \"<clé publique Ed25519 en base64, 32 octets>\"}"
+}

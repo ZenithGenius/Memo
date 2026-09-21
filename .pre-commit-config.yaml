@@ -50,6 +50,14 @@ repos:
         files: (\.dart|\.arb|pubspec\.ya?ml|apps/memo_app/assets/.*)$
         pass_filenames: false
 
+      # Fonctions serveur : lint, format et tests unitaires dans un conteneur Deno.
+      - id: backend-functions
+        name: fonctions serveur (deno lint, fmt, test dans Docker)
+        entry: bash backend/tests/run_deno.sh
+        language: system
+        files: ^backend/supabase/functions/
+        pass_filenames: false
+
       # Vulnérabilités connues (HIGH, CRITICAL) et secrets dans les dépendances.
       - id: trivy-deps
         name: trivy (vulnérabilités des dépendances, secrets, mauvaises configurations)

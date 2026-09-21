@@ -5,7 +5,12 @@ set -euo pipefail
 cd "$(dirname "$0")/../.."
 eval "$(supabase status --workdir backend -o env 2>/dev/null | grep -E '^(ANON_KEY|API_URL)=')"
 
-psql_() { docker exec -i supabase_db_memo psql -U postgres -q "$@"; }
+# Conteneur de la base : dérivé du project_id de config.toml, surchargeable.
+PROJECT_ID=$(sed -n 's/^project_id = "\(.*\)"/\1/p' backend/supabase/config.toml)
+DB_CONTAINER="${SUPABASE_DB_CONTAINER:-supabase_db_${PROJECT_ID}}"
+DB_USER="${SUPABASE_DB_USER:-postgres}"
+
+psql_() { docker exec -i "$DB_CONTAINER" psql -U "$DB_USER" -q "$@"; }
 call() {
   curl -s -w '\n%{http_code}' -X POST "$API_URL/functions/v1/issue-license" \
     -H "Authorization: Bearer $JWT" -H "apikey: $ANON_KEY" \
@@ -16,9 +21,12 @@ expect() { # attendu, obtenu, libellé
   echo "OK $3"
 }
 
-EMAIL="e2e$(date +%s)@test.local"
+# Compte jetable : adresse et mot de passe aléatoires, jamais réutilisés.
+EMAIL="e2e-$(openssl rand -hex 6)@test.invalid"
+PASSWORD="$(openssl rand -base64 24)Aa1"
 SIGNUP=$(curl -s -X POST "$API_URL/auth/v1/signup" -H "apikey: $ANON_KEY" \
-  -H "Content-Type: application/json" -d "{\"email\":\"$EMAIL\",\"password\":\"Test-Pass-12345\"}")
+  -H "Content-Type: application/json" \
+  -d "$(python3 -c 'import json,sys; print(json.dumps({"email": sys.argv[1], "password": sys.argv[2]}))' "$EMAIL" "$PASSWORD")")
 JWT=$(echo "$SIGNUP" | python3 -c "import sys,json; print(json.load(sys.stdin)['access_token'])")
 UID_=$(echo "$SIGNUP" | python3 -c "import sys,json; print(json.load(sys.stdin)['user']['id'])")
 

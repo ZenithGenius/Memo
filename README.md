@@ -22,6 +22,19 @@ dart run build_runner build --delete-conflicting-outputs
 flutter run
 ```
 
+## Configuration
+
+Aucun identifiant, clé ou adresse de serveur n'est écrit dans le code. Tout passe par l'environnement.
+
+Application : variables de compilation `--dart-define`, lues par `AppConfig` (`apps/memo_app/lib/core/config`).
+
+```bash
+cp apps/memo_app/env/dev.example.json apps/memo_app/env/dev.json   # puis renseigner (ignoré par Git)
+flutter run --dart-define-from-file=env/dev.json
+```
+
+Serveur : variables d'environnement des fonctions (`backend/supabase/functions/.env.example`), voir `backend/README.md`. La clé `service_role` et la clé privée de signature ne quittent jamais le serveur.
+
 ## Qualité
 
 ```bash

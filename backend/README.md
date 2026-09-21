@@ -11,6 +11,10 @@ supabase functions serve --workdir backend --env-file backend/supabase/functions
 
 Services lancés : base Postgres, authentification, API REST, passerelle, exécution des fonctions.
 
+## Configuration
+
+Toute valeur sensible vient de l'environnement. `backend/supabase/functions/.env.example` liste les variables ; le vrai `.env` est ignoré par Git. Le code refuse de démarrer si une variable obligatoire manque.
+
 ## Clé de signature des licences
 
 La clé privée Ed25519 est dans `backend/supabase/functions/.env` (ignoré par Git, jamais commité). Générer une paire :
@@ -26,11 +30,12 @@ En production, la clé privée est un secret du serveur. Deux clés publiques so
 ## Tests
 
 ```bash
-docker exec -i supabase_db_memo psql -U postgres -v ON_ERROR_STOP=1 < backend/tests/licence_rls.sql
+docker exec -i supabase_db_memo psql -U postgres -v ON_ERROR_STOP=1 < backend/tests/licence_rls.sql   # conteneur : supabase_db_<project_id>
+docker run --rm -v "$PWD/backend/supabase/functions:/app:ro" -w /app denoland/deno:alpine-2.1.4 deno test --no-lock
 bash backend/tests/e2e_issue_license.sh
 ```
 
-Le premier vérifie le schéma et la sécurité par ligne, le second le parcours complet d'émission de jeton.
+Le premier vérifie le schéma et la sécurité par ligne, le deuxième la logique de la fonction (dans un conteneur Deno, sans base), le troisième le parcours complet d'émission de jeton.
 
 Vérifier un jeton avec le vérificateur de l'application :
 
