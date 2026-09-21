@@ -1,6 +1,6 @@
 # ADR-004 : Jeton de licence signé vérifié localement
 
-Statut : accepté (2026-09-20)
+Statut : accepté (2026-09-20). Précisé par l'ADR-008 (liaison à l'appareil, horloge, contenu payant hors du binaire).
 
 ## Contexte
 
