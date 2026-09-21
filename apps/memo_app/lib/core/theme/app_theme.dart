@@ -31,7 +31,11 @@ ThemeData buildAppTheme() {
       style: FilledButton.styleFrom(
         minimumSize: const Size(48, 52),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-        textStyle: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+        textStyle: const TextStyle(
+          fontFamily: 'Manrope',
+          fontWeight: FontWeight.w700,
+          fontSize: 16,
+        ),
       ),
     ),
   );
