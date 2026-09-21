@@ -3,17 +3,13 @@ import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memo/core/config/app_config.dart';
 
-String jwt(String role) {
-  String enc(Map<String, Object?> m) =>
-      base64Url.encode(utf8.encode(jsonEncode(m))).replaceAll('=', '');
-  return '${enc({'alg': 'HS256'})}.${enc({'role': role})}.sig';
-}
+import '../../support/fake_jwt.dart';
 
 final key32 = base64.encode(List.filled(32, 7));
 
 Map<String, String> valid({Map<String, String> override = const {}}) => {
   'SUPABASE_URL': 'https://api.example.org',
-  'SUPABASE_ANON_KEY': jwt('anon'),
+  'SUPABASE_ANON_KEY': fakeJwt('anon'),
   'LICENSE_PUBLIC_KEYS': jsonEncode({'k1': key32}),
   ...override,
 };
@@ -52,7 +48,7 @@ void main() {
   );
 
   test("une clé service_role n'a rien à faire dans l'application", () {
-    final m = valid(override: {'SUPABASE_ANON_KEY': jwt('service_role')});
+    final m = valid(override: {'SUPABASE_ANON_KEY': fakeJwt('service_role')});
     expect(
       () => AppConfig.fromMap(m),
       throwsA(
@@ -94,7 +90,7 @@ void main() {
   });
 
   test("le message d'erreur ne révèle pas les valeurs", () {
-    final secret = jwt('service_role');
+    final secret = fakeJwt('service_role');
     try {
       AppConfig.fromMap(valid(override: {'SUPABASE_ANON_KEY': secret}));
       fail('aurait dû échouer');
