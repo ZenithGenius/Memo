@@ -45,6 +45,7 @@ dependencies:
   flutter_tts: ^4.2.5
   intl: ^0.20.3
   path_provider: ^2.1.6
+  cryptography: ^2.9.0
 
 dev_dependencies:
   flutter_test:
