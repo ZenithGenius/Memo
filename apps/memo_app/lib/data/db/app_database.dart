@@ -18,6 +18,8 @@ part 'app_database.g.dart';
     Settings,
     ContentMeta,
     QuickPhrases,
+    SpokenSentences,
+    WordEvents,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -28,7 +30,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.production() : super(driftDatabase(name: 'memo'));
 
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -42,6 +44,10 @@ class AppDatabase extends _$AppDatabase {
       }
       if (from < 4) {
         await m.createTable(quickPhrases);
+      }
+      if (from < 5) {
+        await m.createTable(spokenSentences);
+        await m.createTable(wordEvents);
       }
     },
     beforeOpen: (details) async {

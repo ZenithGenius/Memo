@@ -9,8 +9,10 @@ import 'package:memo/features/phrases/domain/quick_phrase.dart';
 import 'package:memo/features/phrases/presentation/phrase_providers.dart';
 import 'package:memo/features/phrases/presentation/phrases_screen.dart';
 import 'package:memo/features/profiles/domain/profile.dart';
+import 'package:memo/features/stats/presentation/usage_providers.dart';
 import 'package:memo/l10n/app_localizations.dart';
 
+import '../../support/fake_usage.dart';
 import '../../support/fakes.dart';
 
 class _FakePhrases implements PhraseRepository {
@@ -43,16 +45,16 @@ const _profile = Profile(
   language: 'fr',
 );
 
-Future<FakeSpeechService> pump(
-  WidgetTester tester,
-  List<QuickPhrase> phrases,
-) async {
-  final speech = FakeSpeechService();
+final speech = FakeSpeechService();
+final usage = FakeUsageRepository();
+
+Future<void> pump(WidgetTester tester, List<QuickPhrase> phrases) async {
   await tester.pumpWidget(
     ProviderScope(
       overrides: [
         phraseRepositoryProvider.overrideWithValue(_FakePhrases(phrases)),
         speechServiceProvider.overrideWithValue(speech),
+        usageRepositoryProvider.overrideWithValue(usage),
         activeProfileProvider.overrideWith((ref) => Stream.value(_profile)),
       ],
       child: const MaterialApp(
@@ -63,10 +65,14 @@ Future<FakeSpeechService> pump(
     ),
   );
   await tester.pumpAndSettle();
-  return speech;
 }
 
 void main() {
+  setUp(() {
+    speech.spoken.clear();
+    usage.recorded.clear();
+  });
+
   testWidgets('affiche les phrases avec leurs thèmes', (tester) async {
     await pump(tester, const [
       QuickPhrase(
@@ -82,12 +88,18 @@ void main() {
   });
 
   testWidgets('toucher une phrase la prononce en entier', (tester) async {
-    final speech = await pump(tester, const [
+    await pump(tester, const [
       QuickPhrase(id: 1, text: "C'est à mon tour", tags: [], isCustom: false),
     ]);
     await tester.tap(find.text("C'est à mon tour"));
     await tester.pump();
     expect(speech.spoken, ["C'est à mon tour"]);
+    expect(usage.recorded.single.profileId, 1);
+    expect(
+      usage.recorded.single.ids,
+      isEmpty,
+      reason: 'phrase toute faite : aucun mot',
+    );
   });
 
   testWidgets('sans phrase : message explicite', (tester) async {

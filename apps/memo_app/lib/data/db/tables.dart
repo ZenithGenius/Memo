@@ -126,3 +126,21 @@ class QuickPhrases extends Table {
     {code, lang},
   ];
 }
+
+/// Une phrase prononcée par un profil : sert aux statistiques d'usage.
+class SpokenSentences extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get profileId =>
+      integer().references(Profiles, #id, onDelete: KeyAction.cascade)();
+  DateTimeColumn get spokenAt => dateTime()();
+}
+
+/// Un mot utilisé dans une phrase prononcée (une ligne par mot et par phrase).
+class WordEvents extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get profileId =>
+      integer().references(Profiles, #id, onDelete: KeyAction.cascade)();
+  IntColumn get pictogramId =>
+      integer().references(Pictograms, #id, onDelete: KeyAction.cascade)();
+  DateTimeColumn get usedAt => dateTime()();
+}

@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:memo/features/catalog/domain/catalog.dart';
 import 'package:memo/features/catalog/presentation/catalog_providers.dart';
 import 'package:memo/features/message/presentation/message_bar.dart';
 import 'package:memo/features/message/presentation/message_notifier.dart';
 import 'package:memo/features/profiles/domain/profile.dart';
+import 'package:memo/features/stats/presentation/usage_providers.dart';
 import 'package:memo/l10n/app_localizations.dart';
 
+import '../../../support/fake_usage.dart';
 import '../../../support/fakes.dart';
 
 Widget host(ProviderContainer container) => UncontrolledProviderScope(
@@ -67,5 +70,78 @@ void main() {
     await tester.tap(find.text('Effacer'));
     await tester.pump();
     expect(container.read(messageProvider), isEmpty);
+  });
+
+  group('statistiques', () {
+    testWidgets('lire le message enregistre la phrase et ses mots', (
+      tester,
+    ) async {
+      final usage = FakeUsageRepository();
+      final c = ProviderContainer(
+        overrides: [
+          speechServiceProvider.overrideWithValue(speech),
+          usageRepositoryProvider.overrideWithValue(usage),
+          activeProfileProvider.overrideWith(
+            (ref) => Stream<Profile?>.value(
+              const Profile(
+                id: 7,
+                name: 'T',
+                type: ProfileType.child,
+                level: Level.beginner,
+                language: 'fr',
+              ),
+            ),
+          ),
+        ],
+      );
+      addTearDown(c.dispose);
+      c.read(messageProvider.notifier)
+        ..add(pictogram(1, 'Je veux'))
+        ..add(pictogram(2, 'Boire'));
+      await tester.pumpWidget(host(c));
+      await tester.pump();
+      await tester.tap(find.text('Lire le message'));
+      await tester.pump();
+      expect(usage.recorded.single.profileId, 7);
+      expect(usage.recorded.single.ids, [1, 2]);
+    });
+
+    testWidgets("un échec d'enregistrement ne perturbe pas la parole", (
+      tester,
+    ) async {
+      final errors = <Object>[];
+      final previous = FlutterError.onError;
+      FlutterError.onError = (d) => errors.add(d.exception);
+      addTearDown(() => FlutterError.onError = previous);
+
+      final c = ProviderContainer(
+        overrides: [
+          speechServiceProvider.overrideWithValue(speech),
+          usageRepositoryProvider.overrideWithValue(
+            FakeUsageRepository(fail: true),
+          ),
+          activeProfileProvider.overrideWith(
+            (ref) => Stream<Profile?>.value(
+              const Profile(
+                id: 7,
+                name: 'T',
+                type: ProfileType.child,
+                level: Level.beginner,
+                language: 'fr',
+              ),
+            ),
+          ),
+        ],
+      );
+      addTearDown(c.dispose);
+      c.read(messageProvider.notifier).add(pictogram(1, 'Oui'));
+      await tester.pumpWidget(host(c));
+      await tester.pump();
+      await tester.tap(find.text('Lire le message'));
+      await tester.pump();
+      await tester.pump();
+      expect(speech.spoken, ['Oui.']);
+      expect(errors.single, isA<StateError>());
+    });
   });
 }

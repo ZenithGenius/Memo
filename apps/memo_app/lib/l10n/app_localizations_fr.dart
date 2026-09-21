@@ -96,6 +96,50 @@ class AppLocalizationsFr extends AppLocalizations {
   String get languageEnglishSoon => 'English (bientôt)';
 
   @override
+  String get wordsTitle => 'Mots';
+
+  @override
+  String get wordsThisWeek => 'Cette semaine';
+
+  @override
+  String get wordsEmpty => 'Rien n\'a encore été dit cette semaine';
+
+  @override
+  String wordsSentences(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count phrases dites',
+      one: '1 phrase dite',
+      zero: 'Aucune phrase dite',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String wordsNew(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count nouveaux mots',
+      one: '1 nouveau mot',
+      zero: 'aucun nouveau mot',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String wordsTimes(String label, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count fois',
+      one: '1 fois',
+    );
+    return '$label, $_temp0';
+  }
+
+  @override
   String get settingsTooltip => 'Réglages';
 
   @override

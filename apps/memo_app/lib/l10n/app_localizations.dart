@@ -250,6 +250,42 @@ abstract class AppLocalizations {
   /// **'English (bientôt)'**
   String get languageEnglishSoon;
 
+  /// No description provided for @wordsTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mots'**
+  String get wordsTitle;
+
+  /// No description provided for @wordsThisWeek.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cette semaine'**
+  String get wordsThisWeek;
+
+  /// No description provided for @wordsEmpty.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rien n\'a encore été dit cette semaine'**
+  String get wordsEmpty;
+
+  /// No description provided for @wordsSentences.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{Aucune phrase dite} =1{1 phrase dite} other{{count} phrases dites}}'**
+  String wordsSentences(int count);
+
+  /// No description provided for @wordsNew.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{aucun nouveau mot} =1{1 nouveau mot} other{{count} nouveaux mots}}'**
+  String wordsNew(int count);
+
+  /// No description provided for @wordsTimes.
+  ///
+  /// In fr, this message translates to:
+  /// **'{label}, {count, plural, =1{1 fois} other{{count} fois}}'**
+  String wordsTimes(String label, int count);
+
   /// No description provided for @settingsTooltip.
   ///
   /// In fr, this message translates to:

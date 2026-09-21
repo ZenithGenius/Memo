@@ -140,4 +140,35 @@ void main() {
     expect((await db.select(db.quickPhrases).getSingle()).body, 'Bonjour');
     expect((await db.select(db.profiles).getSingle()).name, 'T');
   });
+
+  test('migration v4 vers v5 : les tables d\'usage sont créées', () async {
+    final db = AppDatabase(
+      NativeDatabase.memory(
+        setup: (raw) {
+          raw.execute('''
+            CREATE TABLE profiles (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              name TEXT NOT NULL, type TEXT NOT NULL, level INTEGER NOT NULL,
+              language TEXT NOT NULL DEFAULT 'fr',
+              created_at INTEGER NOT NULL DEFAULT (strftime('%s','now'))
+            )''');
+          raw.execute(
+            "INSERT INTO profiles (name, type, level) VALUES ('T','child',0)",
+          );
+          raw.execute('PRAGMA user_version = 4');
+        },
+      ),
+    );
+    addTearDown(db.close);
+
+    await db
+        .into(db.spokenSentences)
+        .insert(
+          SpokenSentencesCompanion.insert(
+            profileId: 1,
+            spokenAt: DateTime.utc(2026, 9, 21),
+          ),
+        );
+    expect(await db.select(db.spokenSentences).get(), hasLength(1));
+  });
 }

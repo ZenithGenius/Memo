@@ -13,6 +13,8 @@ import 'package:memo/features/phrases/presentation/phrase_providers.dart';
 import 'package:memo/features/profiles/data/drift_profile_repository.dart';
 import 'package:memo/features/settings/data/drift_settings_repository.dart';
 import 'package:memo/features/settings/presentation/settings_providers.dart';
+import 'package:memo/features/stats/data/drift_usage_repository.dart';
+import 'package:memo/features/stats/presentation/usage_providers.dart';
 
 /// Ouvre la base, importe le contenu embarqué et câble les dépôts.
 /// Attend le premier état du profil actif et des réglages : le routeur décide
@@ -40,6 +42,7 @@ Future<ProviderContainer> createContainer({
       phraseRepositoryProvider.overrideWithValue(
         DriftPhraseRepository(database),
       ),
+      usageRepositoryProvider.overrideWithValue(DriftUsageRepository(database)),
       settingsRepositoryProvider.overrideWithValue(
         DriftSettingsRepository(database),
       ),

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memo/core/theme/app_colors.dart';
 import 'package:memo/features/catalog/presentation/catalog_providers.dart';
 import 'package:memo/features/message/presentation/message_notifier.dart';
+import 'package:memo/features/stats/presentation/usage_providers.dart';
 import 'package:memo/l10n/app_localizations.dart';
 
 class MessageBar extends ConsumerWidget {
@@ -70,14 +71,20 @@ class MessageBar extends ConsumerWidget {
                     child: FilledButton.icon(
                       onPressed: items.isEmpty
                           ? null
-                          : () => ref
-                                .read(speechServiceProvider)
-                                .speak(
-                                  ref
-                                      .read(phraseComposerProvider)
-                                      .compose(items),
-                                  language: language,
-                                ),
+                          : () {
+                              ref
+                                  .read(speechServiceProvider)
+                                  .speak(
+                                    ref
+                                        .read(phraseComposerProvider)
+                                        .compose(items),
+                                    language: language,
+                                  );
+                              recordSpoken(
+                                ref,
+                                pictogramIds: [for (final p in items) p.id],
+                              );
+                            },
                       style: FilledButton.styleFrom(
                         backgroundColor: AppColors.teal,
                       ),

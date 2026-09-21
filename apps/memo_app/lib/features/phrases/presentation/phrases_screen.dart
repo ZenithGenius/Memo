@@ -6,6 +6,7 @@ import 'package:memo/features/catalog/presentation/catalog_providers.dart';
 import 'package:memo/features/message/presentation/message_notifier.dart';
 import 'package:memo/features/phrases/domain/quick_phrase.dart';
 import 'package:memo/features/phrases/presentation/phrase_providers.dart';
+import 'package:memo/features/stats/presentation/usage_providers.dart';
 import 'package:memo/l10n/app_localizations.dart';
 
 /// Phrases toutes faites : un toucher les prononce en entier.
@@ -63,6 +64,7 @@ class _PhraseRow extends ConsumerWidget {
           ref
               .read(speechServiceProvider)
               .speak(phrase.text, language: language);
+          recordSpoken(ref);
         },
         child: ConstrainedBox(
           constraints: const BoxConstraints(minHeight: 72),
