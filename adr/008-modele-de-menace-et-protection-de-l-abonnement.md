@@ -1,6 +1,6 @@
 # ADR-008 : Modèle de menace et protection de l'abonnement hors ligne
 
-Statut : proposé (2026-09-21). Complète et précise l'ADR-004.
+Statut : accepté (2026-09-21). Complète et précise l'ADR-004.
 
 ## Contexte
 
@@ -94,11 +94,11 @@ Ce changement modifie le jalon M1 : le paquet embarqué actuel de 151 pictogramm
 - Obfuscation et détection de racine comme protection principale : contournables par instrumentation, donc insuffisantes seules.
 - DRM tiers du commerce : coût et dépendance disproportionnés pour la taille du contenu.
 
-## Décisions à trancher
+## Décisions arrêtées
 
-- politique face aux installations hors boutique : accepter avec jeton court, ou refuser
-- durée maximale hors ligne : 45 jours proposés, à ajuster selon la réalité de la connectivité des utilisateurs
-- limite d'appareils par compte : deux proposés
+- installations hors boutique : acceptées, avec un jeton de courte durée et une alerte dans le back office
+- durée maximale hors ligne : 45 jours
+- appareils par compte : deux
 
 ## Références
 
