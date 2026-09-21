@@ -26,6 +26,32 @@ ThemeData buildAppTheme() {
       elevation: 0,
       centerTitle: false,
     ),
+    navigationBarTheme: NavigationBarThemeData(
+      backgroundColor: AppColors.sand,
+      indicatorColor: AppColors.charcoal,
+      indicatorShape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(14),
+      ),
+      iconTheme: WidgetStateProperty.resolveWith(
+        (states) => IconThemeData(
+          color: states.contains(WidgetState.selected)
+              ? AppColors.sand
+              : AppColors.mutedText,
+        ),
+      ),
+      labelTextStyle: WidgetStateProperty.resolveWith(
+        (states) => TextStyle(
+          fontFamily: 'Manrope',
+          fontSize: 12,
+          fontWeight: states.contains(WidgetState.selected)
+              ? FontWeight.w800
+              : FontWeight.w600,
+          color: states.contains(WidgetState.selected)
+              ? AppColors.charcoal
+              : AppColors.mutedText,
+        ),
+      ),
+    ),
     materialTapTargetSize: MaterialTapTargetSize.padded,
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(

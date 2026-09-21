@@ -286,6 +286,30 @@ abstract class AppLocalizations {
   /// **'{label}, {count, plural, =1{1 fois} other{{count} fois}}'**
   String wordsTimes(String label, int count);
 
+  /// No description provided for @navTalk.
+  ///
+  /// In fr, this message translates to:
+  /// **'Parler'**
+  String get navTalk;
+
+  /// No description provided for @navPhrases.
+  ///
+  /// In fr, this message translates to:
+  /// **'Phrases'**
+  String get navPhrases;
+
+  /// No description provided for @navWords.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mots'**
+  String get navWords;
+
+  /// No description provided for @navSettings.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réglages'**
+  String get navSettings;
+
   /// No description provided for @settingsTooltip.
   ///
   /// In fr, this message translates to:

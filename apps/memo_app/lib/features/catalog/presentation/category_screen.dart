@@ -4,7 +4,6 @@ import 'package:memo/core/ui/adaptive_grid.dart';
 import 'package:memo/features/catalog/presentation/catalog_providers.dart';
 import 'package:memo/features/catalog/presentation/pictogram_tile.dart';
 import 'package:memo/features/message/presentation/message_actions.dart';
-import 'package:memo/features/message/presentation/message_bar.dart';
 
 class CategoryScreen extends ConsumerWidget {
   const CategoryScreen({required this.code, super.key});
@@ -50,7 +49,6 @@ class CategoryScreen extends ConsumerWidget {
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text('$e')),
       ),
-      bottomNavigationBar: const MessageBar(),
     );
   }
 }

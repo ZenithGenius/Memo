@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:memo/core/shell/app_shell.dart';
 import 'package:memo/features/board/presentation/board_screen.dart';
 import 'package:memo/features/catalog/presentation/catalog_providers.dart';
 import 'package:memo/features/catalog/presentation/category_screen.dart';
 import 'package:memo/features/catalog/presentation/home_screen.dart';
 import 'package:memo/features/favorites/presentation/favorites_screen.dart';
 import 'package:memo/features/onboarding/presentation/onboarding_screen.dart';
+import 'package:memo/features/phrases/presentation/phrases_screen.dart';
 import 'package:memo/features/settings/presentation/settings_screen.dart';
-import 'package:memo/l10n/app_localizations.dart';
+import 'package:memo/features/stats/presentation/words_screen.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
   final refresh = ValueNotifier<int>(0);
@@ -28,37 +30,60 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       return null;
     },
     routes: [
-      GoRoute(
-        path: '/',
-        builder: (context, state) => HomeScreen(
-          onOpenCategory: (code) => context.push('/category/$code'),
-          onOpenFavorites: () => context.push('/favorites'),
-          onOpenBoard: () => context.push('/board'),
-          actions: [
-            IconButton(
-              tooltip: AppLocalizations.of(context).settingsTooltip,
-              icon: const Icon(Icons.settings_outlined),
-              onPressed: () => context.push('/settings'),
-            ),
-          ],
-        ),
-        routes: [
-          GoRoute(
-            path: 'category/:code',
-            builder: (context, state) =>
-                CategoryScreen(code: state.pathParameters['code']!),
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, shell) => AppShell(shell: shell),
+        branches: [
+          // Parler : catégories, puis pictogrammes, favoris et tableau.
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/',
+                builder: (context, state) => HomeScreen(
+                  onOpenCategory: (code) => context.push('/category/$code'),
+                  onOpenFavorites: () => context.push('/favorites'),
+                  onOpenBoard: () => context.push('/board'),
+                ),
+                routes: [
+                  GoRoute(
+                    path: 'category/:code',
+                    builder: (context, state) =>
+                        CategoryScreen(code: state.pathParameters['code']!),
+                  ),
+                  GoRoute(
+                    path: 'favorites',
+                    builder: (context, state) => const FavoritesScreen(),
+                  ),
+                  GoRoute(
+                    path: 'board',
+                    builder: (context, state) => const BoardScreen(),
+                  ),
+                ],
+              ),
+            ],
           ),
-          GoRoute(
-            path: 'favorites',
-            builder: (context, state) => const FavoritesScreen(),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/phrases',
+                builder: (context, state) => const PhrasesScreen(),
+              ),
+            ],
           ),
-          GoRoute(
-            path: 'board',
-            builder: (context, state) => const BoardScreen(),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/words',
+                builder: (context, state) => const WordsScreen(),
+              ),
+            ],
           ),
-          GoRoute(
-            path: 'settings',
-            builder: (context, state) => const SettingsScreen(),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/settings',
+                builder: (context, state) => const SettingsScreen(),
+              ),
+            ],
           ),
         ],
       ),

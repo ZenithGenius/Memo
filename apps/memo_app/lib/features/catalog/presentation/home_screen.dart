@@ -5,7 +5,6 @@ import 'package:memo/features/catalog/domain/catalog.dart';
 import 'package:memo/features/catalog/presentation/catalog_providers.dart';
 import 'package:memo/features/catalog/presentation/category_icons.dart';
 import 'package:memo/features/catalog/presentation/pictogram_tile.dart';
-import 'package:memo/features/message/presentation/message_bar.dart';
 import 'package:memo/l10n/app_localizations.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -13,14 +12,12 @@ class HomeScreen extends ConsumerWidget {
     required this.onOpenCategory,
     required this.onOpenFavorites,
     required this.onOpenBoard,
-    this.actions = const [],
     super.key,
   });
 
   final void Function(String code) onOpenCategory;
   final VoidCallback onOpenFavorites;
   final VoidCallback onOpenBoard;
-  final List<Widget> actions;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -29,7 +26,7 @@ class HomeScreen extends ConsumerWidget {
     final level = ref.watch(currentLevelProvider);
     final voiceMissing = ref.watch(voiceAvailableProvider).value == false;
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.homeTitle), actions: actions),
+      appBar: AppBar(title: Text(l10n.homeTitle)),
       body: Column(
         children: [
           if (voiceMissing)
@@ -41,7 +38,6 @@ class HomeScreen extends ConsumerWidget {
           Expanded(child: _grid(l10n, categories, level)),
         ],
       ),
-      bottomNavigationBar: const MessageBar(),
     );
   }
 

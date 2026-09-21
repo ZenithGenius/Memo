@@ -11,7 +11,9 @@ import '../test/support/fakes.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('parcours JE VEUX EAU puis lecture, sans réseau', (tester) async {
+  testWidgets('parcours JE VEUX LAIT puis lecture, sans réseau', (
+    tester,
+  ) async {
     final speech = FakeSpeechService();
     final container = await createContainer(
       db: AppDatabase.forTesting(),
@@ -45,12 +47,13 @@ void main() {
     // Alimentation, Eau.
     await tester.tap(find.text('Alimentation'));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Eau').first);
+    await tester.tap(find.text('Lait').first);
     await tester.pumpAndSettle();
 
     await tester.tap(find.text('Lire le message'));
     await tester.pump();
 
-    expect(speech.spoken, ['Je veux eau.']);
+    // Chaque mot est prononcé au toucher, puis la phrase entière à la lecture.
+    expect(speech.spoken, ['je veux', 'lait', 'Je veux lait.']);
   });
 }

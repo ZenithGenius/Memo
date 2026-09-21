@@ -6,7 +6,6 @@ import 'package:memo/features/catalog/domain/catalog.dart';
 import 'package:memo/features/catalog/presentation/catalog_providers.dart';
 import 'package:memo/features/catalog/presentation/pictogram_tile.dart';
 import 'package:memo/features/message/presentation/message_actions.dart';
-import 'package:memo/features/message/presentation/message_bar.dart';
 import 'package:memo/l10n/app_localizations.dart';
 
 class BoardScreen extends ConsumerStatefulWidget {
@@ -60,7 +59,6 @@ class _BoardScreenState extends ConsumerState<BoardScreen> {
                   _cell(board.cells[i], pictograms, i, l10n),
               ],
             ),
-      bottomNavigationBar: const MessageBar(),
     );
   }
 

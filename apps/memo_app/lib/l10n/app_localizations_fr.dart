@@ -140,6 +140,18 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get navTalk => 'Parler';
+
+  @override
+  String get navPhrases => 'Phrases';
+
+  @override
+  String get navWords => 'Mots';
+
+  @override
+  String get navSettings => 'Réglages';
+
+  @override
   String get settingsTooltip => 'Réglages';
 
   @override
