@@ -4,8 +4,8 @@ import 'package:memo/core/theme/app_colors.dart';
 import 'package:memo/features/catalog/domain/catalog.dart';
 import 'package:memo/features/catalog/presentation/catalog_providers.dart';
 import 'package:memo/features/catalog/presentation/pictogram_tile.dart';
+import 'package:memo/features/message/presentation/message_actions.dart';
 import 'package:memo/features/message/presentation/message_bar.dart';
-import 'package:memo/features/message/presentation/message_notifier.dart';
 import 'package:memo/l10n/app_localizations.dart';
 
 class BoardScreen extends ConsumerStatefulWidget {
@@ -100,7 +100,7 @@ class _BoardScreenState extends ConsumerState<BoardScreen> {
       selected: _editing,
       onTap: _editing
           ? () => _pickForCell(position)
-          : () => ref.read(messageProvider.notifier).add(p),
+          : () => addToMessage(context, ref, p),
     );
   }
 }

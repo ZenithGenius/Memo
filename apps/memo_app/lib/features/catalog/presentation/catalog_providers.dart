@@ -86,3 +86,8 @@ final voiceAvailableProvider = FutureProvider<bool>((ref) {
   final language = ref.watch(activeProfileProvider).value?.language ?? 'fr';
   return ref.watch(speechServiceProvider).isLanguageAvailable(language);
 });
+
+/// Niveau du profil actif, `débutant` tant qu'aucun profil n'existe.
+final currentLevelProvider = Provider<Level>(
+  (ref) => ref.watch(activeProfileProvider).value?.level ?? Level.beginner,
+);

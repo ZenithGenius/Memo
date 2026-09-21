@@ -29,6 +29,14 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String messageItemAdded(String label) {
+    return '$label ajouté';
+  }
+
+  @override
+  String get messageFull => 'Le message est plein';
+
+  @override
   String get settingsTooltip => 'Réglages';
 
   @override

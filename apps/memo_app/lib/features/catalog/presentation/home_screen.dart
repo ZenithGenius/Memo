@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:memo/core/ui/adaptive_grid.dart';
 import 'package:memo/features/catalog/domain/catalog.dart';
 import 'package:memo/features/catalog/presentation/catalog_providers.dart';
 import 'package:memo/features/catalog/presentation/category_icons.dart';
@@ -25,6 +26,7 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final categories = ref.watch(categoriesProvider);
+    final level = ref.watch(currentLevelProvider);
     final voiceMissing = ref.watch(voiceAvailableProvider).value == false;
     return Scaffold(
       appBar: AppBar(title: Text(l10n.homeTitle), actions: actions),
@@ -36,19 +38,21 @@ class HomeScreen extends ConsumerWidget {
               content: Text('${l10n.noVoiceTitle}. ${l10n.noVoiceBody}'),
               actions: const [SizedBox.shrink()],
             ),
-          Expanded(child: _grid(l10n, categories)),
+          Expanded(child: _grid(l10n, categories, level)),
         ],
       ),
       bottomNavigationBar: const MessageBar(),
     );
   }
 
-  Widget _grid(AppLocalizations l10n, AsyncValue<List<Category>> categories) {
+  Widget _grid(
+    AppLocalizations l10n,
+    AsyncValue<List<Category>> categories,
+    Level level,
+  ) {
     return categories.when(
-      data: (list) => GridView.count(
-        crossAxisCount: 3,
-        mainAxisSpacing: 12,
-        crossAxisSpacing: 12,
+      data: (list) => GridView(
+        gridDelegate: adaptiveGridDelegate(level),
         padding: const EdgeInsets.all(16),
         children: [
           for (final c in list)

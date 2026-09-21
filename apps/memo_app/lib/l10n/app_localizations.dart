@@ -130,6 +130,18 @@ abstract class AppLocalizations {
   /// **'Retirer {label}'**
   String removeItem(String label);
 
+  /// No description provided for @messageItemAdded.
+  ///
+  /// In fr, this message translates to:
+  /// **'{label} ajouté'**
+  String messageItemAdded(String label);
+
+  /// No description provided for @messageFull.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le message est plein'**
+  String get messageFull;
+
   /// No description provided for @settingsTooltip.
   ///
   /// In fr, this message translates to:

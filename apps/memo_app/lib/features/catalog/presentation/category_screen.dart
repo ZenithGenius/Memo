@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:memo/core/ui/adaptive_grid.dart';
 import 'package:memo/features/catalog/presentation/catalog_providers.dart';
 import 'package:memo/features/catalog/presentation/pictogram_tile.dart';
+import 'package:memo/features/message/presentation/message_actions.dart';
 import 'package:memo/features/message/presentation/message_bar.dart';
-import 'package:memo/features/message/presentation/message_notifier.dart';
 
 class CategoryScreen extends ConsumerWidget {
   const CategoryScreen({required this.code, super.key});
@@ -22,10 +23,8 @@ class CategoryScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: Text(title ?? '')),
       body: pictograms.when(
-        data: (list) => GridView.count(
-          crossAxisCount: 3,
-          mainAxisSpacing: 12,
-          crossAxisSpacing: 12,
+        data: (list) => GridView(
+          gridDelegate: adaptiveGridDelegate(ref.watch(currentLevelProvider)),
           padding: const EdgeInsets.all(16),
           children: [
             for (final p in list)
@@ -34,7 +33,7 @@ class CategoryScreen extends ConsumerWidget {
                 imageAsset: p.imageAsset,
                 icon: Icons.chat_bubble_outline,
                 selected: favoriteIds.contains(p.id),
-                onTap: () => ref.read(messageProvider.notifier).add(p),
+                onTap: () => addToMessage(context, ref, p),
                 onLongPress: () {
                   final profile = ref.read(activeProfileProvider).value;
                   if (profile == null) return;
