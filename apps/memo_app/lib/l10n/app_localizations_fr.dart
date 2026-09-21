@@ -236,4 +236,18 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get languageEnglish => 'English';
+
+  @override
+  String languageSwitchTo(String language) {
+    return 'Passer en $language';
+  }
+
+  @override
+  String languageName(String lang) {
+    String _temp0 = intl.Intl.selectLogic(lang, {
+      'en': 'anglais',
+      'other': 'français',
+    });
+    return '$_temp0';
+  }
 }

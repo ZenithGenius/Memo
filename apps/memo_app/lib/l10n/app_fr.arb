@@ -126,5 +126,21 @@
       }
     }
   },
-  "languageEnglish": "English"
+  "languageEnglish": "English",
+  "languageSwitchTo": "Passer en {language}",
+  "languageName": "{lang, select, en{anglais} other{français}}",
+  "@languageSwitchTo": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "@languageName": {
+    "placeholders": {
+      "lang": {
+        "type": "String"
+      }
+    }
+  }
 }

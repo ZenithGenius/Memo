@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memo/core/theme/app_colors.dart';
 import 'package:memo/features/catalog/domain/catalog.dart';
 import 'package:memo/features/catalog/presentation/catalog_providers.dart';
-import 'package:memo/features/message/presentation/message_notifier.dart';
+import 'package:memo/features/profiles/presentation/language_actions.dart';
 import 'package:memo/features/settings/domain/app_settings.dart';
 import 'package:memo/features/settings/presentation/settings_providers.dart';
 import 'package:memo/l10n/app_localizations.dart';
@@ -75,12 +75,9 @@ class SettingsScreen extends ConsumerWidget {
             RadioGroup<String>(
               groupValue: profile.language,
               onChanged: (language) {
-                if (language == null || language == profile.language) return;
-                // Un message composé dans l'autre langue n'aurait plus de sens.
-                ref.read(messageProvider.notifier).clear();
-                ref
-                    .read(profileRepositoryProvider)
-                    .setLanguage(profile.id, language);
+                if (language != null) {
+                  setProfileLanguage(ref, profile, language);
+                }
               },
               child: Column(
                 children: [

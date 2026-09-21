@@ -60,5 +60,7 @@
   "onboardingStart": "Get started",
   "next": "Next",
   "settingsTitle": "Settings",
-  "levelSetting": "Level"
+  "levelSetting": "Level",
+  "languageSwitchTo": "Switch to {language}",
+  "languageName": "{lang, select, en{English} other{French}}"
 }

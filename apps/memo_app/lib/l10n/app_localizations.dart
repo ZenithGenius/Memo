@@ -463,6 +463,18 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'English'**
   String get languageEnglish;
+
+  /// No description provided for @languageSwitchTo.
+  ///
+  /// In fr, this message translates to:
+  /// **'Passer en {language}'**
+  String languageSwitchTo(String language);
+
+  /// No description provided for @languageName.
+  ///
+  /// In fr, this message translates to:
+  /// **'{lang, select, en{anglais} other{français}}'**
+  String languageName(String lang);
 }
 
 class _AppLocalizationsDelegate
