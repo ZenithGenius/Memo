@@ -52,10 +52,10 @@ Fait :
 - statistiques de la semaine : phrases dites, nouveaux mots, classement
 - réglages : niveau en contrôle segmenté, lecture de chaque mot, vibrations, langue
 - étiquettes agrandies pour le niveau le plus simple
+- anglais complet : interface, libellés, phrases, voix britannique, pastille FR/EN dans l'en-tête
 
 Reste à faire :
 
-- anglais : libellés et sélecteur de langue (la base est prête, le sélecteur est visible mais désactivé)
 - plusieurs profils par appareil et profil affiché en en-tête
 - mode accompagnant à code, avec verrou visible
 - prédiction du mot suivant
@@ -66,10 +66,9 @@ Reste à faire :
 
 Les quatre premières étapes prévues (audio par mot, phrases, réglages, statistiques) et les onglets sont faites. Ordre pour la suite :
 
-1. anglais (libellés et sélecteur de langue)
-2. plusieurs profils et mode accompagnant à code
-3. ajout de ses propres phrases
-4. prédiction du mot suivant
+1. plusieurs profils et mode accompagnant à code
+2. ajout de ses propres phrases
+3. prédiction du mot suivant
 
 ## Points à trancher
 
