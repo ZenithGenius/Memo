@@ -74,6 +74,7 @@ flutter:
   generate: true
   assets:
     - assets/content/
+    - assets/content/images/demo/
   fonts:
     - family: Manrope
       fonts:

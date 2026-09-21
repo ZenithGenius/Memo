@@ -142,6 +142,24 @@ abstract class AppLocalizations {
   /// **'Le message est plein'**
   String get messageFull;
 
+  /// No description provided for @startupFailedTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Impossible de démarrer Memo'**
+  String get startupFailedTitle;
+
+  /// No description provided for @startupFailedBody.
+  ///
+  /// In fr, this message translates to:
+  /// **'Une erreur est survenue au chargement des données. Fermez puis rouvrez l\'application. Si le problème continue, contactez le support.'**
+  String get startupFailedBody;
+
+  /// No description provided for @startupFailedClose.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fermer'**
+  String get startupFailedClose;
+
   /// No description provided for @settingsTooltip.
   ///
   /// In fr, this message translates to:

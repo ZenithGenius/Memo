@@ -59,6 +59,8 @@ class HomeScreen extends ConsumerWidget {
             PictogramTile(
               label: c.label,
               icon: categoryIcon(c.iconName),
+              labelSize: labelSize(level),
+              accent: c.colorArgb == null ? null : Color(c.colorArgb!),
               onTap: () => onOpenCategory(c.code),
             ),
           PictogramTile(

@@ -3,3 +3,6 @@ docs/
 guides/
 design/mocks/memo-*.html
 .dart_tool/
+
+# Captures du navigateur de test
+.playwright-mcp/

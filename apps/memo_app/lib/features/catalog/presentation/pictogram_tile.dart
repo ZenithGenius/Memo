@@ -9,6 +9,9 @@ class PictogramTile extends StatelessWidget {
     this.onLongPress,
     this.imageAsset,
     this.icon,
+    this.accent,
+    this.labelInImage = false,
+    this.labelSize = 14,
     this.selected = false,
     super.key,
   });
@@ -16,6 +19,15 @@ class PictogramTile extends StatelessWidget {
   final String label;
   final String? imageAsset;
   final IconData? icon;
+
+  /// Couleur de la catégorie : bordure et icône (regroupement visuel).
+  final Color? accent;
+
+  /// Le mot est déjà dans l'image : pas de légende en double.
+  final bool labelInImage;
+
+  /// Taille de l'étiquette en points logiques (voir `labelSize`).
+  final double labelSize;
   final VoidCallback onTap;
   final VoidCallback? onLongPress;
   final bool selected;
@@ -34,8 +46,8 @@ class PictogramTile extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
           side: BorderSide(
-            color: selected ? AppColors.terracotta : AppColors.border,
-            width: 2,
+            color: selected ? AppColors.terracotta : accent ?? AppColors.border,
+            width: selected ? 4 : 2,
           ),
         ),
         child: InkWell(
@@ -52,25 +64,27 @@ class PictogramTile extends StatelessWidget {
                   Expanded(
                     child: Center(
                       child: imageAsset != null
-                          ? Image.asset(imageAsset!, fit: BoxFit.contain)
-                          : Icon(
-                              icon ?? Icons.image_outlined,
-                              size: 40,
-                              color: AppColors.terracotta,
-                            ),
+                          ? Image.asset(
+                              imageAsset!,
+                              fit: BoxFit.contain,
+                              errorBuilder: (_, _, _) => _fallbackIcon(),
+                            )
+                          : _fallbackIcon(),
                     ),
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    label,
-                    textAlign: TextAlign.center,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 14,
+                  if (!labelInImage) ...[
+                    const SizedBox(height: 4),
+                    Text(
+                      label,
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: labelSize,
+                      ),
                     ),
-                  ),
+                  ],
                 ],
               ),
             ),
@@ -79,4 +93,10 @@ class PictogramTile extends StatelessWidget {
       ),
     );
   }
+
+  Widget _fallbackIcon() => Icon(
+    icon ?? Icons.image_outlined,
+    size: 40,
+    color: accent ?? AppColors.terracotta,
+  );
 }

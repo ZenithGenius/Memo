@@ -53,6 +53,17 @@ void main() {
               'fr': {'label': 'Je veux', 'spoken': 'je veux'},
             },
           },
+          {
+            'code': 'A2',
+            'category': 'ALI',
+            'level': 0,
+            'audience': 'all',
+            'sortOrder': 1,
+            'image': null,
+            'labels': {
+              'fr': {'label': 'Eau', 'spoken': 'eau'},
+            },
+          },
         ],
       }),
     );

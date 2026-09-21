@@ -6,6 +6,7 @@ class Categories extends Table {
   TextColumn get code => text().unique()();
   IntColumn get sortOrder => integer()();
   TextColumn get iconName => text().nullable()();
+  TextColumn get colorHex => text().nullable()();
 }
 
 class CategoryTranslations extends Table {
@@ -29,6 +30,8 @@ class Pictograms extends Table {
   IntColumn get minLevel => integer()();
   TextColumn get audience => text()();
   IntColumn get sortOrder => integer()();
+  TextColumn get tier => text().withDefault(const Constant('free'))();
+  BoolColumn get labelInImage => boolean().withDefault(const Constant(false))();
 }
 
 class PictogramTranslations extends Table {

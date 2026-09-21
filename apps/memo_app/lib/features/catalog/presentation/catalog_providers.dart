@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memo/features/board/domain/board_repository.dart';
 import 'package:memo/features/catalog/domain/catalog.dart';
@@ -21,7 +22,12 @@ final activeProfileProvider = StreamProvider<Profile?>(
 
 final categoriesProvider = StreamProvider<List<Category>>((ref) {
   final lang = ref.watch(activeProfileProvider).value?.language ?? 'fr';
-  return ref.watch(catalogRepositoryProvider).watchCategories(lang);
+  return ref
+      .watch(catalogRepositoryProvider)
+      .watchCategories(
+        lang,
+        includePremium: ref.watch(premiumUnlockedProvider),
+      );
 });
 
 final pictogramsProvider = StreamProvider.family<List<Pictogram>, String>((
@@ -36,6 +42,7 @@ final pictogramsProvider = StreamProvider.family<List<Pictogram>, String>((
         lang: profile?.language ?? 'fr',
         maxLevel: profile?.level ?? Level.beginner,
         audience: profile?.type.audience ?? Audience.all,
+        includePremium: ref.watch(premiumUnlockedProvider),
       );
 });
 
@@ -59,7 +66,11 @@ final favoritePictogramsProvider = StreamProvider<List<Pictogram>>((ref) {
   if (profile == null || ids.isEmpty) return Stream.value(const <Pictogram>[]);
   return ref
       .watch(catalogRepositoryProvider)
-      .watchByIds(ids.toList(), profile.language);
+      .watchByIds(
+        ids.toList(),
+        profile.language,
+        includePremium: ref.watch(premiumUnlockedProvider),
+      );
 });
 
 final boardProvider = StreamProvider<BoardLayout?>((ref) {
@@ -76,7 +87,11 @@ final boardPictogramsProvider = StreamProvider<Map<int, Pictogram>>((ref) {
   }
   return ref
       .watch(catalogRepositoryProvider)
-      .watchByIds(board.cells.values.toList(), profile.language)
+      .watchByIds(
+        board.cells.values.toList(),
+        profile.language,
+        includePremium: ref.watch(premiumUnlockedProvider),
+      )
       .map((list) => {for (final p in list) p.id: p});
 });
 
@@ -90,4 +105,14 @@ final voiceAvailableProvider = FutureProvider<bool>((ref) {
 /// Niveau du profil actif, `débutant` tant qu'aucun profil n'existe.
 final currentLevelProvider = Provider<Level>(
   (ref) => ref.watch(activeProfileProvider).value?.level ?? Level.beginner,
+);
+
+/// Droit d'accès au contenu payant.
+///
+/// En compilation de développement il est accordé, pour pouvoir travailler
+/// sur tout le contenu ; `--dart-define=LOCK_PREMIUM=true` simule un
+/// utilisateur gratuit. En production il est refusé jusqu'au branchement du
+/// service de droits (jeton vérifié) avec la connexion au compte.
+final premiumUnlockedProvider = Provider<bool>(
+  (ref) => kDebugMode && !const bool.fromEnvironment('LOCK_PREMIUM'),
 );

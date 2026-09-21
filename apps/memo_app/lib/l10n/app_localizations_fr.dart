@@ -37,6 +37,16 @@ class AppLocalizationsFr extends AppLocalizations {
   String get messageFull => 'Le message est plein';
 
   @override
+  String get startupFailedTitle => 'Impossible de démarrer Memo';
+
+  @override
+  String get startupFailedBody =>
+      'Une erreur est survenue au chargement des données. Fermez puis rouvrez l\'application. Si le problème continue, contactez le support.';
+
+  @override
+  String get startupFailedClose => 'Fermer';
+
+  @override
   String get settingsTooltip => 'Réglages';
 
   @override

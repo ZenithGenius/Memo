@@ -20,3 +20,10 @@ double maxTileExtent(Level level) => switch (level) {
   Level.intermediate => 150,
   Level.advanced => 110,
 };
+
+/// Taille de l'étiquette selon le niveau : plus grande pour les enfants.
+double labelSize(Level level) => switch (level) {
+  Level.beginner => 16,
+  Level.intermediate => 15,
+  Level.advanced => 14,
+};

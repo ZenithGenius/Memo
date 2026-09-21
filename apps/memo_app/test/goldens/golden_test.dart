@@ -75,6 +75,17 @@ void main() {
     ),
   );
 
+  /// Charge les images avant la capture : sans cela elles restent vides.
+  Future<void> loadImages(WidgetTester tester) async {
+    final context = tester.element(find.byType(MaterialApp));
+    await tester.runAsync(() async {
+      for (final image in tester.widgetList<Image>(find.byType(Image))) {
+        await precacheImage(image.image, context);
+      }
+    });
+    await tester.pumpAndSettle();
+  }
+
   void phone(WidgetTester tester) {
     tester.view
       ..physicalSize = const Size(1080, 2340)
@@ -116,6 +127,7 @@ void main() {
       ..add(besoins[2]);
     await tester.pumpWidget(host(const CategoryScreen(code: 'CBE')));
     await tester.pumpAndSettle();
+    await loadImages(tester);
     await expectLater(
       find.byType(MaterialApp),
       matchesGoldenFile('category_with_message.png'),

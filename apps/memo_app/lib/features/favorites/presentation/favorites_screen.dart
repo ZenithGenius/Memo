@@ -39,6 +39,9 @@ class FavoritesScreen extends ConsumerWidget {
                     PictogramTile(
                       label: p.label,
                       imageAsset: p.imageAsset,
+                      labelInImage: p.labelInImage,
+                      labelSize: labelSize(ref.watch(currentLevelProvider)),
+                      accent: p.colorArgb == null ? null : Color(p.colorArgb!),
                       icon: Icons.chat_bubble_outline,
                       onTap: () => addToMessage(context, ref, p),
                     ),

@@ -23,7 +23,19 @@ void main() {
               'labels': {'fr': 'Mes besoins'},
             },
           ],
-          'pictograms': <Object?>[],
+          'pictograms': [
+            {
+              'code': 'A1',
+              'category': 'CBE',
+              'level': 0,
+              'audience': 'all',
+              'sortOrder': 1,
+              'image': null,
+              'labels': {
+                'fr': {'label': 'Je veux', 'spoken': 'je veux'},
+              },
+            },
+          ],
         }),
       ),
       speech: FakeSpeechService(),

@@ -4,6 +4,9 @@ enum Level { beginner, intermediate, advanced }
 
 enum Audience { child, teen, adult, all }
 
+/// Palier du contenu : gratuit (livré) ou payant (téléchargé, ADR-008).
+enum Tier { free, premium }
+
 class Category extends Equatable {
   const Category({
     required this.id,
@@ -11,6 +14,7 @@ class Category extends Equatable {
     required this.label,
     required this.sortOrder,
     this.iconName,
+    this.colorArgb,
   });
 
   final int id;
@@ -19,8 +23,11 @@ class Category extends Equatable {
   final String? iconName;
   final int sortOrder;
 
+  /// Couleur ARGB de la catégorie, sans dépendance à Flutter.
+  final int? colorArgb;
+
   @override
-  List<Object?> get props => [id, code, label, iconName, sortOrder];
+  List<Object?> get props => [id, code, label, iconName, sortOrder, colorArgb];
 }
 
 class Pictogram extends Equatable {
@@ -34,6 +41,9 @@ class Pictogram extends Equatable {
     required this.audience,
     required this.sortOrder,
     this.imageAsset,
+    this.tier = Tier.free,
+    this.colorArgb,
+    this.labelInImage = false,
   });
 
   final int id;
@@ -45,6 +55,13 @@ class Pictogram extends Equatable {
   final Level minLevel;
   final Audience audience;
   final int sortOrder;
+  final Tier tier;
+
+  /// Couleur de la catégorie du pictogramme.
+  final int? colorArgb;
+
+  /// Le mot est déjà écrit dans l'image (démonstration) : pas de légende.
+  final bool labelInImage;
 
   @override
   List<Object?> get props => [
@@ -57,5 +74,8 @@ class Pictogram extends Equatable {
     minLevel,
     audience,
     sortOrder,
+    tier,
+    colorArgb,
+    labelInImage,
   ];
 }

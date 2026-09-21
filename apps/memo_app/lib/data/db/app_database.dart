@@ -27,10 +27,19 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.production() : super(driftDatabase(name: 'memo'));
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
+    onUpgrade: (m, from, to) async {
+      if (from < 2) {
+        await m.addColumn(categories, categories.colorHex);
+        await m.addColumn(pictograms, pictograms.tier);
+      }
+      if (from < 3) {
+        await m.addColumn(pictograms, pictograms.labelInImage);
+      }
+    },
     beforeOpen: (details) async {
       await customStatement('PRAGMA foreign_keys = ON');
     },

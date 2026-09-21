@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memo/core/theme/app_colors.dart';
+import 'package:memo/core/ui/adaptive_grid.dart';
 import 'package:memo/features/catalog/domain/catalog.dart';
 import 'package:memo/features/catalog/presentation/catalog_providers.dart';
 import 'package:memo/features/catalog/presentation/pictogram_tile.dart';
@@ -96,6 +97,9 @@ class _BoardScreenState extends ConsumerState<BoardScreen> {
     return PictogramTile(
       label: p.label,
       imageAsset: p.imageAsset,
+      labelInImage: p.labelInImage,
+      labelSize: labelSize(ref.watch(currentLevelProvider)),
+      accent: p.colorArgb == null ? null : Color(p.colorArgb!),
       icon: Icons.chat_bubble_outline,
       selected: _editing,
       onTap: _editing

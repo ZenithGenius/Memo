@@ -10,10 +10,15 @@ class PackCategory {
     required this.sortOrder,
     required this.labels,
     this.iconName,
+    this.color,
   });
   final String code;
   final int sortOrder;
   final String? iconName;
+
+  /// Couleur de regroupement `#RRGGBB` : les symboles d'une même catégorie
+  /// partagent leur couleur, ce qui accélère la recherche visuelle.
+  final String? color;
   final Map<String, String> labels;
 }
 
@@ -26,6 +31,8 @@ class PackPictogram {
     required this.sortOrder,
     required this.labels,
     this.imageAsset,
+    this.tier = 'free',
+    this.labelInImage = false,
   });
   final String code;
   final String categoryCode;
@@ -33,6 +40,13 @@ class PackPictogram {
   final String audience;
   final int sortOrder;
   final String? imageAsset;
+
+  /// `free` (livré dans l'application) ou `premium` (ADR-008).
+  final String tier;
+
+  /// Vrai si le mot est écrit dans l'image (échantillons de démonstration) :
+  /// l'application n'affiche alors pas de légende en double.
+  final bool labelInImage;
   final Map<String, PackLabel> labels;
 }
 
@@ -53,6 +67,7 @@ class ContentPack {
             code: c['code']! as String,
             sortOrder: c['sortOrder']! as int,
             iconName: c['icon'] as String?,
+            color: c['color'] as String?,
             labels: (c['labels']! as Map<String, Object?>)
                 .cast<String, String>(),
           ),
@@ -68,6 +83,8 @@ class ContentPack {
             audience: p['audience']! as String,
             sortOrder: p['sortOrder']! as int,
             imageAsset: p['image'] as String?,
+            tier: (p['tier'] as String?) ?? 'free',
+            labelInImage: (p['labelInImage'] as bool?) ?? false,
             labels: (p['labels']! as Map<String, Object?>).map((lang, v) {
               final m = v! as Map<String, Object?>;
               return MapEntry(

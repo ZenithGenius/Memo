@@ -1,10 +1,11 @@
 {
-  "version": 1,
+  "version": 2,
   "categories": [
     {
       "code": "CBE",
       "sortOrder": 1,
       "icon": "bubble",
+      "color": "#C1502E",
       "labels": {
         "fr": "Mes besoins"
       }
@@ -13,6 +14,7 @@
       "code": "ACT",
       "sortOrder": 2,
       "icon": "hand",
+      "color": "#2F7D4F",
       "labels": {
         "fr": "Actions"
       }
@@ -21,6 +23,7 @@
       "code": "ALI",
       "sortOrder": 3,
       "icon": "plate",
+      "color": "#B45F06",
       "labels": {
         "fr": "Alimentation"
       }
@@ -29,6 +32,7 @@
       "code": "EMO",
       "sortOrder": 4,
       "icon": "face",
+      "color": "#B5486D",
       "labels": {
         "fr": "Mes émotions"
       }
@@ -37,6 +41,7 @@
       "code": "SAN",
       "sortOrder": 5,
       "icon": "cross",
+      "color": "#2B6CB0",
       "labels": {
         "fr": "Santé"
       }
@@ -45,6 +50,7 @@
       "code": "PER",
       "sortOrder": 6,
       "icon": "person",
+      "color": "#6B4FA0",
       "labels": {
         "fr": "Personnes"
       }
@@ -53,6 +59,7 @@
       "code": "LIE",
       "sortOrder": 7,
       "icon": "house",
+      "color": "#1F7A6C",
       "labels": {
         "fr": "Lieux"
       }
@@ -61,6 +68,7 @@
       "code": "HYG",
       "sortOrder": 8,
       "icon": "drop",
+      "color": "#1C7C9A",
       "labels": {
         "fr": "Hygiène"
       }
@@ -73,7 +81,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 1,
+      "tier": "free",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Je veux",
@@ -87,7 +97,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 2,
-      "image": null,
+      "tier": "free",
+      "image": "assets/content/images/demo/je-ne-veux-pas.png",
+      "labelInImage": true,
       "labels": {
         "fr": {
           "label": "Je ne veux pas",
@@ -101,7 +113,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 3,
-      "image": null,
+      "tier": "free",
+      "image": "assets/content/images/demo/encore.png",
+      "labelInImage": true,
       "labels": {
         "fr": {
           "label": "Encore",
@@ -115,7 +129,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 4,
+      "tier": "free",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Fini",
@@ -129,7 +145,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 5,
-      "image": null,
+      "tier": "free",
+      "image": "assets/content/images/demo/aide-moi.png",
+      "labelInImage": true,
       "labels": {
         "fr": {
           "label": "Aide-moi",
@@ -143,7 +161,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 6,
+      "tier": "free",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Attends",
@@ -157,7 +177,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 7,
-      "image": null,
+      "tier": "free",
+      "image": "assets/content/images/demo/oui.png",
+      "labelInImage": true,
       "labels": {
         "fr": {
           "label": "Oui",
@@ -171,7 +193,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 8,
-      "image": null,
+      "tier": "free",
+      "image": "assets/content/images/demo/non.png",
+      "labelInImage": true,
       "labels": {
         "fr": {
           "label": "Non",
@@ -185,7 +209,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 9,
-      "image": null,
+      "tier": "free",
+      "image": "assets/content/images/demo/s-il-te-plait.png",
+      "labelInImage": true,
       "labels": {
         "fr": {
           "label": "S'il te plaît",
@@ -199,7 +225,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 10,
-      "image": null,
+      "tier": "free",
+      "image": "assets/content/images/demo/merci.png",
+      "labelInImage": true,
       "labels": {
         "fr": {
           "label": "Merci",
@@ -213,7 +241,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 11,
-      "image": null,
+      "tier": "free",
+      "image": "assets/content/images/demo/stop.png",
+      "labelInImage": true,
       "labels": {
         "fr": {
           "label": "Stop",
@@ -227,7 +257,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 12,
-      "image": null,
+      "tier": "free",
+      "image": "assets/content/images/demo/donne-moi.png",
+      "labelInImage": true,
       "labels": {
         "fr": {
           "label": "Donne-moi",
@@ -241,7 +273,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 13,
+      "tier": "free",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Je veux aller",
@@ -255,7 +289,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 14,
+      "tier": "free",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Je veux rester",
@@ -269,7 +305,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 15,
+      "tier": "free",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Je veux changer",
@@ -283,7 +321,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 16,
+      "tier": "free",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "J'ai besoin",
@@ -297,7 +337,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 17,
-      "image": null,
+      "tier": "free",
+      "image": "assets/content/images/demo/je-ne-sais-pas.png",
+      "labelInImage": true,
       "labels": {
         "fr": {
           "label": "Je ne sais pas",
@@ -311,7 +353,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 18,
+      "tier": "free",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Je n'ai pas compris",
@@ -325,7 +369,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 19,
+      "tier": "free",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Laisse-moi",
@@ -339,7 +385,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 20,
-      "image": null,
+      "tier": "free",
+      "image": "assets/content/images/demo/viens.png",
+      "labelInImage": true,
       "labels": {
         "fr": {
           "label": "Viens",
@@ -353,7 +401,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 1,
-      "image": null,
+      "tier": "premium",
+      "image": "assets/content/images/demo/manger.png",
+      "labelInImage": true,
       "labels": {
         "fr": {
           "label": "Manger",
@@ -367,7 +417,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 2,
-      "image": null,
+      "tier": "premium",
+      "image": "assets/content/images/demo/boire.png",
+      "labelInImage": true,
       "labels": {
         "fr": {
           "label": "Boire",
@@ -381,7 +433,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 3,
-      "image": null,
+      "tier": "premium",
+      "image": "assets/content/images/demo/dormir.png",
+      "labelInImage": true,
       "labels": {
         "fr": {
           "label": "Dormir",
@@ -395,7 +449,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 4,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Jouer",
@@ -409,7 +465,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 5,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Marcher",
@@ -423,7 +481,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 6,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Courir",
@@ -437,7 +497,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 7,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Lire",
@@ -451,7 +513,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 8,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Écrire",
@@ -465,7 +529,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 9,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Travailler",
@@ -479,7 +545,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 10,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Laver",
@@ -493,7 +561,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 11,
-      "image": null,
+      "tier": "premium",
+      "image": "assets/content/images/demo/s-habiller.png",
+      "labelInImage": true,
       "labels": {
         "fr": {
           "label": "S'habiller",
@@ -507,7 +577,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 12,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Se déshabiller",
@@ -521,7 +593,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 13,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Attendre",
@@ -535,7 +609,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 14,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Parler",
@@ -549,7 +625,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 15,
-      "image": null,
+      "tier": "premium",
+      "image": "assets/content/images/demo/s-asseoir.png",
+      "labelInImage": true,
       "labels": {
         "fr": {
           "label": "S'asseoir",
@@ -563,7 +641,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 16,
-      "image": null,
+      "tier": "premium",
+      "image": "assets/content/images/demo/se-lever.png",
+      "labelInImage": true,
       "labels": {
         "fr": {
           "label": "Se lever",
@@ -577,7 +657,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 17,
-      "image": null,
+      "tier": "premium",
+      "image": "assets/content/images/demo/ouvrir.png",
+      "labelInImage": true,
       "labels": {
         "fr": {
           "label": "Ouvrir",
@@ -591,7 +673,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 18,
-      "image": null,
+      "tier": "premium",
+      "image": "assets/content/images/demo/fermer.png",
+      "labelInImage": true,
       "labels": {
         "fr": {
           "label": "Fermer",
@@ -605,7 +689,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 19,
-      "image": null,
+      "tier": "premium",
+      "image": "assets/content/images/demo/regarder.png",
+      "labelInImage": true,
       "labels": {
         "fr": {
           "label": "Regarder",
@@ -619,7 +705,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 20,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Écouter",
@@ -633,7 +721,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 21,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Prendre",
@@ -647,7 +737,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 22,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Donner",
@@ -661,7 +753,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 23,
-      "image": null,
+      "tier": "premium",
+      "image": "assets/content/images/demo/aller.png",
+      "labelInImage": true,
       "labels": {
         "fr": {
           "label": "Aller",
@@ -675,7 +769,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 24,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Venir",
@@ -689,7 +785,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 25,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Se reposer",
@@ -703,7 +801,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 1,
-      "image": null,
+      "tier": "premium",
+      "image": "assets/content/images/demo/eau.png",
+      "labelInImage": true,
       "labels": {
         "fr": {
           "label": "Eau",
@@ -717,7 +817,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 2,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Lait",
@@ -731,7 +833,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 3,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Jus",
@@ -745,7 +849,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 4,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Pain",
@@ -759,7 +865,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 5,
-      "image": null,
+      "tier": "premium",
+      "image": "assets/content/images/demo/riz.png",
+      "labelInImage": true,
       "labels": {
         "fr": {
           "label": "Riz",
@@ -773,7 +881,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 6,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Plantain",
@@ -787,7 +897,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 7,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Manioc",
@@ -801,7 +913,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 8,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Macabo",
@@ -815,7 +929,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 9,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Igname",
@@ -829,7 +945,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 10,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Maïs",
@@ -843,7 +961,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 11,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Haricot",
@@ -857,7 +977,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 12,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Arachide",
@@ -871,7 +993,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 13,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Poisson",
@@ -885,7 +1009,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 14,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Poulet",
@@ -899,7 +1025,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 15,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Viande",
@@ -913,7 +1041,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 16,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Beignet",
@@ -927,7 +1057,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 17,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Bouillie",
@@ -941,7 +1073,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 18,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Ndolé",
@@ -955,7 +1089,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 19,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Eru",
@@ -969,7 +1105,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 20,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Bâton de manioc",
@@ -983,7 +1121,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 21,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Mangue",
@@ -997,7 +1137,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 22,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Papaye",
@@ -1011,7 +1153,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 23,
-      "image": null,
+      "tier": "premium",
+      "image": "assets/content/images/demo/ananas.png",
+      "labelInImage": true,
       "labels": {
         "fr": {
           "label": "Ananas",
@@ -1025,7 +1169,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 24,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Avocat",
@@ -1039,7 +1185,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 25,
-      "image": null,
+      "tier": "premium",
+      "image": "assets/content/images/demo/orange.png",
+      "labelInImage": true,
       "labels": {
         "fr": {
           "label": "Orange",
@@ -1053,7 +1201,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 26,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Pastèque",
@@ -1067,7 +1217,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 27,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Bonbon",
@@ -1081,7 +1233,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 28,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Biscuit",
@@ -1095,7 +1249,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 29,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Glace",
@@ -1109,7 +1265,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 30,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Couscous",
@@ -1123,7 +1281,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 31,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Œuf",
@@ -1137,7 +1297,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 32,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Banane",
@@ -1151,7 +1313,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 1,
-      "image": null,
+      "tier": "premium",
+      "image": "assets/content/images/demo/content.png",
+      "labelInImage": true,
       "labels": {
         "fr": {
           "label": "Content",
@@ -1165,7 +1329,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 2,
-      "image": null,
+      "tier": "premium",
+      "image": "assets/content/images/demo/triste.png",
+      "labelInImage": true,
       "labels": {
         "fr": {
           "label": "Triste",
@@ -1179,7 +1345,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 3,
-      "image": null,
+      "tier": "premium",
+      "image": "assets/content/images/demo/fache.png",
+      "labelInImage": true,
       "labels": {
         "fr": {
           "label": "Fâché",
@@ -1193,7 +1361,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 4,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Peur",
@@ -1207,7 +1377,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 5,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Fatigué",
@@ -1221,7 +1393,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 6,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Malade",
@@ -1235,7 +1409,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 7,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Calme",
@@ -1249,7 +1425,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 8,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Inquiet",
@@ -1263,7 +1441,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 9,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Surpris",
@@ -1277,7 +1457,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 10,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Ennuyé",
@@ -1291,7 +1473,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 11,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Excité",
@@ -1305,7 +1489,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 12,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "J'ai chaud",
@@ -1319,7 +1505,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 13,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "J'ai froid",
@@ -1333,7 +1521,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 14,
-      "image": null,
+      "tier": "premium",
+      "image": "assets/content/images/demo/j-ai-faim.png",
+      "labelInImage": true,
       "labels": {
         "fr": {
           "label": "J'ai faim",
@@ -1347,7 +1537,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 15,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "J'ai soif",
@@ -1361,7 +1553,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 1,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "J'ai mal",
@@ -1375,7 +1569,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 2,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Tête",
@@ -1389,7 +1585,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 3,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Œil",
@@ -1403,7 +1601,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 4,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Oreille",
@@ -1417,7 +1617,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 5,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Bouche",
@@ -1431,7 +1633,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 6,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Dent",
@@ -1445,7 +1649,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 7,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Gorge",
@@ -1459,7 +1665,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 8,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Ventre",
@@ -1473,7 +1681,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 9,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Dos",
@@ -1487,7 +1697,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 10,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Bras",
@@ -1501,7 +1713,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 11,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Main",
@@ -1515,7 +1729,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 12,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Jambe",
@@ -1529,7 +1745,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 13,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Pied",
@@ -1543,7 +1761,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 14,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Médicament",
@@ -1557,7 +1777,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 15,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Médecin",
@@ -1571,7 +1793,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 16,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Infirmier ou infirmière",
@@ -1585,7 +1809,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 17,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Hôpital",
@@ -1599,7 +1825,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 18,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Urgence",
@@ -1613,7 +1841,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 19,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Poitrine",
@@ -1627,7 +1857,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 20,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Je respire mal",
@@ -1641,7 +1873,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 1,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Moi",
@@ -1655,7 +1889,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 2,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Maman",
@@ -1669,7 +1905,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 3,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Papa",
@@ -1683,7 +1921,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 4,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Frère",
@@ -1697,7 +1937,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 5,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Sœur",
@@ -1711,7 +1953,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 6,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Grand-mère",
@@ -1725,7 +1969,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 7,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Grand-père",
@@ -1739,7 +1985,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 8,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Enfant",
@@ -1753,7 +2001,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 9,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Ami",
@@ -1767,7 +2017,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 10,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Camarade",
@@ -1781,7 +2033,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 11,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Maîtresse",
@@ -1795,7 +2049,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 12,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Maître",
@@ -1809,7 +2065,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 13,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Médecin",
@@ -1823,7 +2081,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 14,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Infirmière",
@@ -1837,7 +2097,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 15,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Éducateur",
@@ -1851,7 +2113,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 1,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Maison",
@@ -1865,7 +2129,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 2,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "École",
@@ -1879,7 +2145,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 3,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Classe",
@@ -1893,7 +2161,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 4,
-      "image": null,
+      "tier": "premium",
+      "image": "assets/content/images/demo/toilettes.png",
+      "labelInImage": true,
       "labels": {
         "fr": {
           "label": "Toilettes",
@@ -1907,7 +2177,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 5,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Cuisine",
@@ -1921,7 +2193,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 6,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Chambre",
@@ -1935,7 +2209,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 7,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Cour",
@@ -1949,7 +2225,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 8,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Hôpital",
@@ -1963,7 +2241,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 9,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Marché",
@@ -1977,7 +2257,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 10,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Boutique",
@@ -1991,7 +2273,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 11,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Route",
@@ -2005,7 +2289,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 12,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Terrain de jeu",
@@ -2019,7 +2305,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 13,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Église",
@@ -2033,7 +2321,9 @@
       "level": 2,
       "audience": "all",
       "sortOrder": 14,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Dehors",
@@ -2047,7 +2337,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 1,
-      "image": null,
+      "tier": "premium",
+      "image": "assets/content/images/demo/toilettes.png",
+      "labelInImage": true,
       "labels": {
         "fr": {
           "label": "Toilettes",
@@ -2061,7 +2353,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 2,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Douche",
@@ -2075,7 +2369,9 @@
       "level": 0,
       "audience": "all",
       "sortOrder": 3,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Savon",
@@ -2089,7 +2385,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 4,
-      "image": null,
+      "tier": "premium",
+      "image": "assets/content/images/demo/eau.png",
+      "labelInImage": true,
       "labels": {
         "fr": {
           "label": "Eau",
@@ -2103,7 +2401,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 5,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Serviette",
@@ -2117,7 +2417,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 6,
-      "image": null,
+      "tier": "premium",
+      "image": "assets/content/images/demo/laver-mains.png",
+      "labelInImage": true,
       "labels": {
         "fr": {
           "label": "Se laver les mains",
@@ -2131,7 +2433,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 7,
-      "image": null,
+      "tier": "premium",
+      "image": "assets/content/images/demo/brosser-dents.png",
+      "labelInImage": true,
       "labels": {
         "fr": {
           "label": "Se brosser les dents",
@@ -2145,7 +2449,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 8,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Propre",
@@ -2159,7 +2465,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 9,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Sale",
@@ -2173,7 +2481,9 @@
       "level": 1,
       "audience": "all",
       "sortOrder": 10,
+      "tier": "premium",
       "image": null,
+      "labelInImage": false,
       "labels": {
         "fr": {
           "label": "Papier toilette",

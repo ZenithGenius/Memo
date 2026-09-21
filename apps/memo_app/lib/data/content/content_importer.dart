@@ -24,6 +24,7 @@ class ContentImporter {
           code: c.code,
           sortOrder: c.sortOrder,
           iconName: Value(c.iconName),
+          colorHex: Value(c.color),
         );
         await _db
             .into(_db.categories)
@@ -56,6 +57,8 @@ class ContentImporter {
           audience: p.audience,
           sortOrder: p.sortOrder,
           imageAsset: Value(p.imageAsset),
+          tier: Value(p.tier),
+          labelInImage: Value(p.labelInImage),
         );
         await _db
             .into(_db.pictograms)
