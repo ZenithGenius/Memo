@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memo/app.dart';
 import 'package:memo/core/bootstrap.dart';
+import 'package:memo/core/storage/secure_store.dart';
 import 'package:memo/data/db/app_database.dart';
 import 'package:memo/features/catalog/domain/catalog.dart';
 import 'package:memo/features/catalog/presentation/catalog_providers.dart';
@@ -13,11 +14,15 @@ import 'fakes.dart';
 /// Application complète (contenu réel embarqué, base en mémoire, voix simulée)
 /// avec un profil déjà créé.
 class AppHarness {
-  AppHarness._(this.db, this.container, this.speech);
+  AppHarness._(this.db, this.container, this.speech, this.secureStore);
 
   final AppDatabase db;
   final ProviderContainer container;
   final FakeSpeechService speech;
+  final InMemorySecureStore secureStore;
+
+  /// Horloge du service de code : avancer cette date simule le temps qui passe.
+  static DateTime clock = DateTime.utc(2026, 9, 22, 10);
 
   static Future<AppHarness> start(
     WidgetTester tester, {
@@ -31,8 +36,15 @@ class AppHarness {
     addTearDown(tester.view.reset);
     final speech = FakeSpeechService();
     final db = AppDatabase.forTesting();
+    final secureStore = InMemorySecureStore();
+    clock = DateTime.utc(2026, 9, 22, 10);
     final container = (await tester.runAsync(
-      () => createContainer(db: db, speech: speech),
+      () => createContainer(
+        db: db,
+        speech: speech,
+        secureStore: secureStore,
+        now: () => clock,
+      ),
     ))!;
     await tester.runAsync(() async {
       await container
@@ -48,7 +60,7 @@ class AppHarness {
       UncontrolledProviderScope(container: container, child: const MemoApp()),
     );
     await tester.pumpAndSettle();
-    return AppHarness._(db, container, speech);
+    return AppHarness._(db, container, speech, secureStore);
   }
 
   Future<void> dispose(WidgetTester tester) async {

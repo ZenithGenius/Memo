@@ -250,4 +250,103 @@ class AppLocalizationsFr extends AppLocalizations {
     });
     return '$_temp0';
   }
+
+  @override
+  String get caregiverModeLocked =>
+      'Mode accompagnant : verrouillé. Toucher pour le déverrouiller';
+
+  @override
+  String get caregiverModeUnlocked =>
+      'Mode accompagnant : déverrouillé. Toucher pour verrouiller';
+
+  @override
+  String get caregiverProtected =>
+      'Réservé à l\'accompagnant : le code sera demandé';
+
+  @override
+  String get pinEnterTitle => 'Code accompagnant';
+
+  @override
+  String get pinEnterHint => 'Entrez votre code à 4 chiffres';
+
+  @override
+  String get pinCreateTitle => 'Créer un code accompagnant';
+
+  @override
+  String get pinCreateHint =>
+      'Choisissez 4 chiffres. Il protège le niveau, le tableau, les phrases et les profils.';
+
+  @override
+  String get pinConfirmTitle => 'Confirmez le code';
+
+  @override
+  String get pinConfirmHint => 'Entrez le même code une seconde fois';
+
+  @override
+  String get pinMismatch => 'Les deux codes sont différents. Recommencez.';
+
+  @override
+  String get pinWeak => 'Ce code est trop simple. Choisissez-en un autre.';
+
+  @override
+  String pinWrong(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count essais restants',
+      one: '1 essai restant',
+    );
+    return 'Code incorrect. $_temp0';
+  }
+
+  @override
+  String pinLocked(int seconds) {
+    return 'Trop d\'essais. Réessayez dans $seconds s.';
+  }
+
+  @override
+  String pinDigit(String digit) {
+    return 'Chiffre $digit';
+  }
+
+  @override
+  String get pinDelete => 'Effacer le dernier chiffre';
+
+  @override
+  String get pinCancel => 'Annuler';
+
+  @override
+  String pinDigitsEntered(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count chiffres saisis',
+      one: '1 chiffre saisi',
+      zero: 'Aucun chiffre saisi',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get phraseAdd => 'Ajouter une phrase';
+
+  @override
+  String get phraseAddHint => 'Écrivez la phrase à dire';
+
+  @override
+  String get phraseSave => 'Enregistrer';
+
+  @override
+  String get phraseDelete => 'Supprimer la phrase';
+
+  @override
+  String phraseDeleteConfirm(String text) {
+    return 'Supprimer « $text » ?';
+  }
+
+  @override
+  String get phraseDeleteAction => 'Supprimer';
+
+  @override
+  String get cancel => 'Annuler';
 }

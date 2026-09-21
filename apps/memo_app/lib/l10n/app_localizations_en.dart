@@ -250,4 +250,100 @@ class AppLocalizationsEn extends AppLocalizations {
     });
     return '$_temp0';
   }
+
+  @override
+  String get caregiverModeLocked => 'Caregiver mode: locked. Tap to unlock';
+
+  @override
+  String get caregiverModeUnlocked => 'Caregiver mode: unlocked. Tap to lock';
+
+  @override
+  String get caregiverProtected => 'Caregiver only: the code will be asked';
+
+  @override
+  String get pinEnterTitle => 'Caregiver code';
+
+  @override
+  String get pinEnterHint => 'Enter your 4-digit code';
+
+  @override
+  String get pinCreateTitle => 'Create a caregiver code';
+
+  @override
+  String get pinCreateHint =>
+      'Choose 4 digits. It protects the level, the board, phrases and profiles.';
+
+  @override
+  String get pinConfirmTitle => 'Confirm the code';
+
+  @override
+  String get pinConfirmHint => 'Enter the same code a second time';
+
+  @override
+  String get pinMismatch => 'The two codes are different. Try again.';
+
+  @override
+  String get pinWeak => 'This code is too simple. Choose another one.';
+
+  @override
+  String pinWrong(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count attempts left',
+      one: '1 attempt left',
+    );
+    return 'Wrong code. $_temp0';
+  }
+
+  @override
+  String pinLocked(int seconds) {
+    return 'Too many attempts. Try again in $seconds s.';
+  }
+
+  @override
+  String pinDigit(String digit) {
+    return 'Digit $digit';
+  }
+
+  @override
+  String get pinDelete => 'Delete the last digit';
+
+  @override
+  String get pinCancel => 'Cancel';
+
+  @override
+  String pinDigitsEntered(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count digits entered',
+      one: '1 digit entered',
+      zero: 'No digits entered',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get phraseAdd => 'Add a phrase';
+
+  @override
+  String get phraseAddHint => 'Write the phrase to say';
+
+  @override
+  String get phraseSave => 'Save';
+
+  @override
+  String get phraseDelete => 'Delete the phrase';
+
+  @override
+  String phraseDeleteConfirm(String text) {
+    return 'Delete \"$text\"?';
+  }
+
+  @override
+  String get phraseDeleteAction => 'Delete';
+
+  @override
+  String get cancel => 'Cancel';
 }

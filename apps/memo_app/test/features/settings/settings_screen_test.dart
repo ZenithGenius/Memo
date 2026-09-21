@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memo/data/db/app_database.dart';
+import 'package:memo/features/caregiver/presentation/caregiver_providers.dart';
 import 'package:memo/features/catalog/domain/catalog.dart';
 import 'package:memo/features/catalog/presentation/catalog_providers.dart';
 import 'package:memo/features/profiles/data/drift_profile_repository.dart';
@@ -63,6 +64,8 @@ void main() {
   testWidgets('changer de niveau met à jour le profil et la description', (
     tester,
   ) async {
+    // Le niveau est réservé à l'accompagnant : mode déverrouillé.
+    container.read(caregiverSessionProvider.notifier).unlock();
     await pump(tester);
     await tester.tap(find.text('Avancé'));
     await tester.pumpAndSettle();
@@ -88,6 +91,7 @@ void main() {
     await pump(tester);
     final english = find.text('English');
     await tester.ensureVisible(english);
+    await tester.pumpAndSettle();
     await tester.tap(english);
     await tester.pumpAndSettle();
     expect((await profiles.watchActive().first)!.language, 'en');

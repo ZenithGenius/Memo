@@ -142,5 +142,64 @@
         "type": "String"
       }
     }
+  },
+  "caregiverModeLocked": "Mode accompagnant : verrouillé. Toucher pour le déverrouiller",
+  "caregiverModeUnlocked": "Mode accompagnant : déverrouillé. Toucher pour verrouiller",
+  "caregiverProtected": "Réservé à l'accompagnant : le code sera demandé",
+  "pinEnterTitle": "Code accompagnant",
+  "pinEnterHint": "Entrez votre code à 4 chiffres",
+  "pinCreateTitle": "Créer un code accompagnant",
+  "pinCreateHint": "Choisissez 4 chiffres. Il protège le niveau, le tableau, les phrases et les profils.",
+  "pinConfirmTitle": "Confirmez le code",
+  "pinConfirmHint": "Entrez le même code une seconde fois",
+  "pinMismatch": "Les deux codes sont différents. Recommencez.",
+  "pinWeak": "Ce code est trop simple. Choisissez-en un autre.",
+  "pinWrong": "Code incorrect. {count, plural, =1{1 essai restant} other{{count} essais restants}}",
+  "pinLocked": "Trop d'essais. Réessayez dans {seconds} s.",
+  "pinDigit": "Chiffre {digit}",
+  "pinDelete": "Effacer le dernier chiffre",
+  "pinCancel": "Annuler",
+  "pinDigitsEntered": "{count, plural, =0{Aucun chiffre saisi} =1{1 chiffre saisi} other{{count} chiffres saisis}}",
+  "@pinWrong": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@pinLocked": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@pinDigit": {
+    "placeholders": {
+      "digit": {
+        "type": "String"
+      }
+    }
+  },
+  "@pinDigitsEntered": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "phraseAdd": "Ajouter une phrase",
+  "phraseAddHint": "Écrivez la phrase à dire",
+  "phraseSave": "Enregistrer",
+  "phraseDelete": "Supprimer la phrase",
+  "phraseDeleteConfirm": "Supprimer « {text} » ?",
+  "phraseDeleteAction": "Supprimer",
+  "cancel": "Annuler",
+  "@phraseDeleteConfirm": {
+    "placeholders": {
+      "text": {
+        "type": "String"
+      }
+    }
   }
 }

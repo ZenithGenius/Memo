@@ -1,8 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:memo/core/storage/secure_store.dart';
 import 'package:memo/data/content/content_importer.dart';
 import 'package:memo/data/content/content_pack_source.dart';
 import 'package:memo/data/db/app_database.dart';
 import 'package:memo/features/board/data/drift_board_repository.dart';
+import 'package:memo/features/caregiver/domain/caregiver_pin_service.dart';
+import 'package:memo/features/caregiver/presentation/caregiver_providers.dart';
 import 'package:memo/features/catalog/data/drift_catalog_repository.dart';
 import 'package:memo/features/catalog/presentation/catalog_providers.dart';
 import 'package:memo/features/favorites/data/drift_favorites_repository.dart';
@@ -23,6 +26,8 @@ Future<ProviderContainer> createContainer({
   AppDatabase? db,
   ContentPackSource? source,
   SpeechService? speech,
+  SecureStore? secureStore,
+  DateTime Function()? now,
 }) async {
   final database = db ?? AppDatabase.production();
   final pack = await (source ?? const AssetContentPackSource()).load();
@@ -43,6 +48,12 @@ Future<ProviderContainer> createContainer({
         DriftPhraseRepository(database),
       ),
       usageRepositoryProvider.overrideWithValue(DriftUsageRepository(database)),
+      caregiverPinServiceProvider.overrideWithValue(
+        CaregiverPinService(
+          store: secureStore ?? const FlutterSecureStore(),
+          now: now ?? DateTime.now,
+        ),
+      ),
       settingsRepositoryProvider.overrideWithValue(
         DriftSettingsRepository(database),
       ),

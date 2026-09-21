@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memo/core/theme/app_colors.dart';
+import 'package:memo/features/caregiver/presentation/caregiver_gate.dart';
+import 'package:memo/features/caregiver/presentation/caregiver_providers.dart';
 import 'package:memo/features/catalog/domain/catalog.dart';
 import 'package:memo/features/catalog/presentation/catalog_providers.dart';
 import 'package:memo/features/profiles/presentation/language_actions.dart';
@@ -18,6 +20,7 @@ class SettingsScreen extends ConsumerWidget {
     final settings =
         ref.watch(appSettingsProvider).asData?.value ?? AppSettings.defaults;
     final repo = ref.read(settingsRepositoryProvider);
+    final caregiverActive = ref.watch(caregiverSessionProvider);
 
     String levelName(Level l) => switch (l) {
       Level.beginner => l10n.levelBeginner,
@@ -44,10 +47,38 @@ class SettingsScreen extends ConsumerWidget {
               ],
               selected: {profile.level},
               showSelectedIcon: false,
-              onSelectionChanged: (s) => ref
-                  .read(profileRepositoryProvider)
-                  .setLevel(profile.id, s.single),
+              onSelectionChanged: (s) async {
+                // Le niveau change la taille des tuiles et le vocabulaire :
+                // réservé à l'accompagnant.
+                if (!await requireCaregiver(context, ref)) return;
+                await ref
+                    .read(profileRepositoryProvider)
+                    .setLevel(profile.id, s.single);
+              },
             ),
+            if (!caregiverActive)
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.lock_outline,
+                      size: 16,
+                      color: AppColors.mutedText,
+                    ),
+                    const SizedBox(width: 6),
+                    Expanded(
+                      child: Text(
+                        l10n.caregiverProtected,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: AppColors.mutedText,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             Padding(
               padding: const EdgeInsets.only(top: 8, bottom: 8),
               child: Text(

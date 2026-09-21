@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memo/core/theme/app_colors.dart';
 import 'package:memo/core/ui/adaptive_grid.dart';
+import 'package:memo/features/caregiver/presentation/caregiver_gate.dart';
 import 'package:memo/features/catalog/domain/catalog.dart';
 import 'package:memo/features/catalog/presentation/catalog_providers.dart';
 import 'package:memo/features/catalog/presentation/pictogram_tile.dart';
@@ -43,7 +44,12 @@ class _BoardScreenState extends ConsumerState<BoardScreen> {
           IconButton(
             tooltip: _editing ? l10n.boardDone : l10n.boardEdit,
             icon: Icon(_editing ? Icons.check : Icons.edit_outlined),
-            onPressed: () => setState(() => _editing = !_editing),
+            onPressed: () async {
+              // Modifier le tableau, c'est modifier le vocabulaire : réservé à
+              // l'accompagnant. Terminer la modification reste libre.
+              if (!_editing && !await requireCaregiver(context, ref)) return;
+              if (mounted) setState(() => _editing = !_editing);
+            },
           ),
         ],
       ),

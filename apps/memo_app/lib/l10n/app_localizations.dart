@@ -475,6 +475,150 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'{lang, select, en{anglais} other{français}}'**
   String languageName(String lang);
+
+  /// No description provided for @caregiverModeLocked.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mode accompagnant : verrouillé. Toucher pour le déverrouiller'**
+  String get caregiverModeLocked;
+
+  /// No description provided for @caregiverModeUnlocked.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mode accompagnant : déverrouillé. Toucher pour verrouiller'**
+  String get caregiverModeUnlocked;
+
+  /// No description provided for @caregiverProtected.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réservé à l\'accompagnant : le code sera demandé'**
+  String get caregiverProtected;
+
+  /// No description provided for @pinEnterTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Code accompagnant'**
+  String get pinEnterTitle;
+
+  /// No description provided for @pinEnterHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Entrez votre code à 4 chiffres'**
+  String get pinEnterHint;
+
+  /// No description provided for @pinCreateTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Créer un code accompagnant'**
+  String get pinCreateTitle;
+
+  /// No description provided for @pinCreateHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisissez 4 chiffres. Il protège le niveau, le tableau, les phrases et les profils.'**
+  String get pinCreateHint;
+
+  /// No description provided for @pinConfirmTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Confirmez le code'**
+  String get pinConfirmTitle;
+
+  /// No description provided for @pinConfirmHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Entrez le même code une seconde fois'**
+  String get pinConfirmHint;
+
+  /// No description provided for @pinMismatch.
+  ///
+  /// In fr, this message translates to:
+  /// **'Les deux codes sont différents. Recommencez.'**
+  String get pinMismatch;
+
+  /// No description provided for @pinWeak.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce code est trop simple. Choisissez-en un autre.'**
+  String get pinWeak;
+
+  /// No description provided for @pinWrong.
+  ///
+  /// In fr, this message translates to:
+  /// **'Code incorrect. {count, plural, =1{1 essai restant} other{{count} essais restants}}'**
+  String pinWrong(int count);
+
+  /// No description provided for @pinLocked.
+  ///
+  /// In fr, this message translates to:
+  /// **'Trop d\'essais. Réessayez dans {seconds} s.'**
+  String pinLocked(int seconds);
+
+  /// No description provided for @pinDigit.
+  ///
+  /// In fr, this message translates to:
+  /// **'Chiffre {digit}'**
+  String pinDigit(String digit);
+
+  /// No description provided for @pinDelete.
+  ///
+  /// In fr, this message translates to:
+  /// **'Effacer le dernier chiffre'**
+  String get pinDelete;
+
+  /// No description provided for @pinCancel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Annuler'**
+  String get pinCancel;
+
+  /// No description provided for @pinDigitsEntered.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{Aucun chiffre saisi} =1{1 chiffre saisi} other{{count} chiffres saisis}}'**
+  String pinDigitsEntered(int count);
+
+  /// No description provided for @phraseAdd.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajouter une phrase'**
+  String get phraseAdd;
+
+  /// No description provided for @phraseAddHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Écrivez la phrase à dire'**
+  String get phraseAddHint;
+
+  /// No description provided for @phraseSave.
+  ///
+  /// In fr, this message translates to:
+  /// **'Enregistrer'**
+  String get phraseSave;
+
+  /// No description provided for @phraseDelete.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer la phrase'**
+  String get phraseDelete;
+
+  /// No description provided for @phraseDeleteConfirm.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer « {text} » ?'**
+  String phraseDeleteConfirm(String text);
+
+  /// No description provided for @phraseDeleteAction.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer'**
+  String get phraseDeleteAction;
+
+  /// No description provided for @cancel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Annuler'**
+  String get cancel;
 }
 
 class _AppLocalizationsDelegate

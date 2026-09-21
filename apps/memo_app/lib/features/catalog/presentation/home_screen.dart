@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memo/core/ui/adaptive_grid.dart';
+import 'package:memo/features/caregiver/presentation/caregiver_lock_button.dart';
 import 'package:memo/features/catalog/domain/catalog.dart';
 import 'package:memo/features/catalog/presentation/catalog_providers.dart';
 import 'package:memo/features/catalog/presentation/category_icons.dart';
@@ -32,7 +33,11 @@ class HomeScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.homeTitle),
-        actions: const [LanguagePill()],
+        actions: const [
+          LanguagePill(),
+          CaregiverLockButton(),
+          SizedBox(width: 8),
+        ],
       ),
       body: Column(
         children: [
