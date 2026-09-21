@@ -50,6 +50,25 @@ class PackPictogram {
   final Map<String, PackLabel> labels;
 }
 
+class PackPhrase {
+  const PackPhrase({
+    required this.code,
+    required this.sortOrder,
+    required this.texts,
+  });
+  final String code;
+  final int sortOrder;
+
+  /// Par langue : texte et thèmes.
+  final Map<String, PackPhraseText> texts;
+}
+
+class PackPhraseText {
+  const PackPhraseText({required this.text, required this.tags});
+  final String text;
+  final List<String> tags;
+}
+
 /// Paquet de contenu versionné : même format pour le contenu embarqué (M1)
 /// et les futures mises à jour téléchargées (M2).
 class ContentPack {
@@ -57,6 +76,7 @@ class ContentPack {
     required this.version,
     required this.categories,
     required this.pictograms,
+    this.phrases = const [],
   });
 
   factory ContentPack.fromJson(Map<String, Object?> json) {
@@ -98,14 +118,36 @@ class ContentPack {
           ),
         )
         .toList();
+    final phrases = ((json['phrases'] as List<Object?>?) ?? const [])
+        .cast<Map<String, Object?>>()
+        .map(
+          (p) => PackPhrase(
+            code: p['code']! as String,
+            sortOrder: p['sortOrder']! as int,
+            texts: (p['texts']! as Map<String, Object?>).map((lang, v) {
+              final m = v! as Map<String, Object?>;
+              return MapEntry(
+                lang,
+                PackPhraseText(
+                  text: m['text']! as String,
+                  tags: ((m['tags'] as List<Object?>?) ?? const [])
+                      .cast<String>(),
+                ),
+              );
+            }),
+          ),
+        )
+        .toList();
     return ContentPack(
       version: json['version']! as int,
       categories: categories,
       pictograms: pictograms,
+      phrases: phrases,
     );
   }
 
   final int version;
   final List<PackCategory> categories;
   final List<PackPictogram> pictograms;
+  final List<PackPhrase> phrases;
 }

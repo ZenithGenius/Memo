@@ -83,6 +83,26 @@ class ContentImporter {
               );
         }
       }
+      for (final phrase in pack.phrases) {
+        for (final e in phrase.texts.entries) {
+          final row = QuickPhrasesCompanion.insert(
+            code: Value(phrase.code),
+            lang: e.key,
+            body: e.value.text,
+            tags: Value(e.value.tags.join(',')),
+            sortOrder: phrase.sortOrder,
+          );
+          await _db
+              .into(_db.quickPhrases)
+              .insert(
+                row,
+                onConflict: DoUpdate(
+                  (_) => row,
+                  target: [_db.quickPhrases.code, _db.quickPhrases.lang],
+                ),
+              );
+        }
+      }
       await _db
           .into(_db.contentMeta)
           .insertOnConflictUpdate(

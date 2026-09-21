@@ -111,4 +111,13 @@ void main() {
       }
     },
   );
+
+  test('phrases toutes faites : codes uniques, texte non vide', () async {
+    final pack = await const AssetContentPackSource().load();
+    expect(pack.phrases, hasLength(8));
+    expect(pack.phrases.map((p) => p.code).toSet(), hasLength(8));
+    for (final p in pack.phrases) {
+      expect(p.texts['fr']!.text.trim(), isNotEmpty, reason: p.code);
+    }
+  });
 }

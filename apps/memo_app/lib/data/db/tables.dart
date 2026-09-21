@@ -100,3 +100,29 @@ class ContentMeta extends Table {
   @override
   Set<Column<Object>> get primaryKey => {id};
 }
+
+/// Phrases toutes faites : livrées avec le contenu (`profileId` nul) ou
+/// créées par un profil.
+@DataClassName('QuickPhraseRow')
+class QuickPhrases extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get profileId => integer().nullable().references(
+    Profiles,
+    #id,
+    onDelete: KeyAction.cascade,
+  )();
+
+  /// Code stable des phrases livrées, nul pour les phrases de l'utilisateur.
+  TextColumn get code => text().nullable()();
+  TextColumn get lang => text()();
+  TextColumn get body => text()();
+
+  /// Thèmes séparés par des virgules (maison, école...).
+  TextColumn get tags => text().withDefault(const Constant(''))();
+  IntColumn get sortOrder => integer()();
+
+  @override
+  List<Set<Column<Object>>> get uniqueKeys => [
+    {code, lang},
+  ];
+}

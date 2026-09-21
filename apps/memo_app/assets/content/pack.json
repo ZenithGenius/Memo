@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "categories": [
     {
       "code": "CBE",
@@ -2488,6 +2488,106 @@
         "fr": {
           "label": "Papier toilette",
           "spoken": "papier toilette"
+        }
+      }
+    }
+  ],
+  "phrases": [
+    {
+      "code": "PH-001",
+      "sortOrder": 1,
+      "texts": {
+        "fr": {
+          "text": "Je dois aller aux toilettes",
+          "tags": [
+            "école",
+            "maison"
+          ]
+        }
+      }
+    },
+    {
+      "code": "PH-002",
+      "sortOrder": 2,
+      "texts": {
+        "fr": {
+          "text": "Maman, viens s'il te plaît",
+          "tags": [
+            "maison"
+          ]
+        }
+      }
+    },
+    {
+      "code": "PH-003",
+      "sortOrder": 3,
+      "texts": {
+        "fr": {
+          "text": "Je peux avoir de l'eau ?",
+          "tags": [
+            "maison",
+            "école"
+          ]
+        }
+      }
+    },
+    {
+      "code": "PH-004",
+      "sortOrder": 4,
+      "texts": {
+        "fr": {
+          "text": "Doucement, je n'ai pas compris",
+          "tags": [
+            "école"
+          ]
+        }
+      }
+    },
+    {
+      "code": "PH-005",
+      "sortOrder": 5,
+      "texts": {
+        "fr": {
+          "text": "C'est à mon tour",
+          "tags": [
+            "jouer"
+          ]
+        }
+      }
+    },
+    {
+      "code": "PH-006",
+      "sortOrder": 6,
+      "texts": {
+        "fr": {
+          "text": "Je veux jouer avec toi",
+          "tags": [
+            "jouer"
+          ]
+        }
+      }
+    },
+    {
+      "code": "PH-007",
+      "sortOrder": 7,
+      "texts": {
+        "fr": {
+          "text": "J'ai fini mon travail",
+          "tags": [
+            "école"
+          ]
+        }
+      }
+    },
+    {
+      "code": "PH-008",
+      "sortOrder": 8,
+      "texts": {
+        "fr": {
+          "text": "Je suis fatigué, je veux dormir",
+          "tags": [
+            "maison"
+          ]
         }
       }
     }

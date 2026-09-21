@@ -160,6 +160,96 @@ abstract class AppLocalizations {
   /// **'Fermer'**
   String get startupFailedClose;
 
+  /// No description provided for @phrasesTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Dis-le maintenant'**
+  String get phrasesTitle;
+
+  /// No description provided for @phrasesEmpty.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune phrase pour le moment'**
+  String get phrasesEmpty;
+
+  /// No description provided for @phraseSpeak.
+  ///
+  /// In fr, this message translates to:
+  /// **'Dire : {text}'**
+  String phraseSpeak(String text);
+
+  /// No description provided for @levelNoteBeginner.
+  ///
+  /// In fr, this message translates to:
+  /// **'Très grandes tuiles, peu de mots à l\'écran, étiquettes agrandies'**
+  String get levelNoteBeginner;
+
+  /// No description provided for @levelNoteIntermediate.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tuiles moyennes, vocabulaire élargi'**
+  String get levelNoteIntermediate;
+
+  /// No description provided for @levelNoteAdvanced.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tuiles denses, tout le vocabulaire'**
+  String get levelNoteAdvanced;
+
+  /// No description provided for @settingsSpeech.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lecture'**
+  String get settingsSpeech;
+
+  /// No description provided for @settingsSpeakEachWord.
+  ///
+  /// In fr, this message translates to:
+  /// **'Prononcer chaque mot touché'**
+  String get settingsSpeakEachWord;
+
+  /// No description provided for @settingsSpeakEachWordNote.
+  ///
+  /// In fr, this message translates to:
+  /// **'Un retour immédiat, avant même que la phrase soit composée'**
+  String get settingsSpeakEachWordNote;
+
+  /// No description provided for @settingsDevice.
+  ///
+  /// In fr, this message translates to:
+  /// **'Appareil'**
+  String get settingsDevice;
+
+  /// No description provided for @settingsHaptics.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vibrations'**
+  String get settingsHaptics;
+
+  /// No description provided for @settingsHapticsNote.
+  ///
+  /// In fr, this message translates to:
+  /// **'À couper pour économiser la batterie'**
+  String get settingsHapticsNote;
+
+  /// No description provided for @settingsLanguage.
+  ///
+  /// In fr, this message translates to:
+  /// **'Langue'**
+  String get settingsLanguage;
+
+  /// No description provided for @languageFrench.
+  ///
+  /// In fr, this message translates to:
+  /// **'Français'**
+  String get languageFrench;
+
+  /// No description provided for @languageEnglishSoon.
+  ///
+  /// In fr, this message translates to:
+  /// **'English (bientôt)'**
+  String get languageEnglishSoon;
+
   /// No description provided for @settingsTooltip.
   ///
   /// In fr, this message translates to:

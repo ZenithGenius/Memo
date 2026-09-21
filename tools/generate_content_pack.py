@@ -71,6 +71,19 @@ DEMO_IMAGES = {
 }
 
 
+# Phrases toutes faites (onglet « Dis-le maintenant »), issues de la maquette.
+PHRASES = [
+    ("Je dois aller aux toilettes", ["école", "maison"]),
+    ("Maman, viens s'il te plaît", ["maison"]),
+    ("Je peux avoir de l'eau ?", ["maison", "école"]),
+    ("Doucement, je n'ai pas compris", ["école"]),
+    ("C'est à mon tour", ["jouer"]),
+    ("Je veux jouer avec toi", ["jouer"]),
+    ("J'ai fini mon travail", ["école"]),
+    ("Je suis fatigué, je veux dormir", ["maison"]),
+]
+
+
 def level(cat, rank):
     if cat == "CBE":
         return 0
@@ -93,7 +106,13 @@ for order, (code, label, icon, concepts, nums) in enumerate(CATALOGUE, 1):
             "labels": {"fr": {"label": concept, "spoken": concept.lower()}},
         })
 
+phrases = [
+    {"code": f"PH-{i:03d}", "sortOrder": i, "texts": {"fr": {"text": t, "tags": tags}}}
+    for i, (t, tags) in enumerate(PHRASES, 1)
+]
+
 out = pathlib.Path(__file__).resolve().parent.parent / "apps/memo_app/assets/content/pack.json"
-out.write_text(json.dumps({"version": 2, "categories": categories, "pictograms": pictograms},
+out.write_text(json.dumps({"version": 3, "categories": categories, "pictograms": pictograms,
+                           "phrases": phrases},
                           ensure_ascii=False, indent=2), encoding="utf-8")
 print(len(pictograms), "pictogrammes écrits dans", out)

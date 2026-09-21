@@ -47,6 +47,55 @@ class AppLocalizationsFr extends AppLocalizations {
   String get startupFailedClose => 'Fermer';
 
   @override
+  String get phrasesTitle => 'Dis-le maintenant';
+
+  @override
+  String get phrasesEmpty => 'Aucune phrase pour le moment';
+
+  @override
+  String phraseSpeak(String text) {
+    return 'Dire : $text';
+  }
+
+  @override
+  String get levelNoteBeginner =>
+      'Très grandes tuiles, peu de mots à l\'écran, étiquettes agrandies';
+
+  @override
+  String get levelNoteIntermediate => 'Tuiles moyennes, vocabulaire élargi';
+
+  @override
+  String get levelNoteAdvanced => 'Tuiles denses, tout le vocabulaire';
+
+  @override
+  String get settingsSpeech => 'Lecture';
+
+  @override
+  String get settingsSpeakEachWord => 'Prononcer chaque mot touché';
+
+  @override
+  String get settingsSpeakEachWordNote =>
+      'Un retour immédiat, avant même que la phrase soit composée';
+
+  @override
+  String get settingsDevice => 'Appareil';
+
+  @override
+  String get settingsHaptics => 'Vibrations';
+
+  @override
+  String get settingsHapticsNote => 'À couper pour économiser la batterie';
+
+  @override
+  String get settingsLanguage => 'Langue';
+
+  @override
+  String get languageFrench => 'Français';
+
+  @override
+  String get languageEnglishSoon => 'English (bientôt)';
+
+  @override
   String get settingsTooltip => 'Réglages';
 
   @override

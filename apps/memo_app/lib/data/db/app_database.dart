@@ -17,6 +17,7 @@ part 'app_database.g.dart';
     BoardCells,
     Settings,
     ContentMeta,
+    QuickPhrases,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -27,7 +28,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.production() : super(driftDatabase(name: 'memo'));
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -38,6 +39,9 @@ class AppDatabase extends _$AppDatabase {
       }
       if (from < 3) {
         await m.addColumn(pictograms, pictograms.labelInImage);
+      }
+      if (from < 4) {
+        await m.createTable(quickPhrases);
       }
     },
     beforeOpen: (details) async {

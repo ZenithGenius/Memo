@@ -106,4 +106,38 @@ void main() {
       expect((await db.select(db.categories).getSingle()).colorHex, '#2F7D4F');
     },
   );
+
+  test('migration v3 vers v4 : la table des phrases est créée', () async {
+    final db = AppDatabase(
+      NativeDatabase.memory(
+        setup: (raw) {
+          raw.execute('''
+            CREATE TABLE profiles (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              name TEXT NOT NULL, type TEXT NOT NULL, level INTEGER NOT NULL,
+              language TEXT NOT NULL DEFAULT 'fr',
+              created_at INTEGER NOT NULL DEFAULT (strftime('%s','now'))
+            )''');
+          raw.execute(
+            "INSERT INTO profiles (name, type, level) VALUES ('T','child',0)",
+          );
+          raw.execute('PRAGMA user_version = 3');
+        },
+      ),
+    );
+    addTearDown(db.close);
+
+    await db
+        .into(db.quickPhrases)
+        .insert(
+          QuickPhrasesCompanion.insert(
+            lang: 'fr',
+            body: 'Bonjour',
+            sortOrder: 1,
+            code: const Value('PH-001'),
+          ),
+        );
+    expect((await db.select(db.quickPhrases).getSingle()).body, 'Bonjour');
+    expect((await db.select(db.profiles).getSingle()).name, 'T');
+  });
 }
