@@ -120,4 +120,60 @@ void main() {
       expect(p.texts['fr']!.text.trim(), isNotEmpty, reason: p.code);
     }
   });
+
+  test('tout le contenu existe en anglais', () async {
+    final pack = await const AssetContentPackSource().load();
+    // Mots identiques en français et en anglais (noms propres, emprunts).
+    const same = {
+      'Stop',
+      'Orange',
+      'Couscous',
+      'Beignet',
+      'Plantain',
+      'Ndolé',
+      'Eru',
+      'Biscuit',
+      'Actions',
+      'Hygiène',
+    };
+    for (final c in pack.categories) {
+      expect(c.labels['en'], isNotNull, reason: c.code);
+    }
+    for (final p in pack.pictograms) {
+      final en = p.labels['en'];
+      final fr = p.labels['fr']!;
+      expect(en, isNotNull, reason: p.code);
+      expect(en!.label.trim(), isNotEmpty, reason: p.code);
+      expect(en.spoken.trim(), isNotEmpty, reason: p.code);
+      if (en.label == fr.label) {
+        expect(same, contains(en.label), reason: '${p.code} non traduit ?');
+      }
+    }
+    for (final ph in pack.phrases) {
+      expect(ph.texts['en'], isNotNull, reason: ph.code);
+      expect(
+        ph.texts['en']!.text,
+        isNot(ph.texts['fr']!.text),
+        reason: ph.code,
+      );
+      expect(
+        ph.texts['en']!.tags.length,
+        ph.texts['fr']!.tags.length,
+        reason: 'thèmes de ${ph.code}',
+      );
+    }
+  });
+
+  test(
+    "le texte prononcé anglais garde le pronom « I » en majuscule",
+    () async {
+      final pack = await const AssetContentPackSource().load();
+      for (final p in pack.pictograms) {
+        final spoken = p.labels['en']!.spoken;
+        if (p.labels['en']!.label.startsWith('I ')) {
+          expect(spoken, startsWith('I '), reason: p.code);
+        }
+      }
+    },
+  );
 }

@@ -55,6 +55,12 @@ class DriftProfileRepository implements ProfileRepository {
         .write(ProfilesCompanion(level: Value(level.index)));
   }
 
+  @override
+  Future<void> setLanguage(int profileId, String language) async {
+    await (_db.update(_db.profiles)..where((p) => p.id.equals(profileId)))
+        .write(ProfilesCompanion(language: Value(language)));
+  }
+
   Profile _toDomain(ProfileRow row) => Profile(
     id: row.id,
     name: row.name,

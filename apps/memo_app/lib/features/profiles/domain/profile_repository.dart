@@ -12,4 +12,7 @@ abstract interface class ProfileRepository {
   });
 
   Future<void> setLevel(int profileId, Level level);
+
+  /// Langue du profil : interface, libellés, phrases et voix (`fr`, `en`).
+  Future<void> setLanguage(int profileId, String language);
 }

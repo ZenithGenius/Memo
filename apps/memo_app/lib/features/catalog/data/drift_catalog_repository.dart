@@ -62,7 +62,7 @@ class DriftCatalogRepository implements CatalogRepository {
             _tierFilter(_db.pictograms.tier, includePremium),
       )
       ..orderBy([OrderingTerm.asc(_db.pictograms.sortOrder)]);
-    return query.watch().map(_mapRows);
+    return query.watch().map((rows) => _mapRows(rows, lang));
   }
 
   @override
@@ -76,7 +76,7 @@ class DriftCatalogRepository implements CatalogRepository {
         _db.pictograms.id.isIn(ids) &
             _tierFilter(_db.pictograms.tier, includePremium),
       );
-    return query.watch().map(_mapRows);
+    return query.watch().map((rows) => _mapRows(rows, lang));
   }
 
   JoinedSelectStatement<HasResultSet, dynamic> _pictogramJoin(String lang) {
@@ -105,19 +105,27 @@ class DriftCatalogRepository implements CatalogRepository {
     return tier.equals(Tier.free.name);
   }
 
-  List<Pictogram> _mapRows(List<TypedResult> rows) => [
+  /// Les images de démonstration portent le mot en français : dans une autre
+  /// langue elles ne sont pas affichées (icône et légende à la place).
+  bool _showImage(TypedResult r, String lang) =>
+      lang == 'fr' || !r.readTable(_db.pictograms).labelInImage;
+
+  List<Pictogram> _mapRows(List<TypedResult> rows, String lang) => [
     for (final r in rows)
       Pictogram(
         id: r.readTable(_db.pictograms).id,
         code: r.readTable(_db.pictograms).code,
         categoryId: r.readTable(_db.pictograms).categoryId,
-        imageAsset: r.readTable(_db.pictograms).imageAsset,
+        imageAsset: _showImage(r, lang)
+            ? r.readTable(_db.pictograms).imageAsset
+            : null,
         minLevel: Level.values[r.readTable(_db.pictograms).minLevel],
         audience: Audience.values.byName(r.readTable(_db.pictograms).audience),
         sortOrder: r.readTable(_db.pictograms).sortOrder,
         tier: Tier.values.byName(r.readTable(_db.pictograms).tier),
         colorArgb: parseHexColor(r.readTable(_db.categories).colorHex),
-        labelInImage: r.readTable(_db.pictograms).labelInImage,
+        labelInImage:
+            _showImage(r, lang) && r.readTable(_db.pictograms).labelInImage,
         label: r.readTable(_db.pictogramTranslations).label,
         spokenText: r.readTable(_db.pictogramTranslations).spokenText,
       ),

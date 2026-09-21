@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memo/core/theme/app_colors.dart';
 import 'package:memo/features/catalog/domain/catalog.dart';
 import 'package:memo/features/catalog/presentation/catalog_providers.dart';
+import 'package:memo/features/message/presentation/message_notifier.dart';
 import 'package:memo/features/settings/domain/app_settings.dart';
 import 'package:memo/features/settings/presentation/settings_providers.dart';
 import 'package:memo/l10n/app_localizations.dart';
@@ -70,23 +71,30 @@ class SettingsScreen extends ConsumerWidget {
             subtitle: Text(l10n.settingsHapticsNote),
           ),
           _Section(l10n.settingsLanguage),
-          RadioGroup<String>(
-            groupValue: profile?.language ?? 'fr',
-            onChanged: (_) {},
-            child: Column(
-              children: [
-                RadioListTile<String>(
-                  value: 'fr',
-                  title: Text(l10n.languageFrench),
-                ),
-                RadioListTile<String>(
-                  value: 'en',
-                  enabled: false,
-                  title: Text(l10n.languageEnglishSoon),
-                ),
-              ],
+          if (profile != null)
+            RadioGroup<String>(
+              groupValue: profile.language,
+              onChanged: (language) {
+                if (language == null || language == profile.language) return;
+                // Un message composé dans l'autre langue n'aurait plus de sens.
+                ref.read(messageProvider.notifier).clear();
+                ref
+                    .read(profileRepositoryProvider)
+                    .setLanguage(profile.id, language);
+              },
+              child: Column(
+                children: [
+                  RadioListTile<String>(
+                    value: 'fr',
+                    title: Text(l10n.languageFrench),
+                  ),
+                  RadioListTile<String>(
+                    value: 'en',
+                    title: Text(l10n.languageEnglish),
+                  ),
+                ],
+              ),
             ),
-          ),
         ],
       ),
     );

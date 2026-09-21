@@ -93,9 +93,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get languageFrench => 'Français';
 
   @override
-  String get languageEnglishSoon => 'English (bientôt)';
-
-  @override
   String get wordsTitle => 'Mots';
 
   @override
@@ -177,11 +174,14 @@ class AppLocalizationsFr extends AppLocalizations {
   String get boardClearCell => 'Vider la case';
 
   @override
-  String get noVoiceTitle => 'Voix française introuvable';
+  String noVoiceTitle(String language) {
+    return 'Voix $language introuvable';
+  }
 
   @override
-  String get noVoiceBody =>
-      'Installez une voix française dans les réglages de synthèse vocale du téléphone pour entendre les messages sans connexion.';
+  String noVoiceBody(String language) {
+    return 'Installez une voix $language dans les réglages de synthèse vocale du téléphone pour entendre les messages sans connexion.';
+  }
 
   @override
   String get onboardingWelcome => 'Bienvenue dans Memo';
@@ -224,4 +224,16 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get levelSetting => 'Niveau';
+
+  @override
+  String voiceLanguage(String lang) {
+    String _temp0 = intl.Intl.selectLogic(lang, {
+      'en': 'anglaise',
+      'other': 'française',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get languageEnglish => 'English';
 }

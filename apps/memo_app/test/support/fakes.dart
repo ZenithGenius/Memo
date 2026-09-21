@@ -3,6 +3,7 @@ import 'package:memo/features/message/domain/speech_service.dart';
 
 class FakeSpeechService implements SpeechService {
   final List<String> spoken = [];
+  final List<String> languages = [];
   bool available = true;
 
   @override
@@ -10,7 +11,12 @@ class FakeSpeechService implements SpeechService {
 
   @override
   Future<void> speak(String text, {required String language}) async =>
-      spoken.add(text);
+      _record(text, language);
+
+  void _record(String text, String language) {
+    spoken.add(text);
+    languages.add(language);
+  }
 
   @override
   Future<void> stop() async {}

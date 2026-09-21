@@ -84,12 +84,13 @@ void main() {
     await disposeWidgetTestDb(tester, container, db);
   });
 
-  testWidgets("l'anglais n'est pas encore sélectionnable", (tester) async {
+  testWidgets("choisir l'anglais change la langue du profil", (tester) async {
     await pump(tester);
-    final english = tester.widget<RadioListTile<String>>(
-      find.widgetWithText(RadioListTile<String>, 'English (bientôt)'),
-    );
-    expect(english.enabled, isFalse);
+    final english = find.text('English');
+    await tester.ensureVisible(english);
+    await tester.tap(english);
+    await tester.pumpAndSettle();
+    expect((await profiles.watchActive().first)!.language, 'en');
     await disposeWidgetTestDb(tester, container, db);
   });
 }

@@ -84,6 +84,54 @@ PHRASES = [
 ]
 
 
+# Libellés anglais (anglais britannique, proche de l'usage au Cameroun).
+CATEGORY_EN = {
+    "CBE": "My needs", "ACT": "Actions", "ALI": "Food", "EMO": "My feelings",
+    "SAN": "Health", "PER": "People", "LIE": "Places", "HYG": "Hygiene",
+}
+
+CONCEPTS_EN = {
+    "CBE": ["I want", "I don't want", "More", "Finished", "Help me", "Wait", "Yes", "No",
+            "Please", "Thank you", "Stop", "Give me", "I want to go", "I want to stay",
+            "I want to change", "I need", "I don't know", "I didn't understand",
+            "Leave me alone", "Come"],
+    "ACT": ["Eat", "Drink", "Sleep", "Play", "Walk", "Run", "Read", "Write", "Work", "Wash",
+            "Get dressed", "Get undressed", "Wait", "Talk", "Sit down", "Stand up", "Open",
+            "Close", "Look", "Listen", "Take", "Give", "Go", "Come", "Rest"],
+    "ALI": ["Water", "Milk", "Juice", "Bread", "Rice", "Plantain", "Cassava", "Cocoyam", "Yam",
+            "Corn", "Beans", "Groundnut", "Fish", "Chicken", "Meat", "Beignet", "Porridge",
+            "Ndolé", "Eru", "Cassava stick", "Mango", "Papaya", "Pineapple", "Avocado", "Orange",
+            "Watermelon", "Sweet", "Biscuit", "Ice cream", "Couscous", "Egg", "Banana"],
+    "EMO": ["Happy", "Sad", "Angry", "Scared", "Tired", "Sick", "Calm", "Worried", "Surprised",
+            "Bored", "Excited", "I'm hot", "I'm cold", "I'm hungry", "I'm thirsty"],
+    "SAN": ["It hurts", "Head", "Eye", "Ear", "Mouth", "Tooth", "Throat", "Tummy", "Back", "Arm",
+            "Hand", "Leg", "Foot", "Medicine", "Doctor", "Nurse", "Hospital", "Emergency",
+            "Chest", "I can't breathe well"],
+    "PER": ["Me", "Mum", "Dad", "Brother", "Sister", "Grandmother", "Grandfather", "Child",
+            "Friend", "Classmate", "Teacher", "Teacher", "Doctor", "Nurse", "Support worker"],
+    "LIE": ["Home", "School", "Classroom", "Toilet", "Kitchen", "Bedroom", "Yard", "Hospital",
+            "Market", "Shop", "Road", "Playground", "Church", "Outside"],
+    "HYG": ["Toilet", "Shower", "Soap", "Water", "Towel", "Wash hands", "Brush teeth", "Clean",
+            "Dirty", "Toilet paper"],
+}
+
+PHRASES_EN = [
+    "I need to go to the toilet", "Mum, please come", "Can I have some water?",
+    "Slowly, I didn't understand", "It's my turn", "I want to play with you",
+    "I've finished my work", "I'm tired, I want to sleep",
+]
+
+
+TAGS_EN = {"école": "school", "maison": "home", "jouer": "play"}
+
+
+def spoken_en(label):
+    """Texte prononcé : minuscule initiale, sauf le pronom « I »."""
+    if label.startswith("I ") or label.startswith("I'"):
+        return label
+    return label[0].lower() + label[1:]
+
+
 def level(cat, rank):
     if cat == "CBE":
         return 0
@@ -93,9 +141,11 @@ def level(cat, rank):
 categories, pictograms = [], []
 for order, (code, label, icon, concepts, nums) in enumerate(CATALOGUE, 1):
     categories.append({"code": code, "sortOrder": order, "icon": icon, "color": COLORS[code],
-                       "labels": {"fr": label}})
+                       "labels": {"fr": label, "en": CATEGORY_EN[code]}})
     nums = nums or list(range(1, len(concepts) + 1))
+    assert len(CONCEPTS_EN[code]) == len(concepts), code
     for rank, (concept, n) in enumerate(zip(concepts, nums)):
+        en = CONCEPTS_EN[code][rank]
         demo = DEMO_IMAGES.get(code, {}).get(concept)
         pictograms.append({
             "code": f"CAA-CR-{code}-{n:03d}", "category": code, "level": level(code, rank),
@@ -103,16 +153,21 @@ for order, (code, label, icon, concepts, nums) in enumerate(CATALOGUE, 1):
             "tier": "free" if code in FREE_CATEGORIES else "premium",
             "image": f"assets/content/images/demo/{demo}.png" if demo else None,
             "labelInImage": bool(demo),
-            "labels": {"fr": {"label": concept, "spoken": concept.lower()}},
+            "labels": {
+                "fr": {"label": concept, "spoken": concept.lower()},
+                "en": {"label": en, "spoken": spoken_en(en)},
+            },
         })
 
 phrases = [
-    {"code": f"PH-{i:03d}", "sortOrder": i, "texts": {"fr": {"text": t, "tags": tags}}}
+    {"code": f"PH-{i:03d}", "sortOrder": i, "texts": {"fr": {"text": t, "tags": tags},
+                                                        "en": {"text": PHRASES_EN[i - 1],
+                                                               "tags": [TAGS_EN[x] for x in tags]}}}
     for i, (t, tags) in enumerate(PHRASES, 1)
 ]
 
 out = pathlib.Path(__file__).resolve().parent.parent / "apps/memo_app/assets/content/pack.json"
-out.write_text(json.dumps({"version": 3, "categories": categories, "pictograms": pictograms,
+out.write_text(json.dumps({"version": 4, "categories": categories, "pictograms": pictograms,
                            "phrases": phrases},
                           ensure_ascii=False, indent=2), encoding="utf-8")
 print(len(pictograms), "pictogrammes écrits dans", out)

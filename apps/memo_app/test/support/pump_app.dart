@@ -23,6 +23,12 @@ class AppHarness {
     WidgetTester tester, {
     Level level = Level.beginner,
   }) async {
+    // Taille d'un téléphone : sur la fenêtre de test par défaut, des éléments
+    // resteraient hors de l'écran et ne recevraient pas les touchers.
+    tester.view
+      ..physicalSize = const Size(1080, 2340)
+      ..devicePixelRatio = 2.625;
+    addTearDown(tester.view.reset);
     final speech = FakeSpeechService();
     final db = AppDatabase.forTesting();
     final container = (await tester.runAsync(
@@ -51,4 +57,13 @@ class AppHarness {
     await tester.pump(const Duration(seconds: 1));
     await tester.runAsync(db.close);
   }
+}
+
+/// Laisse les écritures en base se propager avant de redessiner : les flux de
+/// la base avancent en temps réel, pas dans le temps simulé des tests.
+Future<void> settleDatabase(WidgetTester tester) async {
+  await tester.runAsync(
+    () => Future<void>.delayed(const Duration(milliseconds: 100)),
+  );
+  await tester.pumpAndSettle();
 }

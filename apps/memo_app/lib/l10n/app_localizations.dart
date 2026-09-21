@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
+import 'app_localizations_en.dart';
 import 'app_localizations_fr.dart';
 
 // ignore_for_file: type=lint
@@ -92,7 +93,10 @@ abstract class AppLocalizations {
       ];
 
   /// A list of this localizations delegate's supported locales.
-  static const List<Locale> supportedLocales = <Locale>[Locale('fr')];
+  static const List<Locale> supportedLocales = <Locale>[
+    Locale('en'),
+    Locale('fr'),
+  ];
 
   /// No description provided for @appName.
   ///
@@ -244,12 +248,6 @@ abstract class AppLocalizations {
   /// **'Français'**
   String get languageFrench;
 
-  /// No description provided for @languageEnglishSoon.
-  ///
-  /// In fr, this message translates to:
-  /// **'English (bientôt)'**
-  String get languageEnglishSoon;
-
   /// No description provided for @wordsTitle.
   ///
   /// In fr, this message translates to:
@@ -361,14 +359,14 @@ abstract class AppLocalizations {
   /// No description provided for @noVoiceTitle.
   ///
   /// In fr, this message translates to:
-  /// **'Voix française introuvable'**
-  String get noVoiceTitle;
+  /// **'Voix {language} introuvable'**
+  String noVoiceTitle(String language);
 
   /// No description provided for @noVoiceBody.
   ///
   /// In fr, this message translates to:
-  /// **'Installez une voix française dans les réglages de synthèse vocale du téléphone pour entendre les messages sans connexion.'**
-  String get noVoiceBody;
+  /// **'Installez une voix {language} dans les réglages de synthèse vocale du téléphone pour entendre les messages sans connexion.'**
+  String noVoiceBody(String language);
 
   /// No description provided for @onboardingWelcome.
   ///
@@ -453,6 +451,18 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Niveau'**
   String get levelSetting;
+
+  /// No description provided for @voiceLanguage.
+  ///
+  /// In fr, this message translates to:
+  /// **'{lang, select, en{anglaise} other{française}}'**
+  String voiceLanguage(String lang);
+
+  /// No description provided for @languageEnglish.
+  ///
+  /// In fr, this message translates to:
+  /// **'English'**
+  String get languageEnglish;
 }
 
 class _AppLocalizationsDelegate
@@ -466,7 +476,7 @@ class _AppLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) =>
-      <String>['fr'].contains(locale.languageCode);
+      <String>['en', 'fr'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -475,6 +485,8 @@ class _AppLocalizationsDelegate
 AppLocalizations lookupAppLocalizations(Locale locale) {
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
+    case 'en':
+      return AppLocalizationsEn();
     case 'fr':
       return AppLocalizationsFr();
   }

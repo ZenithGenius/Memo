@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "categories": [
     {
       "code": "CBE",
@@ -7,7 +7,8 @@
       "icon": "bubble",
       "color": "#C1502E",
       "labels": {
-        "fr": "Mes besoins"
+        "fr": "Mes besoins",
+        "en": "My needs"
       }
     },
     {
@@ -16,7 +17,8 @@
       "icon": "hand",
       "color": "#2F7D4F",
       "labels": {
-        "fr": "Actions"
+        "fr": "Actions",
+        "en": "Actions"
       }
     },
     {
@@ -25,7 +27,8 @@
       "icon": "plate",
       "color": "#B45F06",
       "labels": {
-        "fr": "Alimentation"
+        "fr": "Alimentation",
+        "en": "Food"
       }
     },
     {
@@ -34,7 +37,8 @@
       "icon": "face",
       "color": "#B5486D",
       "labels": {
-        "fr": "Mes émotions"
+        "fr": "Mes émotions",
+        "en": "My feelings"
       }
     },
     {
@@ -43,7 +47,8 @@
       "icon": "cross",
       "color": "#2B6CB0",
       "labels": {
-        "fr": "Santé"
+        "fr": "Santé",
+        "en": "Health"
       }
     },
     {
@@ -52,7 +57,8 @@
       "icon": "person",
       "color": "#6B4FA0",
       "labels": {
-        "fr": "Personnes"
+        "fr": "Personnes",
+        "en": "People"
       }
     },
     {
@@ -61,7 +67,8 @@
       "icon": "house",
       "color": "#1F7A6C",
       "labels": {
-        "fr": "Lieux"
+        "fr": "Lieux",
+        "en": "Places"
       }
     },
     {
@@ -70,7 +77,8 @@
       "icon": "drop",
       "color": "#1C7C9A",
       "labels": {
-        "fr": "Hygiène"
+        "fr": "Hygiène",
+        "en": "Hygiene"
       }
     }
   ],
@@ -88,6 +96,10 @@
         "fr": {
           "label": "Je veux",
           "spoken": "je veux"
+        },
+        "en": {
+          "label": "I want",
+          "spoken": "I want"
         }
       }
     },
@@ -104,6 +116,10 @@
         "fr": {
           "label": "Je ne veux pas",
           "spoken": "je ne veux pas"
+        },
+        "en": {
+          "label": "I don't want",
+          "spoken": "I don't want"
         }
       }
     },
@@ -120,6 +136,10 @@
         "fr": {
           "label": "Encore",
           "spoken": "encore"
+        },
+        "en": {
+          "label": "More",
+          "spoken": "more"
         }
       }
     },
@@ -136,6 +156,10 @@
         "fr": {
           "label": "Fini",
           "spoken": "fini"
+        },
+        "en": {
+          "label": "Finished",
+          "spoken": "finished"
         }
       }
     },
@@ -152,6 +176,10 @@
         "fr": {
           "label": "Aide-moi",
           "spoken": "aide-moi"
+        },
+        "en": {
+          "label": "Help me",
+          "spoken": "help me"
         }
       }
     },
@@ -168,6 +196,10 @@
         "fr": {
           "label": "Attends",
           "spoken": "attends"
+        },
+        "en": {
+          "label": "Wait",
+          "spoken": "wait"
         }
       }
     },
@@ -184,6 +216,10 @@
         "fr": {
           "label": "Oui",
           "spoken": "oui"
+        },
+        "en": {
+          "label": "Yes",
+          "spoken": "yes"
         }
       }
     },
@@ -200,6 +236,10 @@
         "fr": {
           "label": "Non",
           "spoken": "non"
+        },
+        "en": {
+          "label": "No",
+          "spoken": "no"
         }
       }
     },
@@ -216,6 +256,10 @@
         "fr": {
           "label": "S'il te plaît",
           "spoken": "s'il te plaît"
+        },
+        "en": {
+          "label": "Please",
+          "spoken": "please"
         }
       }
     },
@@ -232,6 +276,10 @@
         "fr": {
           "label": "Merci",
           "spoken": "merci"
+        },
+        "en": {
+          "label": "Thank you",
+          "spoken": "thank you"
         }
       }
     },
@@ -246,6 +294,10 @@
       "labelInImage": true,
       "labels": {
         "fr": {
+          "label": "Stop",
+          "spoken": "stop"
+        },
+        "en": {
           "label": "Stop",
           "spoken": "stop"
         }
@@ -264,6 +316,10 @@
         "fr": {
           "label": "Donne-moi",
           "spoken": "donne-moi"
+        },
+        "en": {
+          "label": "Give me",
+          "spoken": "give me"
         }
       }
     },
@@ -280,6 +336,10 @@
         "fr": {
           "label": "Je veux aller",
           "spoken": "je veux aller"
+        },
+        "en": {
+          "label": "I want to go",
+          "spoken": "I want to go"
         }
       }
     },
@@ -296,6 +356,10 @@
         "fr": {
           "label": "Je veux rester",
           "spoken": "je veux rester"
+        },
+        "en": {
+          "label": "I want to stay",
+          "spoken": "I want to stay"
         }
       }
     },
@@ -312,6 +376,10 @@
         "fr": {
           "label": "Je veux changer",
           "spoken": "je veux changer"
+        },
+        "en": {
+          "label": "I want to change",
+          "spoken": "I want to change"
         }
       }
     },
@@ -328,6 +396,10 @@
         "fr": {
           "label": "J'ai besoin",
           "spoken": "j'ai besoin"
+        },
+        "en": {
+          "label": "I need",
+          "spoken": "I need"
         }
       }
     },
@@ -344,6 +416,10 @@
         "fr": {
           "label": "Je ne sais pas",
           "spoken": "je ne sais pas"
+        },
+        "en": {
+          "label": "I don't know",
+          "spoken": "I don't know"
         }
       }
     },
@@ -360,6 +436,10 @@
         "fr": {
           "label": "Je n'ai pas compris",
           "spoken": "je n'ai pas compris"
+        },
+        "en": {
+          "label": "I didn't understand",
+          "spoken": "I didn't understand"
         }
       }
     },
@@ -376,6 +456,10 @@
         "fr": {
           "label": "Laisse-moi",
           "spoken": "laisse-moi"
+        },
+        "en": {
+          "label": "Leave me alone",
+          "spoken": "leave me alone"
         }
       }
     },
@@ -392,6 +476,10 @@
         "fr": {
           "label": "Viens",
           "spoken": "viens"
+        },
+        "en": {
+          "label": "Come",
+          "spoken": "come"
         }
       }
     },
@@ -408,6 +496,10 @@
         "fr": {
           "label": "Manger",
           "spoken": "manger"
+        },
+        "en": {
+          "label": "Eat",
+          "spoken": "eat"
         }
       }
     },
@@ -424,6 +516,10 @@
         "fr": {
           "label": "Boire",
           "spoken": "boire"
+        },
+        "en": {
+          "label": "Drink",
+          "spoken": "drink"
         }
       }
     },
@@ -440,6 +536,10 @@
         "fr": {
           "label": "Dormir",
           "spoken": "dormir"
+        },
+        "en": {
+          "label": "Sleep",
+          "spoken": "sleep"
         }
       }
     },
@@ -456,6 +556,10 @@
         "fr": {
           "label": "Jouer",
           "spoken": "jouer"
+        },
+        "en": {
+          "label": "Play",
+          "spoken": "play"
         }
       }
     },
@@ -472,6 +576,10 @@
         "fr": {
           "label": "Marcher",
           "spoken": "marcher"
+        },
+        "en": {
+          "label": "Walk",
+          "spoken": "walk"
         }
       }
     },
@@ -488,6 +596,10 @@
         "fr": {
           "label": "Courir",
           "spoken": "courir"
+        },
+        "en": {
+          "label": "Run",
+          "spoken": "run"
         }
       }
     },
@@ -504,6 +616,10 @@
         "fr": {
           "label": "Lire",
           "spoken": "lire"
+        },
+        "en": {
+          "label": "Read",
+          "spoken": "read"
         }
       }
     },
@@ -520,6 +636,10 @@
         "fr": {
           "label": "Écrire",
           "spoken": "écrire"
+        },
+        "en": {
+          "label": "Write",
+          "spoken": "write"
         }
       }
     },
@@ -536,6 +656,10 @@
         "fr": {
           "label": "Travailler",
           "spoken": "travailler"
+        },
+        "en": {
+          "label": "Work",
+          "spoken": "work"
         }
       }
     },
@@ -552,6 +676,10 @@
         "fr": {
           "label": "Laver",
           "spoken": "laver"
+        },
+        "en": {
+          "label": "Wash",
+          "spoken": "wash"
         }
       }
     },
@@ -568,6 +696,10 @@
         "fr": {
           "label": "S'habiller",
           "spoken": "s'habiller"
+        },
+        "en": {
+          "label": "Get dressed",
+          "spoken": "get dressed"
         }
       }
     },
@@ -584,6 +716,10 @@
         "fr": {
           "label": "Se déshabiller",
           "spoken": "se déshabiller"
+        },
+        "en": {
+          "label": "Get undressed",
+          "spoken": "get undressed"
         }
       }
     },
@@ -600,6 +736,10 @@
         "fr": {
           "label": "Attendre",
           "spoken": "attendre"
+        },
+        "en": {
+          "label": "Wait",
+          "spoken": "wait"
         }
       }
     },
@@ -616,6 +756,10 @@
         "fr": {
           "label": "Parler",
           "spoken": "parler"
+        },
+        "en": {
+          "label": "Talk",
+          "spoken": "talk"
         }
       }
     },
@@ -632,6 +776,10 @@
         "fr": {
           "label": "S'asseoir",
           "spoken": "s'asseoir"
+        },
+        "en": {
+          "label": "Sit down",
+          "spoken": "sit down"
         }
       }
     },
@@ -648,6 +796,10 @@
         "fr": {
           "label": "Se lever",
           "spoken": "se lever"
+        },
+        "en": {
+          "label": "Stand up",
+          "spoken": "stand up"
         }
       }
     },
@@ -664,6 +816,10 @@
         "fr": {
           "label": "Ouvrir",
           "spoken": "ouvrir"
+        },
+        "en": {
+          "label": "Open",
+          "spoken": "open"
         }
       }
     },
@@ -680,6 +836,10 @@
         "fr": {
           "label": "Fermer",
           "spoken": "fermer"
+        },
+        "en": {
+          "label": "Close",
+          "spoken": "close"
         }
       }
     },
@@ -696,6 +856,10 @@
         "fr": {
           "label": "Regarder",
           "spoken": "regarder"
+        },
+        "en": {
+          "label": "Look",
+          "spoken": "look"
         }
       }
     },
@@ -712,6 +876,10 @@
         "fr": {
           "label": "Écouter",
           "spoken": "écouter"
+        },
+        "en": {
+          "label": "Listen",
+          "spoken": "listen"
         }
       }
     },
@@ -728,6 +896,10 @@
         "fr": {
           "label": "Prendre",
           "spoken": "prendre"
+        },
+        "en": {
+          "label": "Take",
+          "spoken": "take"
         }
       }
     },
@@ -744,6 +916,10 @@
         "fr": {
           "label": "Donner",
           "spoken": "donner"
+        },
+        "en": {
+          "label": "Give",
+          "spoken": "give"
         }
       }
     },
@@ -760,6 +936,10 @@
         "fr": {
           "label": "Aller",
           "spoken": "aller"
+        },
+        "en": {
+          "label": "Go",
+          "spoken": "go"
         }
       }
     },
@@ -776,6 +956,10 @@
         "fr": {
           "label": "Venir",
           "spoken": "venir"
+        },
+        "en": {
+          "label": "Come",
+          "spoken": "come"
         }
       }
     },
@@ -792,6 +976,10 @@
         "fr": {
           "label": "Se reposer",
           "spoken": "se reposer"
+        },
+        "en": {
+          "label": "Rest",
+          "spoken": "rest"
         }
       }
     },
@@ -808,6 +996,10 @@
         "fr": {
           "label": "Eau",
           "spoken": "eau"
+        },
+        "en": {
+          "label": "Water",
+          "spoken": "water"
         }
       }
     },
@@ -824,6 +1016,10 @@
         "fr": {
           "label": "Lait",
           "spoken": "lait"
+        },
+        "en": {
+          "label": "Milk",
+          "spoken": "milk"
         }
       }
     },
@@ -840,6 +1036,10 @@
         "fr": {
           "label": "Jus",
           "spoken": "jus"
+        },
+        "en": {
+          "label": "Juice",
+          "spoken": "juice"
         }
       }
     },
@@ -856,6 +1056,10 @@
         "fr": {
           "label": "Pain",
           "spoken": "pain"
+        },
+        "en": {
+          "label": "Bread",
+          "spoken": "bread"
         }
       }
     },
@@ -872,6 +1076,10 @@
         "fr": {
           "label": "Riz",
           "spoken": "riz"
+        },
+        "en": {
+          "label": "Rice",
+          "spoken": "rice"
         }
       }
     },
@@ -886,6 +1094,10 @@
       "labelInImage": false,
       "labels": {
         "fr": {
+          "label": "Plantain",
+          "spoken": "plantain"
+        },
+        "en": {
           "label": "Plantain",
           "spoken": "plantain"
         }
@@ -904,6 +1116,10 @@
         "fr": {
           "label": "Manioc",
           "spoken": "manioc"
+        },
+        "en": {
+          "label": "Cassava",
+          "spoken": "cassava"
         }
       }
     },
@@ -920,6 +1136,10 @@
         "fr": {
           "label": "Macabo",
           "spoken": "macabo"
+        },
+        "en": {
+          "label": "Cocoyam",
+          "spoken": "cocoyam"
         }
       }
     },
@@ -936,6 +1156,10 @@
         "fr": {
           "label": "Igname",
           "spoken": "igname"
+        },
+        "en": {
+          "label": "Yam",
+          "spoken": "yam"
         }
       }
     },
@@ -952,6 +1176,10 @@
         "fr": {
           "label": "Maïs",
           "spoken": "maïs"
+        },
+        "en": {
+          "label": "Corn",
+          "spoken": "corn"
         }
       }
     },
@@ -968,6 +1196,10 @@
         "fr": {
           "label": "Haricot",
           "spoken": "haricot"
+        },
+        "en": {
+          "label": "Beans",
+          "spoken": "beans"
         }
       }
     },
@@ -984,6 +1216,10 @@
         "fr": {
           "label": "Arachide",
           "spoken": "arachide"
+        },
+        "en": {
+          "label": "Groundnut",
+          "spoken": "groundnut"
         }
       }
     },
@@ -1000,6 +1236,10 @@
         "fr": {
           "label": "Poisson",
           "spoken": "poisson"
+        },
+        "en": {
+          "label": "Fish",
+          "spoken": "fish"
         }
       }
     },
@@ -1016,6 +1256,10 @@
         "fr": {
           "label": "Poulet",
           "spoken": "poulet"
+        },
+        "en": {
+          "label": "Chicken",
+          "spoken": "chicken"
         }
       }
     },
@@ -1032,6 +1276,10 @@
         "fr": {
           "label": "Viande",
           "spoken": "viande"
+        },
+        "en": {
+          "label": "Meat",
+          "spoken": "meat"
         }
       }
     },
@@ -1046,6 +1294,10 @@
       "labelInImage": false,
       "labels": {
         "fr": {
+          "label": "Beignet",
+          "spoken": "beignet"
+        },
+        "en": {
           "label": "Beignet",
           "spoken": "beignet"
         }
@@ -1064,6 +1316,10 @@
         "fr": {
           "label": "Bouillie",
           "spoken": "bouillie"
+        },
+        "en": {
+          "label": "Porridge",
+          "spoken": "porridge"
         }
       }
     },
@@ -1078,6 +1334,10 @@
       "labelInImage": false,
       "labels": {
         "fr": {
+          "label": "Ndolé",
+          "spoken": "ndolé"
+        },
+        "en": {
           "label": "Ndolé",
           "spoken": "ndolé"
         }
@@ -1096,6 +1356,10 @@
         "fr": {
           "label": "Eru",
           "spoken": "eru"
+        },
+        "en": {
+          "label": "Eru",
+          "spoken": "eru"
         }
       }
     },
@@ -1112,6 +1376,10 @@
         "fr": {
           "label": "Bâton de manioc",
           "spoken": "bâton de manioc"
+        },
+        "en": {
+          "label": "Cassava stick",
+          "spoken": "cassava stick"
         }
       }
     },
@@ -1128,6 +1396,10 @@
         "fr": {
           "label": "Mangue",
           "spoken": "mangue"
+        },
+        "en": {
+          "label": "Mango",
+          "spoken": "mango"
         }
       }
     },
@@ -1144,6 +1416,10 @@
         "fr": {
           "label": "Papaye",
           "spoken": "papaye"
+        },
+        "en": {
+          "label": "Papaya",
+          "spoken": "papaya"
         }
       }
     },
@@ -1160,6 +1436,10 @@
         "fr": {
           "label": "Ananas",
           "spoken": "ananas"
+        },
+        "en": {
+          "label": "Pineapple",
+          "spoken": "pineapple"
         }
       }
     },
@@ -1176,6 +1456,10 @@
         "fr": {
           "label": "Avocat",
           "spoken": "avocat"
+        },
+        "en": {
+          "label": "Avocado",
+          "spoken": "avocado"
         }
       }
     },
@@ -1190,6 +1474,10 @@
       "labelInImage": true,
       "labels": {
         "fr": {
+          "label": "Orange",
+          "spoken": "orange"
+        },
+        "en": {
           "label": "Orange",
           "spoken": "orange"
         }
@@ -1208,6 +1496,10 @@
         "fr": {
           "label": "Pastèque",
           "spoken": "pastèque"
+        },
+        "en": {
+          "label": "Watermelon",
+          "spoken": "watermelon"
         }
       }
     },
@@ -1224,6 +1516,10 @@
         "fr": {
           "label": "Bonbon",
           "spoken": "bonbon"
+        },
+        "en": {
+          "label": "Sweet",
+          "spoken": "sweet"
         }
       }
     },
@@ -1238,6 +1534,10 @@
       "labelInImage": false,
       "labels": {
         "fr": {
+          "label": "Biscuit",
+          "spoken": "biscuit"
+        },
+        "en": {
           "label": "Biscuit",
           "spoken": "biscuit"
         }
@@ -1256,6 +1556,10 @@
         "fr": {
           "label": "Glace",
           "spoken": "glace"
+        },
+        "en": {
+          "label": "Ice cream",
+          "spoken": "ice cream"
         }
       }
     },
@@ -1270,6 +1574,10 @@
       "labelInImage": false,
       "labels": {
         "fr": {
+          "label": "Couscous",
+          "spoken": "couscous"
+        },
+        "en": {
           "label": "Couscous",
           "spoken": "couscous"
         }
@@ -1288,6 +1596,10 @@
         "fr": {
           "label": "Œuf",
           "spoken": "œuf"
+        },
+        "en": {
+          "label": "Egg",
+          "spoken": "egg"
         }
       }
     },
@@ -1304,6 +1616,10 @@
         "fr": {
           "label": "Banane",
           "spoken": "banane"
+        },
+        "en": {
+          "label": "Banana",
+          "spoken": "banana"
         }
       }
     },
@@ -1320,6 +1636,10 @@
         "fr": {
           "label": "Content",
           "spoken": "content"
+        },
+        "en": {
+          "label": "Happy",
+          "spoken": "happy"
         }
       }
     },
@@ -1336,6 +1656,10 @@
         "fr": {
           "label": "Triste",
           "spoken": "triste"
+        },
+        "en": {
+          "label": "Sad",
+          "spoken": "sad"
         }
       }
     },
@@ -1352,6 +1676,10 @@
         "fr": {
           "label": "Fâché",
           "spoken": "fâché"
+        },
+        "en": {
+          "label": "Angry",
+          "spoken": "angry"
         }
       }
     },
@@ -1368,6 +1696,10 @@
         "fr": {
           "label": "Peur",
           "spoken": "peur"
+        },
+        "en": {
+          "label": "Scared",
+          "spoken": "scared"
         }
       }
     },
@@ -1384,6 +1716,10 @@
         "fr": {
           "label": "Fatigué",
           "spoken": "fatigué"
+        },
+        "en": {
+          "label": "Tired",
+          "spoken": "tired"
         }
       }
     },
@@ -1400,6 +1736,10 @@
         "fr": {
           "label": "Malade",
           "spoken": "malade"
+        },
+        "en": {
+          "label": "Sick",
+          "spoken": "sick"
         }
       }
     },
@@ -1416,6 +1756,10 @@
         "fr": {
           "label": "Calme",
           "spoken": "calme"
+        },
+        "en": {
+          "label": "Calm",
+          "spoken": "calm"
         }
       }
     },
@@ -1432,6 +1776,10 @@
         "fr": {
           "label": "Inquiet",
           "spoken": "inquiet"
+        },
+        "en": {
+          "label": "Worried",
+          "spoken": "worried"
         }
       }
     },
@@ -1448,6 +1796,10 @@
         "fr": {
           "label": "Surpris",
           "spoken": "surpris"
+        },
+        "en": {
+          "label": "Surprised",
+          "spoken": "surprised"
         }
       }
     },
@@ -1464,6 +1816,10 @@
         "fr": {
           "label": "Ennuyé",
           "spoken": "ennuyé"
+        },
+        "en": {
+          "label": "Bored",
+          "spoken": "bored"
         }
       }
     },
@@ -1480,6 +1836,10 @@
         "fr": {
           "label": "Excité",
           "spoken": "excité"
+        },
+        "en": {
+          "label": "Excited",
+          "spoken": "excited"
         }
       }
     },
@@ -1496,6 +1856,10 @@
         "fr": {
           "label": "J'ai chaud",
           "spoken": "j'ai chaud"
+        },
+        "en": {
+          "label": "I'm hot",
+          "spoken": "I'm hot"
         }
       }
     },
@@ -1512,6 +1876,10 @@
         "fr": {
           "label": "J'ai froid",
           "spoken": "j'ai froid"
+        },
+        "en": {
+          "label": "I'm cold",
+          "spoken": "I'm cold"
         }
       }
     },
@@ -1528,6 +1896,10 @@
         "fr": {
           "label": "J'ai faim",
           "spoken": "j'ai faim"
+        },
+        "en": {
+          "label": "I'm hungry",
+          "spoken": "I'm hungry"
         }
       }
     },
@@ -1544,6 +1916,10 @@
         "fr": {
           "label": "J'ai soif",
           "spoken": "j'ai soif"
+        },
+        "en": {
+          "label": "I'm thirsty",
+          "spoken": "I'm thirsty"
         }
       }
     },
@@ -1560,6 +1936,10 @@
         "fr": {
           "label": "J'ai mal",
           "spoken": "j'ai mal"
+        },
+        "en": {
+          "label": "It hurts",
+          "spoken": "it hurts"
         }
       }
     },
@@ -1576,6 +1956,10 @@
         "fr": {
           "label": "Tête",
           "spoken": "tête"
+        },
+        "en": {
+          "label": "Head",
+          "spoken": "head"
         }
       }
     },
@@ -1592,6 +1976,10 @@
         "fr": {
           "label": "Œil",
           "spoken": "œil"
+        },
+        "en": {
+          "label": "Eye",
+          "spoken": "eye"
         }
       }
     },
@@ -1608,6 +1996,10 @@
         "fr": {
           "label": "Oreille",
           "spoken": "oreille"
+        },
+        "en": {
+          "label": "Ear",
+          "spoken": "ear"
         }
       }
     },
@@ -1624,6 +2016,10 @@
         "fr": {
           "label": "Bouche",
           "spoken": "bouche"
+        },
+        "en": {
+          "label": "Mouth",
+          "spoken": "mouth"
         }
       }
     },
@@ -1640,6 +2036,10 @@
         "fr": {
           "label": "Dent",
           "spoken": "dent"
+        },
+        "en": {
+          "label": "Tooth",
+          "spoken": "tooth"
         }
       }
     },
@@ -1656,6 +2056,10 @@
         "fr": {
           "label": "Gorge",
           "spoken": "gorge"
+        },
+        "en": {
+          "label": "Throat",
+          "spoken": "throat"
         }
       }
     },
@@ -1672,6 +2076,10 @@
         "fr": {
           "label": "Ventre",
           "spoken": "ventre"
+        },
+        "en": {
+          "label": "Tummy",
+          "spoken": "tummy"
         }
       }
     },
@@ -1688,6 +2096,10 @@
         "fr": {
           "label": "Dos",
           "spoken": "dos"
+        },
+        "en": {
+          "label": "Back",
+          "spoken": "back"
         }
       }
     },
@@ -1704,6 +2116,10 @@
         "fr": {
           "label": "Bras",
           "spoken": "bras"
+        },
+        "en": {
+          "label": "Arm",
+          "spoken": "arm"
         }
       }
     },
@@ -1720,6 +2136,10 @@
         "fr": {
           "label": "Main",
           "spoken": "main"
+        },
+        "en": {
+          "label": "Hand",
+          "spoken": "hand"
         }
       }
     },
@@ -1736,6 +2156,10 @@
         "fr": {
           "label": "Jambe",
           "spoken": "jambe"
+        },
+        "en": {
+          "label": "Leg",
+          "spoken": "leg"
         }
       }
     },
@@ -1752,6 +2176,10 @@
         "fr": {
           "label": "Pied",
           "spoken": "pied"
+        },
+        "en": {
+          "label": "Foot",
+          "spoken": "foot"
         }
       }
     },
@@ -1768,6 +2196,10 @@
         "fr": {
           "label": "Médicament",
           "spoken": "médicament"
+        },
+        "en": {
+          "label": "Medicine",
+          "spoken": "medicine"
         }
       }
     },
@@ -1784,6 +2216,10 @@
         "fr": {
           "label": "Médecin",
           "spoken": "médecin"
+        },
+        "en": {
+          "label": "Doctor",
+          "spoken": "doctor"
         }
       }
     },
@@ -1800,6 +2236,10 @@
         "fr": {
           "label": "Infirmier ou infirmière",
           "spoken": "infirmier ou infirmière"
+        },
+        "en": {
+          "label": "Nurse",
+          "spoken": "nurse"
         }
       }
     },
@@ -1816,6 +2256,10 @@
         "fr": {
           "label": "Hôpital",
           "spoken": "hôpital"
+        },
+        "en": {
+          "label": "Hospital",
+          "spoken": "hospital"
         }
       }
     },
@@ -1832,6 +2276,10 @@
         "fr": {
           "label": "Urgence",
           "spoken": "urgence"
+        },
+        "en": {
+          "label": "Emergency",
+          "spoken": "emergency"
         }
       }
     },
@@ -1848,6 +2296,10 @@
         "fr": {
           "label": "Poitrine",
           "spoken": "poitrine"
+        },
+        "en": {
+          "label": "Chest",
+          "spoken": "chest"
         }
       }
     },
@@ -1864,6 +2316,10 @@
         "fr": {
           "label": "Je respire mal",
           "spoken": "je respire mal"
+        },
+        "en": {
+          "label": "I can't breathe well",
+          "spoken": "I can't breathe well"
         }
       }
     },
@@ -1880,6 +2336,10 @@
         "fr": {
           "label": "Moi",
           "spoken": "moi"
+        },
+        "en": {
+          "label": "Me",
+          "spoken": "me"
         }
       }
     },
@@ -1896,6 +2356,10 @@
         "fr": {
           "label": "Maman",
           "spoken": "maman"
+        },
+        "en": {
+          "label": "Mum",
+          "spoken": "mum"
         }
       }
     },
@@ -1912,6 +2376,10 @@
         "fr": {
           "label": "Papa",
           "spoken": "papa"
+        },
+        "en": {
+          "label": "Dad",
+          "spoken": "dad"
         }
       }
     },
@@ -1928,6 +2396,10 @@
         "fr": {
           "label": "Frère",
           "spoken": "frère"
+        },
+        "en": {
+          "label": "Brother",
+          "spoken": "brother"
         }
       }
     },
@@ -1944,6 +2416,10 @@
         "fr": {
           "label": "Sœur",
           "spoken": "sœur"
+        },
+        "en": {
+          "label": "Sister",
+          "spoken": "sister"
         }
       }
     },
@@ -1960,6 +2436,10 @@
         "fr": {
           "label": "Grand-mère",
           "spoken": "grand-mère"
+        },
+        "en": {
+          "label": "Grandmother",
+          "spoken": "grandmother"
         }
       }
     },
@@ -1976,6 +2456,10 @@
         "fr": {
           "label": "Grand-père",
           "spoken": "grand-père"
+        },
+        "en": {
+          "label": "Grandfather",
+          "spoken": "grandfather"
         }
       }
     },
@@ -1992,6 +2476,10 @@
         "fr": {
           "label": "Enfant",
           "spoken": "enfant"
+        },
+        "en": {
+          "label": "Child",
+          "spoken": "child"
         }
       }
     },
@@ -2008,6 +2496,10 @@
         "fr": {
           "label": "Ami",
           "spoken": "ami"
+        },
+        "en": {
+          "label": "Friend",
+          "spoken": "friend"
         }
       }
     },
@@ -2024,6 +2516,10 @@
         "fr": {
           "label": "Camarade",
           "spoken": "camarade"
+        },
+        "en": {
+          "label": "Classmate",
+          "spoken": "classmate"
         }
       }
     },
@@ -2040,6 +2536,10 @@
         "fr": {
           "label": "Maîtresse",
           "spoken": "maîtresse"
+        },
+        "en": {
+          "label": "Teacher",
+          "spoken": "teacher"
         }
       }
     },
@@ -2056,6 +2556,10 @@
         "fr": {
           "label": "Maître",
           "spoken": "maître"
+        },
+        "en": {
+          "label": "Teacher",
+          "spoken": "teacher"
         }
       }
     },
@@ -2072,6 +2576,10 @@
         "fr": {
           "label": "Médecin",
           "spoken": "médecin"
+        },
+        "en": {
+          "label": "Doctor",
+          "spoken": "doctor"
         }
       }
     },
@@ -2088,6 +2596,10 @@
         "fr": {
           "label": "Infirmière",
           "spoken": "infirmière"
+        },
+        "en": {
+          "label": "Nurse",
+          "spoken": "nurse"
         }
       }
     },
@@ -2104,6 +2616,10 @@
         "fr": {
           "label": "Éducateur",
           "spoken": "éducateur"
+        },
+        "en": {
+          "label": "Support worker",
+          "spoken": "support worker"
         }
       }
     },
@@ -2120,6 +2636,10 @@
         "fr": {
           "label": "Maison",
           "spoken": "maison"
+        },
+        "en": {
+          "label": "Home",
+          "spoken": "home"
         }
       }
     },
@@ -2136,6 +2656,10 @@
         "fr": {
           "label": "École",
           "spoken": "école"
+        },
+        "en": {
+          "label": "School",
+          "spoken": "school"
         }
       }
     },
@@ -2152,6 +2676,10 @@
         "fr": {
           "label": "Classe",
           "spoken": "classe"
+        },
+        "en": {
+          "label": "Classroom",
+          "spoken": "classroom"
         }
       }
     },
@@ -2168,6 +2696,10 @@
         "fr": {
           "label": "Toilettes",
           "spoken": "toilettes"
+        },
+        "en": {
+          "label": "Toilet",
+          "spoken": "toilet"
         }
       }
     },
@@ -2184,6 +2716,10 @@
         "fr": {
           "label": "Cuisine",
           "spoken": "cuisine"
+        },
+        "en": {
+          "label": "Kitchen",
+          "spoken": "kitchen"
         }
       }
     },
@@ -2200,6 +2736,10 @@
         "fr": {
           "label": "Chambre",
           "spoken": "chambre"
+        },
+        "en": {
+          "label": "Bedroom",
+          "spoken": "bedroom"
         }
       }
     },
@@ -2216,6 +2756,10 @@
         "fr": {
           "label": "Cour",
           "spoken": "cour"
+        },
+        "en": {
+          "label": "Yard",
+          "spoken": "yard"
         }
       }
     },
@@ -2232,6 +2776,10 @@
         "fr": {
           "label": "Hôpital",
           "spoken": "hôpital"
+        },
+        "en": {
+          "label": "Hospital",
+          "spoken": "hospital"
         }
       }
     },
@@ -2248,6 +2796,10 @@
         "fr": {
           "label": "Marché",
           "spoken": "marché"
+        },
+        "en": {
+          "label": "Market",
+          "spoken": "market"
         }
       }
     },
@@ -2264,6 +2816,10 @@
         "fr": {
           "label": "Boutique",
           "spoken": "boutique"
+        },
+        "en": {
+          "label": "Shop",
+          "spoken": "shop"
         }
       }
     },
@@ -2280,6 +2836,10 @@
         "fr": {
           "label": "Route",
           "spoken": "route"
+        },
+        "en": {
+          "label": "Road",
+          "spoken": "road"
         }
       }
     },
@@ -2296,6 +2856,10 @@
         "fr": {
           "label": "Terrain de jeu",
           "spoken": "terrain de jeu"
+        },
+        "en": {
+          "label": "Playground",
+          "spoken": "playground"
         }
       }
     },
@@ -2312,6 +2876,10 @@
         "fr": {
           "label": "Église",
           "spoken": "église"
+        },
+        "en": {
+          "label": "Church",
+          "spoken": "church"
         }
       }
     },
@@ -2328,6 +2896,10 @@
         "fr": {
           "label": "Dehors",
           "spoken": "dehors"
+        },
+        "en": {
+          "label": "Outside",
+          "spoken": "outside"
         }
       }
     },
@@ -2344,6 +2916,10 @@
         "fr": {
           "label": "Toilettes",
           "spoken": "toilettes"
+        },
+        "en": {
+          "label": "Toilet",
+          "spoken": "toilet"
         }
       }
     },
@@ -2360,6 +2936,10 @@
         "fr": {
           "label": "Douche",
           "spoken": "douche"
+        },
+        "en": {
+          "label": "Shower",
+          "spoken": "shower"
         }
       }
     },
@@ -2376,6 +2956,10 @@
         "fr": {
           "label": "Savon",
           "spoken": "savon"
+        },
+        "en": {
+          "label": "Soap",
+          "spoken": "soap"
         }
       }
     },
@@ -2392,6 +2976,10 @@
         "fr": {
           "label": "Eau",
           "spoken": "eau"
+        },
+        "en": {
+          "label": "Water",
+          "spoken": "water"
         }
       }
     },
@@ -2408,6 +2996,10 @@
         "fr": {
           "label": "Serviette",
           "spoken": "serviette"
+        },
+        "en": {
+          "label": "Towel",
+          "spoken": "towel"
         }
       }
     },
@@ -2424,6 +3016,10 @@
         "fr": {
           "label": "Se laver les mains",
           "spoken": "se laver les mains"
+        },
+        "en": {
+          "label": "Wash hands",
+          "spoken": "wash hands"
         }
       }
     },
@@ -2440,6 +3036,10 @@
         "fr": {
           "label": "Se brosser les dents",
           "spoken": "se brosser les dents"
+        },
+        "en": {
+          "label": "Brush teeth",
+          "spoken": "brush teeth"
         }
       }
     },
@@ -2456,6 +3056,10 @@
         "fr": {
           "label": "Propre",
           "spoken": "propre"
+        },
+        "en": {
+          "label": "Clean",
+          "spoken": "clean"
         }
       }
     },
@@ -2472,6 +3076,10 @@
         "fr": {
           "label": "Sale",
           "spoken": "sale"
+        },
+        "en": {
+          "label": "Dirty",
+          "spoken": "dirty"
         }
       }
     },
@@ -2488,6 +3096,10 @@
         "fr": {
           "label": "Papier toilette",
           "spoken": "papier toilette"
+        },
+        "en": {
+          "label": "Toilet paper",
+          "spoken": "toilet paper"
         }
       }
     }
@@ -2503,6 +3115,13 @@
             "école",
             "maison"
           ]
+        },
+        "en": {
+          "text": "I need to go to the toilet",
+          "tags": [
+            "school",
+            "home"
+          ]
         }
       }
     },
@@ -2514,6 +3133,12 @@
           "text": "Maman, viens s'il te plaît",
           "tags": [
             "maison"
+          ]
+        },
+        "en": {
+          "text": "Mum, please come",
+          "tags": [
+            "home"
           ]
         }
       }
@@ -2528,6 +3153,13 @@
             "maison",
             "école"
           ]
+        },
+        "en": {
+          "text": "Can I have some water?",
+          "tags": [
+            "home",
+            "school"
+          ]
         }
       }
     },
@@ -2539,6 +3171,12 @@
           "text": "Doucement, je n'ai pas compris",
           "tags": [
             "école"
+          ]
+        },
+        "en": {
+          "text": "Slowly, I didn't understand",
+          "tags": [
+            "school"
           ]
         }
       }
@@ -2552,6 +3190,12 @@
           "tags": [
             "jouer"
           ]
+        },
+        "en": {
+          "text": "It's my turn",
+          "tags": [
+            "play"
+          ]
         }
       }
     },
@@ -2563,6 +3207,12 @@
           "text": "Je veux jouer avec toi",
           "tags": [
             "jouer"
+          ]
+        },
+        "en": {
+          "text": "I want to play with you",
+          "tags": [
+            "play"
           ]
         }
       }
@@ -2576,6 +3226,12 @@
           "tags": [
             "école"
           ]
+        },
+        "en": {
+          "text": "I've finished my work",
+          "tags": [
+            "school"
+          ]
         }
       }
     },
@@ -2587,6 +3243,12 @@
           "text": "Je suis fatigué, je veux dormir",
           "tags": [
             "maison"
+          ]
+        },
+        "en": {
+          "text": "I'm tired, I want to sleep",
+          "tags": [
+            "home"
           ]
         }
       }

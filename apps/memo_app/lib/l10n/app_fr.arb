@@ -6,9 +6,21 @@
   "speakButton": "Lire le message",
   "clearButton": "Effacer",
   "removeItem": "Retirer {label}",
-  "@removeItem": {"placeholders": {"label": {"type": "String"}}},
+  "@removeItem": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
   "messageItemAdded": "{label} ajouté",
-  "@messageItemAdded": {"placeholders": {"label": {"type": "String"}}},
+  "@messageItemAdded": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
   "messageFull": "Le message est plein",
   "startupFailedTitle": "Impossible de démarrer Memo",
   "startupFailedBody": "Une erreur est survenue au chargement des données. Fermez puis rouvrez l'application. Si le problème continue, contactez le support.",
@@ -16,7 +28,13 @@
   "phrasesTitle": "Dis-le maintenant",
   "phrasesEmpty": "Aucune phrase pour le moment",
   "phraseSpeak": "Dire : {text}",
-  "@phraseSpeak": {"placeholders": {"text": {"type": "String"}}},
+  "@phraseSpeak": {
+    "placeholders": {
+      "text": {
+        "type": "String"
+      }
+    }
+  },
   "levelNoteBeginner": "Très grandes tuiles, peu de mots à l'écran, étiquettes agrandies",
   "levelNoteIntermediate": "Tuiles moyennes, vocabulaire élargi",
   "levelNoteAdvanced": "Tuiles denses, tout le vocabulaire",
@@ -28,16 +46,36 @@
   "settingsHapticsNote": "À couper pour économiser la batterie",
   "settingsLanguage": "Langue",
   "languageFrench": "Français",
-  "languageEnglishSoon": "English (bientôt)",
   "wordsTitle": "Mots",
   "wordsThisWeek": "Cette semaine",
   "wordsEmpty": "Rien n'a encore été dit cette semaine",
   "wordsSentences": "{count, plural, =0{Aucune phrase dite} =1{1 phrase dite} other{{count} phrases dites}}",
-  "@wordsSentences": {"placeholders": {"count": {"type": "int"}}},
+  "@wordsSentences": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "wordsNew": "{count, plural, =0{aucun nouveau mot} =1{1 nouveau mot} other{{count} nouveaux mots}}",
-  "@wordsNew": {"placeholders": {"count": {"type": "int"}}},
+  "@wordsNew": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "wordsTimes": "{label}, {count, plural, =1{1 fois} other{{count} fois}}",
-  "@wordsTimes": {"placeholders": {"label": {"type": "String"}, "count": {"type": "int"}}},
+  "@wordsTimes": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "navTalk": "Parler",
   "navPhrases": "Phrases",
   "navWords": "Mots",
@@ -50,8 +88,8 @@
   "boardDone": "Terminer",
   "boardEmptyCell": "Case vide",
   "boardClearCell": "Vider la case",
-  "noVoiceTitle": "Voix française introuvable",
-  "noVoiceBody": "Installez une voix française dans les réglages de synthèse vocale du téléphone pour entendre les messages sans connexion.",
+  "noVoiceTitle": "Voix {language} introuvable",
+  "noVoiceBody": "Installez une voix {language} dans les réglages de synthèse vocale du téléphone pour entendre les messages sans connexion.",
   "onboardingWelcome": "Bienvenue dans Memo",
   "onboardingWho": "Qui va utiliser Memo ?",
   "profileChild": "Enfant",
@@ -65,5 +103,28 @@
   "onboardingStart": "Commencer",
   "next": "Suivant",
   "settingsTitle": "Réglages",
-  "levelSetting": "Niveau"
+  "levelSetting": "Niveau",
+  "@noVoiceTitle": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "@noVoiceBody": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "voiceLanguage": "{lang, select, en{anglaise} other{française}}",
+  "@voiceLanguage": {
+    "placeholders": {
+      "lang": {
+        "type": "String"
+      }
+    }
+  },
+  "languageEnglish": "English"
 }

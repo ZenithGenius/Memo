@@ -24,6 +24,9 @@ class HomeScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final categories = ref.watch(categoriesProvider);
     final level = ref.watch(currentLevelProvider);
+    final voiceLanguage = l10n.voiceLanguage(
+      ref.watch(activeProfileProvider).asData?.value?.language ?? 'fr',
+    );
     final voiceMissing = ref.watch(voiceAvailableProvider).value == false;
     return Scaffold(
       appBar: AppBar(title: Text(l10n.homeTitle)),
@@ -32,7 +35,10 @@ class HomeScreen extends ConsumerWidget {
           if (voiceMissing)
             MaterialBanner(
               leading: const Icon(Icons.volume_off_outlined),
-              content: Text('${l10n.noVoiceTitle}. ${l10n.noVoiceBody}'),
+              content: Text(
+                '${l10n.noVoiceTitle(voiceLanguage)}. '
+                '${l10n.noVoiceBody(voiceLanguage)}',
+              ),
               actions: const [SizedBox.shrink()],
             ),
           Expanded(child: _grid(l10n, categories, level)),
