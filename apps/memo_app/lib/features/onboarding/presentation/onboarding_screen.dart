@@ -4,6 +4,7 @@ import 'package:memo/core/theme/app_colors.dart';
 import 'package:memo/features/catalog/domain/catalog.dart';
 import 'package:memo/features/catalog/presentation/catalog_providers.dart';
 import 'package:memo/features/profiles/domain/profile.dart';
+import 'package:memo/features/profiles/presentation/profile_labels.dart';
 import 'package:memo/l10n/app_localizations.dart';
 
 /// Première installation : type de profil, niveau, puis démarrage.
@@ -22,24 +23,25 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   int _step = 0;
   ProfileType? _type;
   Level? _level;
+  final _name = TextEditingController();
 
-  String _typeLabel(AppLocalizations l10n, ProfileType t) => switch (t) {
-    ProfileType.child => l10n.profileChild,
-    ProfileType.teen => l10n.profileTeen,
-    ProfileType.adult => l10n.profileAdult,
-    ProfileType.caregiver => l10n.profileCaregiver,
-  };
-
-  String _levelLabel(AppLocalizations l10n, Level l) => switch (l) {
-    Level.beginner => l10n.levelBeginner,
-    Level.intermediate => l10n.levelIntermediate,
-    Level.advanced => l10n.levelAdvanced,
-  };
+  @override
+  void dispose() {
+    _name.dispose();
+    super.dispose();
+  }
 
   Future<void> _finish(AppLocalizations l10n) async {
     await ref
         .read(profileRepositoryProvider)
-        .create(name: _typeLabel(l10n, _type!), type: _type!, level: _level!);
+        .create(
+          // Sans prénom saisi, le profil porte le nom de son type.
+          name: _name.text.trim().isEmpty
+              ? profileTypeLabel(l10n, _type!)
+              : _name.text.trim(),
+          type: _type!,
+          level: _level!,
+        );
     widget.onDone?.call();
   }
 
@@ -78,14 +80,24 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                     if (_step == 0)
                       for (final t in ProfileType.values)
                         _ChoiceCard(
-                          label: _typeLabel(l10n, t),
+                          label: profileTypeLabel(l10n, t),
                           selected: _type == t,
                           onTap: () => setState(() => _type = t),
                         ),
+                    if (_step == 2)
+                      TextField(
+                        controller: _name,
+                        maxLength: 30,
+                        textCapitalization: TextCapitalization.words,
+                        decoration: InputDecoration(
+                          labelText: l10n.onboardingName,
+                          hintText: l10n.onboardingNameHint,
+                        ),
+                      ),
                     if (_step == 1)
                       for (final l in Level.values)
                         _ChoiceCard(
-                          label: _levelLabel(l10n, l),
+                          label: levelLabel(l10n, l),
                           selected: _level == l,
                           onTap: () => setState(() => _level = l),
                         ),

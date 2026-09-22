@@ -69,7 +69,10 @@ void main() {
     await pump(tester);
     await tester.tap(find.text('Avancé'));
     await tester.pumpAndSettle();
-    expect((await profiles.watchActive().first)!.level, Level.advanced);
+    expect(
+      (await tester.runAsync(() => profiles.watchActive().first))!.level,
+      Level.advanced,
+    );
     expect(find.textContaining('Tuiles denses'), findsOneWidget);
     await disposeWidgetTestDb(tester, container, db);
   });
@@ -94,7 +97,10 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(english);
     await tester.pumpAndSettle();
-    expect((await profiles.watchActive().first)!.language, 'en');
+    expect(
+      (await tester.runAsync(() => profiles.watchActive().first))!.language,
+      'en',
+    );
     await disposeWidgetTestDb(tester, container, db);
   });
 }

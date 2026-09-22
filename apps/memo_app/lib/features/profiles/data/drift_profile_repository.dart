@@ -12,14 +12,20 @@ class DriftProfileRepository implements ProfileRepository {
 
   @override
   Stream<Profile?> watchActive() {
-    final setting = _db.select(_db.settings)
-      ..where((s) => s.key.equals(_activeKey));
-    return setting.watchSingleOrNull().asyncExpand((s) {
-      if (s == null) return Stream<Profile?>.value(null);
-      final id = int.parse(s.value);
-      return (_db.select(_db.profiles)..where((p) => p.id.equals(id)))
-          .watchSingleOrNull()
-          .map((row) => row == null ? null : _toDomain(row));
+    // Une seule requête réactive qui joint le réglage « profil actif » et la
+    // table des profils : elle se met à jour quand l'un ou l'autre change.
+    // (Enchaîner deux flux avec asyncExpand ne suivait pas un changement de
+    // profil actif : le flux interne ne se termine jamais.)
+    final query = _db.select(_db.profiles).join([
+      innerJoin(
+        _db.settings,
+        _db.settings.key.equals(_activeKey) &
+            _db.settings.value.equalsExp(_db.profiles.id.cast<String>()),
+      ),
+    ]);
+    return query.watchSingleOrNull().map((row) {
+      final profile = row?.readTableOrNull(_db.profiles);
+      return profile == null ? null : _toDomain(profile);
     });
   }
 
@@ -28,6 +34,7 @@ class DriftProfileRepository implements ProfileRepository {
     required String name,
     required ProfileType type,
     required Level level,
+    String language = 'fr',
   }) async {
     final id = await _db
         .into(_db.profiles)
@@ -36,6 +43,7 @@ class DriftProfileRepository implements ProfileRepository {
             name: name,
             type: type.name,
             level: level.index,
+            language: Value(language),
           ),
         );
     await _db
@@ -47,6 +55,26 @@ class DriftProfileRepository implements ProfileRepository {
       _db.profiles,
     )..where((p) => p.id.equals(id))).getSingle();
     return _toDomain(row);
+  }
+
+  @override
+  Stream<List<Profile>> watchAll() {
+    final query = _db.select(_db.profiles)
+      ..orderBy([(p) => OrderingTerm.asc(p.id)]);
+    return query.watch().map((rows) => rows.map(_toDomain).toList());
+  }
+
+  @override
+  Future<void> setActive(int profileId) async {
+    final exists = await (_db.select(
+      _db.profiles,
+    )..where((p) => p.id.equals(profileId))).getSingleOrNull();
+    if (exists == null) return;
+    await _db
+        .into(_db.settings)
+        .insertOnConflictUpdate(
+          SettingsCompanion.insert(key: _activeKey, value: '$profileId'),
+        );
   }
 
   @override

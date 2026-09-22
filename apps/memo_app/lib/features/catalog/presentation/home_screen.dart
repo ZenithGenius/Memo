@@ -7,6 +7,7 @@ import 'package:memo/features/catalog/presentation/catalog_providers.dart';
 import 'package:memo/features/catalog/presentation/category_icons.dart';
 import 'package:memo/features/catalog/presentation/pictogram_tile.dart';
 import 'package:memo/features/profiles/presentation/language_pill.dart';
+import 'package:memo/features/profiles/presentation/profile_button.dart';
 import 'package:memo/l10n/app_localizations.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -32,7 +33,7 @@ class HomeScreen extends ConsumerWidget {
     final voiceMissing = ref.watch(voiceAvailableProvider).value == false;
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n.homeTitle),
+        title: const ProfileButton(),
         actions: const [
           LanguagePill(),
           CaregiverLockButton(),

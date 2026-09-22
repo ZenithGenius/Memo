@@ -54,4 +54,109 @@ void main() {
     await repo.setLanguage(p.id, 'en');
     expect((await repo.watchActive().first)!.language, 'en');
   });
+
+  group('plusieurs profils', () {
+    test('la liste suit l\'ordre de création', () async {
+      await repo.create(
+        name: 'Amina',
+        type: ProfileType.child,
+        level: Level.beginner,
+      );
+      await repo.create(
+        name: 'Paul',
+        type: ProfileType.adult,
+        level: Level.advanced,
+      );
+      final all = await repo.watchAll().first;
+      expect(all.map((p) => p.name), ['Amina', 'Paul']);
+    });
+
+    test('créer un profil le rend actif, dans la langue demandée', () async {
+      await repo.create(
+        name: 'Amina',
+        type: ProfileType.child,
+        level: Level.beginner,
+      );
+      final paul = await repo.create(
+        name: 'Paul',
+        type: ProfileType.adult,
+        level: Level.advanced,
+        language: 'en',
+      );
+      final active = (await repo.watchActive().first)!;
+      expect(active.id, paul.id);
+      expect(active.language, 'en');
+    });
+
+    test('changer de profil actif est persistant', () async {
+      final amina = await repo.create(
+        name: 'Amina',
+        type: ProfileType.child,
+        level: Level.beginner,
+      );
+      await repo.create(
+        name: 'Paul',
+        type: ProfileType.adult,
+        level: Level.advanced,
+      );
+      await repo.setActive(amina.id);
+      expect((await repo.watchActive().first)!.name, 'Amina');
+    });
+
+    test(
+      'le flux du profil actif suit les changements de profil actif',
+      () async {
+        final amina = await repo.create(
+          name: 'Amina',
+          type: ProfileType.child,
+          level: Level.beginner,
+        );
+        final paul = await repo.create(
+          name: 'Paul',
+          type: ProfileType.adult,
+          level: Level.advanced,
+        );
+        final names = <String?>[];
+        final sub = repo.watchActive().listen((p) => names.add(p?.name));
+        await Future<void>.delayed(const Duration(milliseconds: 50));
+        await repo.setActive(amina.id);
+        await Future<void>.delayed(const Duration(milliseconds: 50));
+        await repo.setActive(paul.id);
+        await Future<void>.delayed(const Duration(milliseconds: 50));
+        await sub.cancel();
+        // Régression : un flux interne sans fin bloquait tout changement.
+        expect(names, ['Paul', 'Amina', 'Paul']);
+      },
+    );
+
+    test('activer un profil inexistant ne change rien', () async {
+      final amina = await repo.create(
+        name: 'Amina',
+        type: ProfileType.child,
+        level: Level.beginner,
+      );
+      await repo.setActive(9999);
+      expect((await repo.watchActive().first)!.id, amina.id);
+    });
+
+    test('le niveau et la langue sont propres à chaque profil', () async {
+      final a = await repo.create(
+        name: 'A',
+        type: ProfileType.child,
+        level: Level.beginner,
+      );
+      final b = await repo.create(
+        name: 'B',
+        type: ProfileType.adult,
+        level: Level.beginner,
+      );
+      await repo.setLevel(a.id, Level.advanced);
+      await repo.setLanguage(b.id, 'en');
+      final all = await repo.watchAll().first;
+      expect(all.firstWhere((p) => p.id == a.id).level, Level.advanced);
+      expect(all.firstWhere((p) => p.id == b.id).level, Level.beginner);
+      expect(all.firstWhere((p) => p.id == a.id).language, 'fr');
+      expect(all.firstWhere((p) => p.id == b.id).language, 'en');
+    });
+  });
 }

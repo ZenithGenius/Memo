@@ -27,6 +27,7 @@ class AppHarness {
   static Future<AppHarness> start(
     WidgetTester tester, {
     Level level = Level.beginner,
+    String name = 'T',
   }) async {
     // Taille d'un téléphone : sur la fenêtre de test par défaut, des éléments
     // resteraient hors de l'écran et ne recevraient pas les touchers.
@@ -49,7 +50,7 @@ class AppHarness {
     await tester.runAsync(() async {
       await container
           .read(profileRepositoryProvider)
-          .create(name: 'T', type: ProfileType.child, level: level);
+          .create(name: name, type: ProfileType.child, level: level);
       // Attend que le profil actif soit diffusé avant d'afficher l'application.
       for (var i = 0; i < 100; i++) {
         if (container.read(activeProfileProvider).value != null) break;
@@ -71,11 +72,22 @@ class AppHarness {
   }
 }
 
-/// Laisse les écritures en base se propager avant de redessiner : les flux de
-/// la base avancent en temps réel, pas dans le temps simulé des tests.
+/// Laisse les écritures et les flux de la base se propager avant de redessiner :
+/// ils avancent en temps réel, pas dans le temps simulé des tests. Alterne
+/// attente réelle et images tant qu'un indicateur de chargement est visible.
 Future<void> settleDatabase(WidgetTester tester) async {
-  await tester.runAsync(
-    () => Future<void>.delayed(const Duration(milliseconds: 100)),
-  );
+  for (var i = 0; i < 20; i++) {
+    await tester.runAsync(
+      () => Future<void>.delayed(const Duration(milliseconds: 50)),
+    );
+    await tester.pump(const Duration(milliseconds: 100));
+    final loading = find
+        .byType(CircularProgressIndicator)
+        .evaluate()
+        .isNotEmpty;
+    // Au moins trois tours : une écriture puis sa notification puis le
+    // rechargement de l'écran ne tiennent pas dans un seul.
+    if (i >= 2 && !loading && !tester.binding.hasScheduledFrame) break;
+  }
   await tester.pumpAndSettle();
 }

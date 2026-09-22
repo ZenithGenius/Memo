@@ -349,4 +349,34 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get cancel => 'Annuler';
+
+  @override
+  String get profileSwitchTitle => 'Qui parle ?';
+
+  @override
+  String get profileSwitchHint =>
+      'Chaque personne garde son niveau, ses favoris, son tableau, ses phrases et son historique.';
+
+  @override
+  String get profileNew => 'Nouveau profil';
+
+  @override
+  String get profileNameLabel => 'Prénom ou surnom';
+
+  @override
+  String get profileCreate => 'Créer le profil';
+
+  @override
+  String get profileCurrent => 'Profil actuel';
+
+  @override
+  String profileButtonSemantics(String name) {
+    return 'Profil de $name. Toucher pour changer de personne';
+  }
+
+  @override
+  String get onboardingName => 'Comment s\'appelle la personne ?';
+
+  @override
+  String get onboardingNameHint => 'Facultatif';
 }

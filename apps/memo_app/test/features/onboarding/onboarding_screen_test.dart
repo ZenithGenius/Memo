@@ -48,11 +48,59 @@ void main() {
     await tester.tap(find.text('Commencer'));
     await tester.pump();
 
-    final profile = await repo.watchActive().first;
+    final profile = await tester.runAsync(() => repo.watchActive().first);
     expect(profile?.type, ProfileType.child);
     expect(profile?.level, Level.beginner);
     expect(done, isTrue);
 
     await disposeWidgetTestDb(tester, container, db);
+  });
+
+  Future<Profile?> runOnboarding(WidgetTester tester, {String? name}) async {
+    final db = AppDatabase.forTesting();
+    final repo = DriftProfileRepository(db);
+    final container = ProviderContainer(
+      overrides: [profileRepositoryProvider.overrideWithValue(repo)],
+    );
+    await tester.pumpWidget(
+      UncontrolledProviderScope(
+        container: container,
+        child: MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: const OnboardingScreen(),
+        ),
+      ),
+    );
+    await tester.tap(find.text('Adulte'));
+    await tester.pump();
+    await tester.tap(find.text('Suivant'));
+    await tester.pump();
+    await tester.tap(find.text('Avancé'));
+    await tester.pump();
+    await tester.tap(find.text('Suivant'));
+    await tester.pump();
+    if (name != null) {
+      await tester.enterText(find.byType(TextField), name);
+      await tester.pump();
+    }
+    await tester.tap(find.text('Commencer'));
+    await tester.pump();
+    final profile = await tester.runAsync(() => repo.watchActive().first);
+    await disposeWidgetTestDb(tester, container, db);
+    return profile;
+  }
+
+  testWidgets('le prénom saisi devient le nom du profil', (tester) async {
+    final profile = await runOnboarding(tester, name: '  Régine ');
+    expect(profile?.name, 'Régine');
+    expect(profile?.type, ProfileType.adult);
+  });
+
+  testWidgets('sans prénom, le profil porte le nom de son type', (
+    tester,
+  ) async {
+    final profile = await runOnboarding(tester);
+    expect(profile?.name, 'Adulte');
   });
 }

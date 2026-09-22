@@ -201,5 +201,21 @@
         "type": "String"
       }
     }
+  },
+  "profileSwitchTitle": "Qui parle ?",
+  "profileSwitchHint": "Chaque personne garde son niveau, ses favoris, son tableau, ses phrases et son historique.",
+  "profileNew": "Nouveau profil",
+  "profileNameLabel": "Prénom ou surnom",
+  "profileCreate": "Créer le profil",
+  "profileCurrent": "Profil actuel",
+  "profileButtonSemantics": "Profil de {name}. Toucher pour changer de personne",
+  "onboardingName": "Comment s'appelle la personne ?",
+  "onboardingNameHint": "Facultatif",
+  "@profileButtonSemantics": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
   }
 }

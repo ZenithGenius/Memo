@@ -86,5 +86,14 @@
   "phraseDelete": "Delete the phrase",
   "phraseDeleteConfirm": "Delete \"{text}\"?",
   "phraseDeleteAction": "Delete",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "profileSwitchTitle": "Who is talking?",
+  "profileSwitchHint": "Each person keeps their own level, favourites, board, phrases and history.",
+  "profileNew": "New profile",
+  "profileNameLabel": "First name or nickname",
+  "profileCreate": "Create profile",
+  "profileCurrent": "Current profile",
+  "profileButtonSemantics": "{name}'s profile. Tap to switch person",
+  "onboardingName": "What is the person's name?",
+  "onboardingNameHint": "Optional"
 }

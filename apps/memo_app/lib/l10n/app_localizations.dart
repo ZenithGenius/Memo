@@ -619,6 +619,60 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Annuler'**
   String get cancel;
+
+  /// No description provided for @profileSwitchTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Qui parle ?'**
+  String get profileSwitchTitle;
+
+  /// No description provided for @profileSwitchHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Chaque personne garde son niveau, ses favoris, son tableau, ses phrases et son historique.'**
+  String get profileSwitchHint;
+
+  /// No description provided for @profileNew.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nouveau profil'**
+  String get profileNew;
+
+  /// No description provided for @profileNameLabel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Prénom ou surnom'**
+  String get profileNameLabel;
+
+  /// No description provided for @profileCreate.
+  ///
+  /// In fr, this message translates to:
+  /// **'Créer le profil'**
+  String get profileCreate;
+
+  /// No description provided for @profileCurrent.
+  ///
+  /// In fr, this message translates to:
+  /// **'Profil actuel'**
+  String get profileCurrent;
+
+  /// No description provided for @profileButtonSemantics.
+  ///
+  /// In fr, this message translates to:
+  /// **'Profil de {name}. Toucher pour changer de personne'**
+  String profileButtonSemantics(String name);
+
+  /// No description provided for @onboardingName.
+  ///
+  /// In fr, this message translates to:
+  /// **'Comment s\'appelle la personne ?'**
+  String get onboardingName;
+
+  /// No description provided for @onboardingNameHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Facultatif'**
+  String get onboardingNameHint;
 }
 
 class _AppLocalizationsDelegate
