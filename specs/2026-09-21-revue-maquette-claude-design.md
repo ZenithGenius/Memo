@@ -53,22 +53,24 @@ Fait :
 - réglages : niveau en contrôle segmenté, lecture de chaque mot, vibrations, langue
 - étiquettes agrandies pour le niveau le plus simple
 - anglais complet : interface, libellés, phrases, voix britannique, pastille FR/EN dans l'en-tête
+- plusieurs profils par appareil, avec le profil actif dans l'en-tête et « Qui parle ? »
+- mode accompagnant à code à 4 chiffres : niveau, tableau, phrases personnelles, changement et création de profil
+- phrases personnelles : ajout et suppression par l'accompagnant
 
 Reste à faire :
 
-- plusieurs profils par appareil et profil affiché en en-tête
-- mode accompagnant à code, avec verrou visible
+- récupération d'un code accompagnant oublié (aujourd'hui aucune, sauf réinitialiser l'application)
+- suppression d'un profil
 - prédiction du mot suivant
-- ajout de ses propres phrases (dépend du mode accompagnant)
 - choix du type d'image (photo, symbole, les deux), dès que les pictogrammes définitifs existent
 
 ## Priorités proposées
 
-Les quatre premières étapes prévues (audio par mot, phrases, réglages, statistiques) et les onglets sont faites. Ordre pour la suite :
+Presque tout ce que la maquette prévoit est fait. Ordre pour la suite :
 
-1. plusieurs profils et mode accompagnant à code
-2. ajout de ses propres phrases
-3. prédiction du mot suivant
+1. récupération du code accompagnant et suppression d'un profil
+2. prédiction du mot suivant
+3. choix du type d'image, avec les pictogrammes définitifs
 
 ## Points à trancher
 
