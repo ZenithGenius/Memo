@@ -739,6 +739,144 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Ajouter {label}'**
   String nextWordAdd(String label);
+
+  /// No description provided for @accountTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Compte'**
+  String get accountTitle;
+
+  /// No description provided for @accountSignedOut.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucun compte connecté'**
+  String get accountSignedOut;
+
+  /// No description provided for @accountFree.
+  ///
+  /// In fr, this message translates to:
+  /// **'Contenu gratuit (20 mots essentiels)'**
+  String get accountFree;
+
+  /// No description provided for @accountPremiumUntil.
+  ///
+  /// In fr, this message translates to:
+  /// **'Abonnement actif jusqu\'au {date}'**
+  String accountPremiumUntil(String date);
+
+  /// No description provided for @accountSignIn.
+  ///
+  /// In fr, this message translates to:
+  /// **'Se connecter'**
+  String get accountSignIn;
+
+  /// No description provided for @accountCreate.
+  ///
+  /// In fr, this message translates to:
+  /// **'Créer un compte'**
+  String get accountCreate;
+
+  /// No description provided for @accountSync.
+  ///
+  /// In fr, this message translates to:
+  /// **'Synchroniser'**
+  String get accountSync;
+
+  /// No description provided for @accountSignOut.
+  ///
+  /// In fr, this message translates to:
+  /// **'Se déconnecter'**
+  String get accountSignOut;
+
+  /// No description provided for @accountEmail.
+  ///
+  /// In fr, this message translates to:
+  /// **'Adresse e-mail'**
+  String get accountEmail;
+
+  /// No description provided for @accountPassword.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mot de passe'**
+  String get accountPassword;
+
+  /// No description provided for @accountPasswordRule.
+  ///
+  /// In fr, this message translates to:
+  /// **'10 caractères au moins, avec majuscule, minuscule et chiffre'**
+  String get accountPasswordRule;
+
+  /// No description provided for @accountHaveOne.
+  ///
+  /// In fr, this message translates to:
+  /// **'J\'ai déjà un compte'**
+  String get accountHaveOne;
+
+  /// No description provided for @accountNoneYet.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pas encore de compte ?'**
+  String get accountNoneYet;
+
+  /// No description provided for @authInvalidCredentials.
+  ///
+  /// In fr, this message translates to:
+  /// **'Adresse ou mot de passe incorrect.'**
+  String get authInvalidCredentials;
+
+  /// No description provided for @authEmailTaken.
+  ///
+  /// In fr, this message translates to:
+  /// **'Un compte existe déjà avec cette adresse.'**
+  String get authEmailTaken;
+
+  /// No description provided for @authWeakPassword.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mot de passe trop faible.'**
+  String get authWeakPassword;
+
+  /// No description provided for @authConfirmationRequired.
+  ///
+  /// In fr, this message translates to:
+  /// **'Confirmez votre adresse via l\'e-mail reçu, puis connectez-vous.'**
+  String get authConfirmationRequired;
+
+  /// No description provided for @authSessionExpired.
+  ///
+  /// In fr, this message translates to:
+  /// **'Session expirée : reconnectez-vous.'**
+  String get authSessionExpired;
+
+  /// No description provided for @networkOffline.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pas de connexion. Réessayez quand le réseau est disponible.'**
+  String get networkOffline;
+
+  /// No description provided for @networkServer.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le serveur ne répond pas correctement. Réessayez plus tard.'**
+  String get networkServer;
+
+  /// No description provided for @licenseNoSubscription.
+  ///
+  /// In fr, this message translates to:
+  /// **'Connecté, mais aucun abonnement actif. Contactez-nous pour l\'activer.'**
+  String get licenseNoSubscription;
+
+  /// No description provided for @licenseDeviceLimit.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce compte est déjà utilisé sur deux appareils.'**
+  String get licenseDeviceLimit;
+
+  /// No description provided for @licenseDeviceRevoked.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cet appareil a été retiré du compte.'**
+  String get licenseDeviceRevoked;
 }
 
 class _AppLocalizationsDelegate

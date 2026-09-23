@@ -166,8 +166,25 @@ phrases = [
     for i, (t, tags) in enumerate(PHRASES, 1)
 ]
 
-out = pathlib.Path(__file__).resolve().parent.parent / "apps/memo_app/assets/content/pack.json"
-out.write_text(json.dumps({"version": 4, "categories": categories, "pictograms": pictograms,
-                           "phrases": phrases},
-                          ensure_ascii=False, indent=2), encoding="utf-8")
-print(len(pictograms), "pictogrammes écrits dans", out)
+root = pathlib.Path(__file__).resolve().parent.parent
+
+
+def write(path, pack):
+    path.write_text(json.dumps(pack, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(len(pack["pictograms"]), "pictogrammes écrits dans", path)
+
+
+free = [p for p in pictograms if p["tier"] == "free"]
+premium = [p for p in pictograms if p["tier"] == "premium"]
+premium_cats = {p["category"] for p in premium}
+
+# Paquet embarqué : contenu gratuit et phrases. Paquet payant : servi par la
+# fonction premium-pack aux seuls abonnés (ADR-008, couche 1). Les deux ont la
+# même version, incrémentée à chaque changement de contenu.
+VERSION = 5
+write(root / "apps/memo_app/assets/content/pack.json",
+      {"version": VERSION, "categories": [c for c in categories if c["code"] not in premium_cats],
+       "pictograms": free, "phrases": phrases})
+write(root / "backend/supabase/functions/premium-pack/pack.json",
+      {"version": VERSION, "categories": [c for c in categories if c["code"] in premium_cats],
+       "pictograms": premium, "phrases": []})

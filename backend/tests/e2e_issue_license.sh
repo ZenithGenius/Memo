@@ -57,8 +57,23 @@ p=lambda s: d.datetime.fromisoformat(s.replace('Z','+00:00'))
 print(round((p(r['valid_until'])-p(r['server_time'])).total_seconds()/86400))")
 expect 7 "$DAYS" "jeton court hors boutique"
 
+# Contenu payant : seulement pour un appareil enregistré d'un abonné.
+pack() {
+  curl -s -o /tmp/premium.json -w '%{http_code}' \
+    "$API_URL/functions/v1/premium-pack?fingerprint=$1${2:+&have=$2}" \
+    -H "Authorization: Bearer $JWT" -H "apikey: $ANON_KEY"
+}
+expect 200 "$(pack abcdefghijklmnop1234)" "paquet payant livré"
+VERSION=$(python3 -c "import json; print(json.load(open('/tmp/premium.json'))['version'])")
+COUNT=$(python3 -c "import json; print(len(json.load(open('/tmp/premium.json'))['pictograms']))")
+expect 131 "$COUNT" "131 pictogrammes payants"
+expect 204 "$(pack abcdefghijklmnop1234 "$VERSION")" "déjà à jour"
+expect 403 "$(pack inconnu-0000000000000)" "appareil inconnu"
+expect 403 "$(pack second-device-0000001)" "appareil révoqué"
+
 # Abonnement révoqué : plus de jeton.
 psql_ -c "update public.subscriptions set status = 'revoked' where user_id = '$UID_';"
 expect 402 "$(code "$(call '{"fingerprint":"abcdefghijklmnop1234","platform":"android"}')")" "abonnement révoqué"
+expect 402 "$(pack abcdefghijklmnop1234)" "paquet refusé sans abonnement"
 
 echo "TOUS LES TESTS E2E PASSENT"

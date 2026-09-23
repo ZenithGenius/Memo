@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memo/core/theme/app_colors.dart';
+import 'package:memo/features/account/presentation/account_providers.dart';
+import 'package:memo/features/account/presentation/account_section.dart';
 import 'package:memo/features/caregiver/presentation/caregiver_gate.dart';
 import 'package:memo/features/caregiver/presentation/caregiver_providers.dart';
 import 'package:memo/features/catalog/domain/catalog.dart';
@@ -101,6 +103,10 @@ class SettingsScreen extends ConsumerWidget {
             title: Text(l10n.settingsHaptics),
             subtitle: Text(l10n.settingsHapticsNote),
           ),
+          if (ref.watch(accountServiceProvider) != null) ...[
+            _Section(l10n.accountTitle),
+            const AccountSection(),
+          ],
           _Section(l10n.settingsLanguage),
           if (profile != null)
             RadioGroup<String>(

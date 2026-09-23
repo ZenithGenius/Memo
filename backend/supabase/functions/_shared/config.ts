@@ -58,3 +58,15 @@ export function loadConfig(env: EnvReader): LicenseConfig {
     maxTokenDays: positiveInt(env, "LICENSE_MAX_TOKEN_DAYS", DEFAULT_MAX_TOKEN_DAYS),
   };
 }
+
+/** Lit des variables obligatoires, sans valeur par défaut. */
+export function requireEnv<K extends string>(
+  env: EnvReader,
+  keys: readonly K[],
+): Record<K, string> {
+  const missing = keys.filter((k) => !env.get(k));
+  if (missing.length > 0) {
+    throw new ConfigError(`Variables d'environnement manquantes : ${missing.join(", ")}`);
+  }
+  return Object.fromEntries(keys.map((k) => [k, env.get(k)!])) as Record<K, string>;
+}

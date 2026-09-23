@@ -242,5 +242,35 @@
         "type": "String"
       }
     }
+  },
+  "accountTitle": "Compte",
+  "accountSignedOut": "Aucun compte connecté",
+  "accountFree": "Contenu gratuit (20 mots essentiels)",
+  "accountPremiumUntil": "Abonnement actif jusqu'au {date}",
+  "accountSignIn": "Se connecter",
+  "accountCreate": "Créer un compte",
+  "accountSync": "Synchroniser",
+  "accountSignOut": "Se déconnecter",
+  "accountEmail": "Adresse e-mail",
+  "accountPassword": "Mot de passe",
+  "accountPasswordRule": "10 caractères au moins, avec majuscule, minuscule et chiffre",
+  "accountHaveOne": "J'ai déjà un compte",
+  "accountNoneYet": "Pas encore de compte ?",
+  "authInvalidCredentials": "Adresse ou mot de passe incorrect.",
+  "authEmailTaken": "Un compte existe déjà avec cette adresse.",
+  "authWeakPassword": "Mot de passe trop faible.",
+  "authConfirmationRequired": "Confirmez votre adresse via l'e-mail reçu, puis connectez-vous.",
+  "authSessionExpired": "Session expirée : reconnectez-vous.",
+  "networkOffline": "Pas de connexion. Réessayez quand le réseau est disponible.",
+  "networkServer": "Le serveur ne répond pas correctement. Réessayez plus tard.",
+  "licenseNoSubscription": "Connecté, mais aucun abonnement actif. Contactez-nous pour l'activer.",
+  "licenseDeviceLimit": "Ce compte est déjà utilisé sur deux appareils.",
+  "licenseDeviceRevoked": "Cet appareil a été retiré du compte.",
+  "@accountPremiumUntil": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
   }
 }

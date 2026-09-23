@@ -1,9 +1,14 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memo/app.dart';
 import 'package:memo/core/bootstrap.dart';
 import 'package:memo/core/storage/secure_store.dart';
+import 'package:memo/data/content/content_importer.dart';
+import 'package:memo/data/content/content_pack.dart';
 import 'package:memo/data/db/app_database.dart';
 import 'package:memo/features/catalog/domain/catalog.dart';
 import 'package:memo/features/catalog/presentation/catalog_providers.dart';
@@ -45,9 +50,15 @@ class AppHarness {
         speech: speech,
         secureStore: secureStore,
         now: () => clock,
+        // Abonné : le contenu payant est visible.
+        overrides: [premiumUnlockedProvider.overrideWithValue(true)],
       ),
     ))!;
     await tester.runAsync(() async {
+      await ContentImporter(db).importIfNeeded(
+        await loadPremiumPack(),
+        slot: ContentImporter.premiumSlot,
+      );
       await container
           .read(profileRepositoryProvider)
           .create(name: name, type: ProfileType.child, level: level);
@@ -91,3 +102,13 @@ Future<void> settleDatabase(WidgetTester tester) async {
   }
   await tester.pumpAndSettle();
 }
+
+/// Paquet payant tel que servi par la fonction premium-pack.
+Future<ContentPack> loadPremiumPack() async => ContentPack.fromJson(
+  jsonDecode(
+        await File(
+          '../../backend/supabase/functions/premium-pack/pack.json',
+        ).readAsString(),
+      )
+      as Map<String, Object?>,
+);

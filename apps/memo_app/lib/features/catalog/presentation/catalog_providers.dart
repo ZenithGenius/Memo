@@ -1,5 +1,5 @@
-import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:memo/features/account/presentation/account_providers.dart';
 import 'package:memo/features/board/domain/board_repository.dart';
 import 'package:memo/features/catalog/domain/catalog.dart';
 import 'package:memo/features/catalog/domain/catalog_repository.dart';
@@ -107,12 +107,10 @@ final currentLevelProvider = Provider<Level>(
   (ref) => ref.watch(activeProfileProvider).value?.level ?? Level.beginner,
 );
 
-/// Droit d'accès au contenu payant.
-///
-/// En compilation de développement il est accordé, pour pouvoir travailler
-/// sur tout le contenu ; `--dart-define=LOCK_PREMIUM=true` simule un
-/// utilisateur gratuit. En production il est refusé jusqu'au branchement du
-/// service de droits (jeton vérifié) avec la connexion au compte.
+/// Droit d'accès au contenu payant : jeton de licence vérifié (ADR-008).
+/// `--dart-define=UNLOCK_PREMIUM=true` le force, pour le développement.
 final premiumUnlockedProvider = Provider<bool>(
-  (ref) => kDebugMode && !const bool.fromEnvironment('LOCK_PREMIUM'),
+  (ref) =>
+      const bool.fromEnvironment('UNLOCK_PREMIUM') ||
+      (ref.watch(entitlementProvider).asData?.value?.isPremium ?? false),
 );

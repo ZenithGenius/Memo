@@ -414,4 +414,82 @@ class AppLocalizationsEn extends AppLocalizations {
   String nextWordAdd(String label) {
     return 'Add $label';
   }
+
+  @override
+  String get accountTitle => 'Account';
+
+  @override
+  String get accountSignedOut => 'No account signed in';
+
+  @override
+  String get accountFree => 'Free content (20 essential words)';
+
+  @override
+  String accountPremiumUntil(String date) {
+    return 'Subscription active until $date';
+  }
+
+  @override
+  String get accountSignIn => 'Sign in';
+
+  @override
+  String get accountCreate => 'Create account';
+
+  @override
+  String get accountSync => 'Sync';
+
+  @override
+  String get accountSignOut => 'Sign out';
+
+  @override
+  String get accountEmail => 'Email address';
+
+  @override
+  String get accountPassword => 'Password';
+
+  @override
+  String get accountPasswordRule =>
+      'At least 10 characters, with upper case, lower case and a digit';
+
+  @override
+  String get accountHaveOne => 'I already have an account';
+
+  @override
+  String get accountNoneYet => 'No account yet?';
+
+  @override
+  String get authInvalidCredentials => 'Wrong email or password.';
+
+  @override
+  String get authEmailTaken => 'An account already exists with this email.';
+
+  @override
+  String get authWeakPassword => 'Password too weak.';
+
+  @override
+  String get authConfirmationRequired =>
+      'Confirm your address with the email you received, then sign in.';
+
+  @override
+  String get authSessionExpired => 'Session expired: sign in again.';
+
+  @override
+  String get networkOffline =>
+      'No connection. Try again when the network is available.';
+
+  @override
+  String get networkServer =>
+      'The server is not responding properly. Try again later.';
+
+  @override
+  String get licenseNoSubscription =>
+      'Signed in, but no active subscription. Contact us to activate it.';
+
+  @override
+  String get licenseDeviceLimit =>
+      'This account is already used on two devices.';
+
+  @override
+  String get licenseDeviceRevoked =>
+      'This device was removed from the account.';
 }

@@ -418,4 +418,81 @@ class AppLocalizationsFr extends AppLocalizations {
   String nextWordAdd(String label) {
     return 'Ajouter $label';
   }
+
+  @override
+  String get accountTitle => 'Compte';
+
+  @override
+  String get accountSignedOut => 'Aucun compte connecté';
+
+  @override
+  String get accountFree => 'Contenu gratuit (20 mots essentiels)';
+
+  @override
+  String accountPremiumUntil(String date) {
+    return 'Abonnement actif jusqu\'au $date';
+  }
+
+  @override
+  String get accountSignIn => 'Se connecter';
+
+  @override
+  String get accountCreate => 'Créer un compte';
+
+  @override
+  String get accountSync => 'Synchroniser';
+
+  @override
+  String get accountSignOut => 'Se déconnecter';
+
+  @override
+  String get accountEmail => 'Adresse e-mail';
+
+  @override
+  String get accountPassword => 'Mot de passe';
+
+  @override
+  String get accountPasswordRule =>
+      '10 caractères au moins, avec majuscule, minuscule et chiffre';
+
+  @override
+  String get accountHaveOne => 'J\'ai déjà un compte';
+
+  @override
+  String get accountNoneYet => 'Pas encore de compte ?';
+
+  @override
+  String get authInvalidCredentials => 'Adresse ou mot de passe incorrect.';
+
+  @override
+  String get authEmailTaken => 'Un compte existe déjà avec cette adresse.';
+
+  @override
+  String get authWeakPassword => 'Mot de passe trop faible.';
+
+  @override
+  String get authConfirmationRequired =>
+      'Confirmez votre adresse via l\'e-mail reçu, puis connectez-vous.';
+
+  @override
+  String get authSessionExpired => 'Session expirée : reconnectez-vous.';
+
+  @override
+  String get networkOffline =>
+      'Pas de connexion. Réessayez quand le réseau est disponible.';
+
+  @override
+  String get networkServer =>
+      'Le serveur ne répond pas correctement. Réessayez plus tard.';
+
+  @override
+  String get licenseNoSubscription =>
+      'Connecté, mais aucun abonnement actif. Contactez-nous pour l\'activer.';
+
+  @override
+  String get licenseDeviceLimit =>
+      'Ce compte est déjà utilisé sur deux appareils.';
+
+  @override
+  String get licenseDeviceRevoked => 'Cet appareil a été retiré du compte.';
 }

@@ -10,11 +10,23 @@ class ContentImporter {
   ContentImporter(this._db);
   final AppDatabase _db;
 
-  /// Retourne `true` si un import a eu lieu.
-  Future<bool> importIfNeeded(ContentPack pack) async {
+  /// Emplacement du paquet embarqué (gratuit).
+  static const baseSlot = 1;
+
+  /// Emplacement du paquet payant téléchargé (ADR-008).
+  static const premiumSlot = 2;
+
+  /// Version installée d'un emplacement, `null` si rien n'est installé.
+  Future<int?> installedVersion(int slot) async => (await (_db.select(
+    _db.contentMeta,
+  )..where((m) => m.id.equals(slot))).getSingleOrNull())?.version;
+
+  /// Retourne `true` si un import a eu lieu. Chaque emplacement a sa propre
+  /// version : le paquet payant ne remplace pas le paquet embarqué.
+  Future<bool> importIfNeeded(ContentPack pack, {int slot = baseSlot}) async {
     final installed = await (_db.select(
       _db.contentMeta,
-    )..where((m) => m.id.equals(1))).getSingleOrNull();
+    )..where((m) => m.id.equals(slot))).getSingleOrNull();
     if (installed != null && installed.version >= pack.version) return false;
 
     await _db.transaction(() async {
@@ -107,7 +119,7 @@ class ContentImporter {
           .into(_db.contentMeta)
           .insertOnConflictUpdate(
             ContentMetaCompanion.insert(
-              id: const Value(1),
+              id: Value(slot),
               version: pack.version,
               installedAt: DateTime.now(),
             ),

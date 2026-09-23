@@ -1,4 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Connexion au compte et téléchargement du contenu payant. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:label="Memo"
         android:name="${applicationName}"
