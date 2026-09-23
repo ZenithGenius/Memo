@@ -406,4 +406,12 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get profileDeleteWarning =>
       'Their favourites, board, phrases and history will be erased. This cannot be undone.';
+
+  @override
+  String get nextWordsLabel => 'Next…';
+
+  @override
+  String nextWordAdd(String label) {
+    return 'Add $label';
+  }
 }

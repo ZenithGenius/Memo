@@ -114,4 +114,57 @@ void main() {
     expect(emitted.last.sentences, 1);
     expect(emitted.last.topWords.single.label, 'Eau');
   });
+
+  group('mot suivant', () {
+    Future<List<int>> next(int after, {int? p}) => repo
+        .watchNextWords(profileId: p ?? profile, afterPictogramId: after)
+        .first;
+
+    test('sans historique : aucune suggestion', () async {
+      expect(await next(veux), isEmpty);
+    });
+
+    test(
+      'classe les mots qui suivent, du plus fréquent au moins fréquent',
+      () async {
+        await say([veux, eau]);
+        await say([veux, manger], ago: const Duration(minutes: 1));
+        await say([veux, eau], ago: const Duration(minutes: 2));
+        expect(await next(veux), [eau, manger]);
+      },
+    );
+
+    test("seul le mot juste après compte, pas les suivants", () async {
+      await say([veux, eau, manger]);
+      expect(await next(veux), [eau]);
+      expect(await next(eau), [manger]);
+      expect(await next(manger), isEmpty, reason: 'dernier mot de la phrase');
+    });
+
+    test('deux phrases à la suite ne se mélangent pas', () async {
+      await say([eau], ago: const Duration(minutes: 1));
+      await say([veux]);
+      expect(await next(eau), isEmpty);
+    });
+
+    test('propre à chaque profil', () async {
+      final other = (await seedProfile(db, type: ProfileType.adult)).id;
+      await say([veux, eau], p: other);
+      expect(await next(veux), isEmpty);
+      expect(await next(veux, p: other), [eau]);
+    });
+
+    test('le flux se met à jour quand une phrase est dite', () async {
+      final seen = <List<int>>[];
+      final sub = repo
+          .watchNextWords(profileId: profile, afterPictogramId: veux)
+          .listen(seen.add);
+      await Future<void>.delayed(const Duration(milliseconds: 50));
+      await say([veux, manger]);
+      await Future<void>.delayed(const Duration(milliseconds: 100));
+      await sub.cancel();
+      expect(seen.first, isEmpty);
+      expect(seen.last, [manger]);
+    });
+  });
 }

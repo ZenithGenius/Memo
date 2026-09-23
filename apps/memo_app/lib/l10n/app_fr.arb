@@ -233,5 +233,14 @@
         "type": "String"
       }
     }
+  },
+  "nextWordsLabel": "Ensuite…",
+  "nextWordAdd": "Ajouter {label}",
+  "@nextWordAdd": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
   }
 }

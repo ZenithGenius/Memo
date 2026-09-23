@@ -35,6 +35,35 @@ class DriftUsageRepository implements UsageRepository {
   });
 
   @override
+  Stream<List<int>> watchNextWords({
+    required int profileId,
+    required int afterPictogramId,
+    int limit = 4,
+  }) {
+    // Les mots d'une phrase sont insérés d'affilée avec la même date :
+    // le suivant a l'identifiant immédiatement supérieur et la même date.
+    // ponytail: bigrammes bruts, sans pondération par l'ancienneté ; suffisant
+    // tant que l'historique reste modeste.
+    return _db
+        .customSelect(
+          'SELECT b.pictogram_id AS id, COUNT(*) AS n '
+          'FROM word_events a JOIN word_events b '
+          'ON b.id = a.id + 1 AND b.used_at = a.used_at '
+          'AND b.profile_id = a.profile_id '
+          'WHERE a.profile_id = ?1 AND a.pictogram_id = ?2 '
+          'GROUP BY b.pictogram_id ORDER BY n DESC, b.pictogram_id LIMIT ?3',
+          variables: [
+            Variable.withInt(profileId),
+            Variable.withInt(afterPictogramId),
+            Variable.withInt(limit),
+          ],
+          readsFrom: {_db.wordEvents},
+        )
+        .watch()
+        .map((rows) => [for (final r in rows) r.read<int>('id')]);
+  }
+
+  @override
   Stream<UsageSummary> watchWeek({
     required int profileId,
     required String lang,

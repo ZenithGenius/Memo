@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memo/core/theme/app_colors.dart';
 import 'package:memo/features/catalog/presentation/catalog_providers.dart';
+import 'package:memo/features/message/presentation/message_actions.dart';
 import 'package:memo/features/message/presentation/message_notifier.dart';
 import 'package:memo/features/stats/presentation/usage_providers.dart';
 import 'package:memo/l10n/app_localizations.dart';
@@ -26,6 +27,7 @@ class MessageBar extends ConsumerWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              const _Suggestions(),
               ConstrainedBox(
                 constraints: const BoxConstraints(minHeight: 48),
                 child: Align(
@@ -97,6 +99,54 @@ class MessageBar extends ConsumerWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// « Ensuite… » : mots qui suivent souvent le dernier mot, un toucher l'ajoute.
+class _Suggestions extends ConsumerWidget {
+  const _Suggestions();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final suggestions =
+        ref.watch(nextWordSuggestionsProvider).asData?.value ?? const [];
+    if (suggestions.isEmpty) return const SizedBox.shrink();
+    final l10n = AppLocalizations.of(context);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        children: [
+          Text(
+            l10n.nextWordsLabel,
+            style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w800,
+              color: AppColors.mutedText,
+            ),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  for (final p in suggestions)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8),
+                      child: ActionChip(
+                        label: Text(p.label),
+                        tooltip: l10n.nextWordAdd(p.label),
+                        materialTapTargetSize: MaterialTapTargetSize.padded,
+                        onPressed: () => addToMessage(context, ref, p),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

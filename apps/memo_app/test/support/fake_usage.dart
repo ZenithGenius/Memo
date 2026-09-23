@@ -23,4 +23,11 @@ class FakeUsageRepository implements UsageRepository {
     required String lang,
     required DateTime Function() now,
   }) => Stream.value(summary);
+
+  @override
+  Stream<List<int>> watchNextWords({
+    required int profileId,
+    required int afterPictogramId,
+    int limit = 4,
+  }) => Stream.value(const []);
 }

@@ -727,6 +727,18 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Ses favoris, son tableau, ses phrases et son historique seront effacés. Cette action est définitive.'**
   String get profileDeleteWarning;
+
+  /// No description provided for @nextWordsLabel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ensuite…'**
+  String get nextWordsLabel;
+
+  /// No description provided for @nextWordAdd.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajouter {label}'**
+  String nextWordAdd(String label);
 }
 
 class _AppLocalizationsDelegate

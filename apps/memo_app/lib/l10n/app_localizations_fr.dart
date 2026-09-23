@@ -410,4 +410,12 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get profileDeleteWarning =>
       'Ses favoris, son tableau, ses phrases et son historique seront effacés. Cette action est définitive.';
+
+  @override
+  String get nextWordsLabel => 'Ensuite…';
+
+  @override
+  String nextWordAdd(String label) {
+    return 'Ajouter $label';
+  }
 }

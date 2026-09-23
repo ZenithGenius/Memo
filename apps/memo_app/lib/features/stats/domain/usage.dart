@@ -40,6 +40,14 @@ abstract interface class UsageRepository {
     required DateTime at,
   });
 
+  /// Mots qui ont le plus souvent suivi [afterPictogramId] dans les phrases
+  /// déjà dites par ce profil, du plus au moins fréquent.
+  Stream<List<int>> watchNextWords({
+    required int profileId,
+    required int afterPictogramId,
+    int limit = 4,
+  });
+
   /// Résumé des sept derniers jours jusqu'à [now].
   Stream<UsageSummary> watchWeek({
     required int profileId,

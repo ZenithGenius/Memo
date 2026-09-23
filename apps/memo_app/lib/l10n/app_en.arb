@@ -104,5 +104,7 @@
   "adultCheckContinue": "Continue",
   "profileDelete": "Delete {name}",
   "profileDeleteAction": "Delete",
-  "profileDeleteWarning": "Their favourites, board, phrases and history will be erased. This cannot be undone."
+  "profileDeleteWarning": "Their favourites, board, phrases and history will be erased. This cannot be undone.",
+  "nextWordsLabel": "Next…",
+  "nextWordAdd": "Add {label}"
 }
