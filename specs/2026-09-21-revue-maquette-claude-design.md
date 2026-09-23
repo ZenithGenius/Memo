@@ -56,21 +56,17 @@ Fait :
 - plusieurs profils par appareil, avec le profil actif dans l'en-tête et « Qui parle ? »
 - mode accompagnant à code à 4 chiffres : niveau, tableau, phrases personnelles, changement et création de profil
 - phrases personnelles : ajout et suppression par l'accompagnant
+- code accompagnant oublié : contrôle adulte (addition écrite en lettres), nouveau code sans perte de données
+- suppression d'un profil (hors profil actif), avec confirmation
+- prédiction du mot suivant, apprise des phrases déjà dites par le profil, hors ligne
 
 Reste à faire :
 
-- récupération d'un code accompagnant oublié (aujourd'hui aucune, sauf réinitialiser l'application)
-- suppression d'un profil
-- prédiction du mot suivant
 - choix du type d'image (photo, symbole, les deux), dès que les pictogrammes définitifs existent
 
 ## Priorités proposées
 
-Presque tout ce que la maquette prévoit est fait. Ordre pour la suite :
-
-1. récupération du code accompagnant et suppression d'un profil
-2. prédiction du mot suivant
-3. choix du type d'image, avec les pictogrammes définitifs
+Tout ce que la maquette prévoit est fait, sauf le choix du type d'image, qui dépend des pictogrammes définitifs.
 
 ## Points à trancher
 
