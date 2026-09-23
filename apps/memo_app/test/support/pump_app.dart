@@ -33,6 +33,8 @@ class AppHarness {
     WidgetTester tester, {
     Level level = Level.beginner,
     String name = 'T',
+    List<Override> Function(AppDatabase db, InMemorySecureStore store)?
+    overrides,
   }) async {
     // Taille d'un téléphone : sur la fenêtre de test par défaut, des éléments
     // resteraient hors de l'écran et ne recevraient pas les touchers.
@@ -51,7 +53,10 @@ class AppHarness {
         secureStore: secureStore,
         now: () => clock,
         // Abonné : le contenu payant est visible.
-        overrides: [premiumUnlockedProvider.overrideWithValue(true)],
+        overrides: [
+          premiumUnlockedProvider.overrideWithValue(true),
+          ...?overrides?.call(db, secureStore),
+        ],
       ),
     ))!;
     await tester.runAsync(() async {

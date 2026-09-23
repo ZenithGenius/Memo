@@ -37,99 +37,104 @@ class SettingsScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.settingsTitle)),
-      body: ListView(
+      // Colonne défilante et non ListView : peu d'éléments, et la section
+      // Compte doit survivre quand le clavier la fait sortir de l'écran.
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
-        children: [
-          if (profile != null) ...[
-            _Section(l10n.levelSetting),
-            SegmentedButton<Level>(
-              segments: [
-                for (final l in Level.values)
-                  ButtonSegment(value: l, label: Text(levelName(l))),
-              ],
-              selected: {profile.level},
-              showSelectedIcon: false,
-              onSelectionChanged: (s) async {
-                // Le niveau change la taille des tuiles et le vocabulaire :
-                // réservé à l'accompagnant.
-                if (!await requireCaregiver(context, ref)) return;
-                await ref
-                    .read(profileRepositoryProvider)
-                    .setLevel(profile.id, s.single);
-              },
-            ),
-            if (!caregiverActive)
-              Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: Row(
-                  children: [
-                    const Icon(
-                      Icons.lock_outline,
-                      size: 16,
-                      color: AppColors.mutedText,
-                    ),
-                    const SizedBox(width: 6),
-                    Expanded(
-                      child: Text(
-                        l10n.caregiverProtected,
-                        style: const TextStyle(
-                          fontSize: 13,
-                          color: AppColors.mutedText,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (profile != null) ...[
+              _Section(l10n.levelSetting),
+              SegmentedButton<Level>(
+                segments: [
+                  for (final l in Level.values)
+                    ButtonSegment(value: l, label: Text(levelName(l))),
+                ],
+                selected: {profile.level},
+                showSelectedIcon: false,
+                onSelectionChanged: (s) async {
+                  // Le niveau change la taille des tuiles et le vocabulaire :
+                  // réservé à l'accompagnant.
+                  if (!await requireCaregiver(context, ref)) return;
+                  await ref
+                      .read(profileRepositoryProvider)
+                      .setLevel(profile.id, s.single);
+                },
+              ),
+              if (!caregiverActive)
+                Padding(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.lock_outline,
+                        size: 16,
+                        color: AppColors.mutedText,
+                      ),
+                      const SizedBox(width: 6),
+                      Expanded(
+                        child: Text(
+                          l10n.caregiverProtected,
+                          style: const TextStyle(
+                            fontSize: 13,
+                            color: AppColors.mutedText,
+                          ),
                         ),
                       ),
+                    ],
+                  ),
+                ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8, bottom: 8),
+                child: Text(
+                  levelNote(profile.level),
+                  style: const TextStyle(color: AppColors.mutedText),
+                ),
+              ),
+            ],
+            _Section(l10n.settingsSpeech),
+            SwitchListTile(
+              value: settings.speakEachWord,
+              onChanged: (v) => repo.setSpeakEachWord(value: v),
+              title: Text(l10n.settingsSpeakEachWord),
+              subtitle: Text(l10n.settingsSpeakEachWordNote),
+            ),
+            _Section(l10n.settingsDevice),
+            SwitchListTile(
+              value: settings.hapticsEnabled,
+              onChanged: (v) => repo.setHapticsEnabled(value: v),
+              title: Text(l10n.settingsHaptics),
+              subtitle: Text(l10n.settingsHapticsNote),
+            ),
+            if (ref.watch(accountServiceProvider) != null) ...[
+              _Section(l10n.accountTitle),
+              const AccountSection(),
+            ],
+            _Section(l10n.settingsLanguage),
+            if (profile != null)
+              RadioGroup<String>(
+                groupValue: profile.language,
+                onChanged: (language) {
+                  if (language != null) {
+                    setProfileLanguage(ref, profile, language);
+                  }
+                },
+                child: Column(
+                  children: [
+                    RadioListTile<String>(
+                      value: 'fr',
+                      title: Text(l10n.languageFrench),
+                    ),
+                    RadioListTile<String>(
+                      value: 'en',
+                      title: Text(l10n.languageEnglish),
                     ),
                   ],
                 ),
               ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8, bottom: 8),
-              child: Text(
-                levelNote(profile.level),
-                style: const TextStyle(color: AppColors.mutedText),
-              ),
-            ),
           ],
-          _Section(l10n.settingsSpeech),
-          SwitchListTile(
-            value: settings.speakEachWord,
-            onChanged: (v) => repo.setSpeakEachWord(value: v),
-            title: Text(l10n.settingsSpeakEachWord),
-            subtitle: Text(l10n.settingsSpeakEachWordNote),
-          ),
-          _Section(l10n.settingsDevice),
-          SwitchListTile(
-            value: settings.hapticsEnabled,
-            onChanged: (v) => repo.setHapticsEnabled(value: v),
-            title: Text(l10n.settingsHaptics),
-            subtitle: Text(l10n.settingsHapticsNote),
-          ),
-          if (ref.watch(accountServiceProvider) != null) ...[
-            _Section(l10n.accountTitle),
-            const AccountSection(),
-          ],
-          _Section(l10n.settingsLanguage),
-          if (profile != null)
-            RadioGroup<String>(
-              groupValue: profile.language,
-              onChanged: (language) {
-                if (language != null) {
-                  setProfileLanguage(ref, profile, language);
-                }
-              },
-              child: Column(
-                children: [
-                  RadioListTile<String>(
-                    value: 'fr',
-                    title: Text(l10n.languageFrench),
-                  ),
-                  RadioListTile<String>(
-                    value: 'en',
-                    title: Text(l10n.languageEnglish),
-                  ),
-                ],
-              ),
-            ),
-        ],
+        ),
       ),
     );
   }

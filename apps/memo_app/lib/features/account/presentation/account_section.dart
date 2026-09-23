@@ -22,8 +22,11 @@ class _AccountSectionState extends ConsumerState<AccountSection> {
   bool _busy = false;
   String? _message;
 
+  /// Les opérations durent (réseau) : on garde le conteneur, pas le widget,
+  /// qui peut être détruit entre-temps.
   Future<void> _run(Future<Entitlement?> Function() action) async {
     final l10n = AppLocalizations.of(context);
+    final container = ProviderScope.containerOf(context, listen: false);
     setState(() {
       _busy = true;
       _message = null;
@@ -36,7 +39,7 @@ class _AccountSectionState extends ConsumerState<AccountSection> {
     } on LicenseApiException catch (e) {
       message = licenseErrorText(l10n, e.error);
     }
-    ref
+    container
       ..invalidate(accountEmailProvider)
       ..invalidate(entitlementProvider);
     if (mounted) {
@@ -48,14 +51,14 @@ class _AccountSectionState extends ConsumerState<AccountSection> {
   }
 
   Future<void> _signIn() async {
+    final service = ref.read(accountServiceProvider)!;
     if (!await requireCaregiver(context, ref)) return;
     if (!mounted) return;
     final credentials = await showDialog<_Credentials>(
       context: context,
       builder: (_) => const _SignInDialog(),
     );
-    if (credentials == null) return;
-    final service = ref.read(accountServiceProvider)!;
+    if (credentials == null || !mounted) return;
     await _run(
       () => credentials.create
           ? service.signUp(credentials.email, credentials.password)
@@ -64,9 +67,11 @@ class _AccountSectionState extends ConsumerState<AccountSection> {
   }
 
   Future<void> _signOut() async {
+    final service = ref.read(accountServiceProvider)!;
     if (!await requireCaregiver(context, ref)) return;
+    if (!mounted) return;
     await _run(() async {
-      await ref.read(accountServiceProvider)!.signOut();
+      await service.signOut();
       return null;
     });
   }
