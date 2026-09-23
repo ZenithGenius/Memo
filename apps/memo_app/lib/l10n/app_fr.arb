@@ -217,5 +217,21 @@
         "type": "String"
       }
     }
+  },
+  "pinForgot": "Code oublié ?",
+  "adultCheckTitle": "Vérification adulte",
+  "adultCheckHint": "Écrivez le résultat en chiffres :",
+  "adultCheckAnswer": "Résultat",
+  "adultCheckWrong": "Ce n'est pas le bon résultat. Nouvelle question.",
+  "adultCheckContinue": "Continuer",
+  "profileDelete": "Supprimer {name}",
+  "profileDeleteAction": "Supprimer",
+  "profileDeleteWarning": "Ses favoris, son tableau, ses phrases et son historique seront effacés. Cette action est définitive.",
+  "@profileDelete": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
   }
 }

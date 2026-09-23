@@ -95,5 +95,14 @@
   "profileCurrent": "Current profile",
   "profileButtonSemantics": "{name}'s profile. Tap to switch person",
   "onboardingName": "What is the person's name?",
-  "onboardingNameHint": "Optional"
+  "onboardingNameHint": "Optional",
+  "pinForgot": "Forgot the code?",
+  "adultCheckTitle": "Adult check",
+  "adultCheckHint": "Write the result in digits:",
+  "adultCheckAnswer": "Result",
+  "adultCheckWrong": "That's not the right result. New question.",
+  "adultCheckContinue": "Continue",
+  "profileDelete": "Delete {name}",
+  "profileDeleteAction": "Delete",
+  "profileDeleteWarning": "Their favourites, board, phrases and history will be erased. This cannot be undone."
 }

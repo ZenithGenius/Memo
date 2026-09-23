@@ -3,6 +3,7 @@ import 'package:memo/data/db/app_database.dart';
 import 'package:memo/features/catalog/domain/catalog.dart';
 import 'package:memo/features/profiles/data/drift_profile_repository.dart';
 import 'package:memo/features/profiles/domain/profile.dart';
+import '../../support/seed.dart';
 
 void main() {
   late AppDatabase db;
@@ -158,5 +159,40 @@ void main() {
       expect(all.firstWhere((p) => p.id == a.id).language, 'fr');
       expect(all.firstWhere((p) => p.id == b.id).language, 'en');
     });
+  });
+
+  test('supprimer un profil efface ses données, les autres restent', () async {
+    final a = await repo.create(
+      name: 'A',
+      type: ProfileType.child,
+      level: Level.beginner,
+    );
+    final b = await repo.create(
+      name: 'B',
+      type: ProfileType.adult,
+      level: Level.beginner,
+    );
+    final pid = await seedPictogram(db, 'P1', label: 'Eau');
+    await db
+        .into(db.favorites)
+        .insert(FavoritesCompanion.insert(profileId: a.id, pictogramId: pid));
+    await db
+        .into(db.favorites)
+        .insert(FavoritesCompanion.insert(profileId: b.id, pictogramId: pid));
+
+    await repo.delete(a.id); // B est actif
+    expect((await repo.watchAll().first).map((p) => p.name), ['B']);
+    final favs = await db.select(db.favorites).get();
+    expect(favs.map((f) => f.profileId), [b.id]);
+  });
+
+  test('le profil actif ne peut pas être supprimé', () async {
+    final a = await repo.create(
+      name: 'A',
+      type: ProfileType.child,
+      level: Level.beginner,
+    );
+    await expectLater(repo.delete(a.id), throwsStateError);
+    expect(await repo.watchAll().first, hasLength(1));
   });
 }

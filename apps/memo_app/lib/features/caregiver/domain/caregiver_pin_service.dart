@@ -70,6 +70,14 @@ class CaregiverPinService {
     await _store.delete(_stateKey);
   }
 
+  /// Oubli du code : l'efface avec son compteur d'essais, sans toucher aux
+  /// données. À n'appeler qu'après le contrôle adulte ([AdultCheck]).
+  Future<void> reset() async {
+    await _store.delete(_hashKey);
+    await _store.delete(_saltKey);
+    await _store.delete(_stateKey);
+  }
+
   Future<PinResult> verify(String pin) async {
     final state = await _readState();
     final until = state.lockedUntil;

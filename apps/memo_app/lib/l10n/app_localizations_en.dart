@@ -376,4 +376,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingNameHint => 'Optional';
+
+  @override
+  String get pinForgot => 'Forgot the code?';
+
+  @override
+  String get adultCheckTitle => 'Adult check';
+
+  @override
+  String get adultCheckHint => 'Write the result in digits:';
+
+  @override
+  String get adultCheckAnswer => 'Result';
+
+  @override
+  String get adultCheckWrong => 'That\'s not the right result. New question.';
+
+  @override
+  String get adultCheckContinue => 'Continue';
+
+  @override
+  String profileDelete(String name) {
+    return 'Delete $name';
+  }
+
+  @override
+  String get profileDeleteAction => 'Delete';
+
+  @override
+  String get profileDeleteWarning =>
+      'Their favourites, board, phrases and history will be erased. This cannot be undone.';
 }

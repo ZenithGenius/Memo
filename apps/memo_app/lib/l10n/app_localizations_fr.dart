@@ -379,4 +379,35 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get onboardingNameHint => 'Facultatif';
+
+  @override
+  String get pinForgot => 'Code oublié ?';
+
+  @override
+  String get adultCheckTitle => 'Vérification adulte';
+
+  @override
+  String get adultCheckHint => 'Écrivez le résultat en chiffres :';
+
+  @override
+  String get adultCheckAnswer => 'Résultat';
+
+  @override
+  String get adultCheckWrong =>
+      'Ce n\'est pas le bon résultat. Nouvelle question.';
+
+  @override
+  String get adultCheckContinue => 'Continuer';
+
+  @override
+  String profileDelete(String name) {
+    return 'Supprimer $name';
+  }
+
+  @override
+  String get profileDeleteAction => 'Supprimer';
+
+  @override
+  String get profileDeleteWarning =>
+      'Ses favoris, son tableau, ses phrases et son historique seront effacés. Cette action est définitive.';
 }

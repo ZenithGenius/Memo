@@ -673,6 +673,60 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Facultatif'**
   String get onboardingNameHint;
+
+  /// No description provided for @pinForgot.
+  ///
+  /// In fr, this message translates to:
+  /// **'Code oublié ?'**
+  String get pinForgot;
+
+  /// No description provided for @adultCheckTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vérification adulte'**
+  String get adultCheckTitle;
+
+  /// No description provided for @adultCheckHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Écrivez le résultat en chiffres :'**
+  String get adultCheckHint;
+
+  /// No description provided for @adultCheckAnswer.
+  ///
+  /// In fr, this message translates to:
+  /// **'Résultat'**
+  String get adultCheckAnswer;
+
+  /// No description provided for @adultCheckWrong.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce n\'est pas le bon résultat. Nouvelle question.'**
+  String get adultCheckWrong;
+
+  /// No description provided for @adultCheckContinue.
+  ///
+  /// In fr, this message translates to:
+  /// **'Continuer'**
+  String get adultCheckContinue;
+
+  /// No description provided for @profileDelete.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer {name}'**
+  String profileDelete(String name);
+
+  /// No description provided for @profileDeleteAction.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer'**
+  String get profileDeleteAction;
+
+  /// No description provided for @profileDeleteWarning.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ses favoris, son tableau, ses phrases et son historique seront effacés. Cette action est définitive.'**
+  String get profileDeleteWarning;
 }
 
 class _AppLocalizationsDelegate

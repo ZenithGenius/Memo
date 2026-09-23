@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memo/core/theme/app_colors.dart';
 import 'package:memo/features/caregiver/domain/caregiver_pin_service.dart';
+import 'package:memo/features/caregiver/presentation/adult_check_dialog.dart';
 import 'package:memo/features/caregiver/presentation/caregiver_providers.dart';
 import 'package:memo/features/caregiver/presentation/pin_pad.dart';
 import 'package:memo/l10n/app_localizations.dart';
@@ -112,6 +113,23 @@ class _PinSheetState extends ConsumerState<PinSheet> {
     });
   }
 
+  /// Code oublié : contrôle adulte, puis création d'un nouveau code.
+  /// Les données ne sont pas touchées.
+  Future<void> _forgot() async {
+    final passed = await showDialog<bool>(
+      context: context,
+      builder: (_) => const AdultCheckDialog(),
+    );
+    if (!(passed ?? false)) return;
+    await ref.read(caregiverPinServiceProvider).reset();
+    if (!mounted) return;
+    setState(() {
+      _step = _Step.create;
+      _digits = '';
+      _message = null;
+    });
+  }
+
   bool _isWeak(String pin) =>
       RegExp(r'^(\d)\1{3}$').hasMatch(pin) ||
       const {'1234', '4321', '0123', '3210'}.contains(pin);
@@ -192,9 +210,19 @@ class _PinSheetState extends ConsumerState<PinSheet> {
                     onDelete: _onDelete,
                     enabled: !_busy,
                   ),
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(false),
-                    child: Text(l10n.pinCancel),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (step == _Step.enter)
+                        TextButton(
+                          onPressed: _busy ? null : _forgot,
+                          child: Text(l10n.pinForgot),
+                        ),
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(false),
+                        child: Text(l10n.pinCancel),
+                      ),
+                    ],
                   ),
                 ],
               ),

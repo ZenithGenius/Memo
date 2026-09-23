@@ -37,6 +37,37 @@ class ProfilesSheet extends ConsumerWidget {
     if (context.mounted) Navigator.of(context).pop();
   }
 
+  Future<void> _delete(
+    BuildContext context,
+    WidgetRef ref,
+    Profile profile,
+  ) async {
+    final l10n = AppLocalizations.of(context);
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.profileDelete(profile.name)),
+        content: Text(l10n.profileDeleteWarning),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(l10n.cancel),
+          ),
+          FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor: const Color(0xFFB3261E),
+            ),
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text(l10n.profileDeleteAction),
+          ),
+        ],
+      ),
+    );
+    if (!(confirmed ?? false)) return;
+    ref.read(caregiverSessionProvider.notifier).touch();
+    await ref.read(profileRepositoryProvider).delete(profile.id);
+  }
+
   Future<void> _create(BuildContext context, WidgetRef ref) async {
     if (!await requireCaregiver(context, ref)) return;
     if (!context.mounted) return;
@@ -54,6 +85,7 @@ class ProfilesSheet extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final profiles = ref.watch(allProfilesProvider).asData?.value ?? const [];
     final activeId = ref.watch(activeProfileProvider).asData?.value?.id;
+    final caregiver = ref.watch(caregiverSessionProvider);
     return SafeArea(
       child: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
@@ -87,6 +119,12 @@ class ProfilesSheet extends ConsumerWidget {
                           Icons.check_circle,
                           color: AppColors.teal,
                         ),
+                      )
+                    : caregiver
+                    ? IconButton(
+                        tooltip: l10n.profileDelete(p.name),
+                        icon: const Icon(Icons.delete_outline),
+                        onPressed: () => _delete(context, ref, p),
                       )
                     : const Icon(Icons.lock_outline, size: 18),
                 onTap: () => _switchTo(context, ref, p),

@@ -155,4 +155,20 @@ void main() {
       expect(await s.verify('9153'), isA<PinAccepted>());
     },
   );
+
+  test('réinitialiser efface le code et le blocage', () async {
+    final s = service();
+    await s.setPin('4827');
+    for (var i = 0; i < CaregiverPinService.maxAttempts; i++) {
+      await s.verify('0001');
+    }
+    await s.reset();
+    expect(await s.isSet, isFalse);
+    await s.setPin('9153');
+    expect(
+      await s.verify('9153'),
+      isA<PinAccepted>(),
+      reason: 'plus de blocage',
+    );
+  });
 }

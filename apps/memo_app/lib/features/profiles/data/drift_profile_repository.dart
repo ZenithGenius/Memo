@@ -84,6 +84,18 @@ class DriftProfileRepository implements ProfileRepository {
   }
 
   @override
+  Future<void> delete(int profileId) async {
+    final active = await (_db.select(
+      _db.settings,
+    )..where((s) => s.key.equals(_activeKey))).getSingleOrNull();
+    if (active?.value == '$profileId') {
+      throw StateError('Le profil actif ne peut pas être supprimé');
+    }
+    // Les données du profil partent en cascade (clés étrangères).
+    await (_db.delete(_db.profiles)..where((p) => p.id.equals(profileId))).go();
+  }
+
+  @override
   Future<void> setLanguage(int profileId, String language) async {
     await (_db.update(_db.profiles)..where((p) => p.id.equals(profileId)))
         .write(ProfilesCompanion(language: Value(language)));

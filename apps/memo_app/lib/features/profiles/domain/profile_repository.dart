@@ -18,6 +18,11 @@ abstract interface class ProfileRepository {
   /// Change le profil actif. Sans effet si le profil n'existe pas.
   Future<void> setActive(int profileId);
 
+  /// Supprime un profil et tout ce qui lui appartient (favoris, tableau,
+  /// phrases, historique). Refusé pour le profil actif : on change d'abord
+  /// de personne. Lève [StateError] dans ce cas.
+  Future<void> delete(int profileId);
+
   Future<void> setLevel(int profileId, Level level);
 
   /// Langue du profil : interface, libellés, phrases et voix (`fr`, `en`).
