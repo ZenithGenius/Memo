@@ -35,6 +35,23 @@ flutter run --dart-define-from-file=env/dev.json
 
 Serveur : variables d'environnement des fonctions (`backend/supabase/functions/.env.example`), voir `backend/README.md`. La clé `service_role` et la clé privée de signature ne quittent jamais le serveur.
 
+## Signature Android
+
+Une seule clé de publication signe `flutter run` et l'APK de la CI : l'un remplace l'autre sur un appareil sans désinstaller. Elle ne doit jamais être commitée (`*.jks` et `key.properties` sont ignorés par Git).
+
+En local : `memo-release.jks` et `key.properties` dans `apps/memo_app/android/`.
+
+```properties
+storeFile=memo-release.jks
+storePassword=...
+keyPassword=...
+keyAlias=memo
+```
+
+En CI, secrets du dépôt : `MEMO_KEYSTORE_BASE64` (`base64 -w0 memo-release.jks`), `MEMO_KEYSTORE_PASSWORD`, `MEMO_KEY_ALIAS`, `MEMO_KEY_PASSWORD`. Sans eux (PR de Dependabot, forks), l'APK est signé avec la clé de débogage.
+
+Perdre cette clé empêche toute mise à jour de l'application déjà installée : en garder une copie hors de la machine de développement.
+
 ## Qualité
 
 ```bash

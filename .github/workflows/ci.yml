@@ -3,17 +3,35 @@ on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Un nouveau push sur une PR annule la vérification précédente ; sur main,
+# chaque commit est vérifié jusqu'au bout.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+# Image de runner épinglée (pas ubuntu-latest) : un changement de version
+# d'Ubuntu passe par une PR, pas par une migration silencieuse.
 jobs:
+  # Analyse, tests, puis mêmes contrôles qu'en local sur tout le dépôt :
+  # secrets, format, vulnérabilités, paquets abandonnés, SDK périmé.
   quality:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
     defaults:
       run:
         working-directory: apps/memo_app
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
+          # Lu par tools/security/check_eol.py : garder la même version dans
+          # le job apk.
           flutter-version: 3.47.5
           cache: true
       - uses: actions/setup-python@v7
@@ -25,14 +43,79 @@ jobs:
       - run: dart run build_runner build --delete-conflicting-outputs
       - run: flutter analyze --fatal-infos
       - run: flutter test --coverage
-      - run: flutter build apk --debug
-      - run: bash backend/tests/run_deno.sh
-        working-directory: .
-      # Mêmes contrôles qu'en local, sur tout le dépôt : secrets, format,
-      # vulnérabilités, paquets abandonnés, SDK périmé.
       - run: pre-commit run --all-files --show-diff-on-failure
         env:
-          SKIP: flutter-analyze,flutter-test
+          SKIP: flutter-analyze,flutter-test,backend-functions
         working-directory: .
       - run: pre-commit run --all-files --hook-stage pre-push
         working-directory: .
+
+  # Fonctions serveur : lint, format et tests Deno.
+  backend:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - run: bash backend/tests/run_deno.sh
+
+  # APK de publication (obfusqué, ADR-008), signé avec la clé de publication
+  # (secrets MEMO_KEYSTORE_*), ou la clé de débogage quand les secrets ne sont
+  # pas disponibles (PR de Dependabot, forks). Téléchargeable depuis la page
+  # du run.
+  apk:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: apps/memo_app
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.47.5
+          cache: true
+      - run: flutter pub get
+      - run: dart run build_runner build --delete-conflicting-outputs
+      # Le keystore n'est écrit que dans le dossier temporaire du runner.
+      - name: Clé de publication
+        env:
+          KEYSTORE_BASE64: ${{ secrets.MEMO_KEYSTORE_BASE64 }}
+        run: |
+          if [ -z "$KEYSTORE_BASE64" ]; then
+            echo "::notice::Secrets de signature absents : APK signé avec la clé de débogage."
+            exit 0
+          fi
+          echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/memo-release.jks"
+          echo "MEMO_KEYSTORE_PATH=$RUNNER_TEMP/memo-release.jks" >> "$GITHUB_ENV"
+      - run: >-
+          flutter build apk --release
+          --obfuscate --split-debug-info=build/symbols
+        env:
+          MEMO_KEYSTORE_PASSWORD: ${{ secrets.MEMO_KEYSTORE_PASSWORD }}
+          MEMO_KEY_ALIAS: ${{ secrets.MEMO_KEY_ALIAS }}
+          MEMO_KEY_PASSWORD: ${{ secrets.MEMO_KEY_PASSWORD }}
+      # Empreinte du certificat de signature, à comparer avec celle de la clé.
+      - run: >-
+          "$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)/apksigner"
+          verify --print-certs build/app/outputs/flutter-apk/app-release.apk
+          | grep -E 'DN|SHA-256'
+      - uses: actions/upload-artifact@v7
+        with:
+          name: memo-apk-${{ github.event.pull_request.head.sha || github.sha }}
+          path: apps/memo_app/build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: error
+          retention-days: 14
+      # Symboles de débogage : nécessaires pour lire une trace de plantage
+      # d'un binaire obfusqué.
+      - uses: actions/upload-artifact@v7
+        with:
+          name: memo-symbols-${{ github.event.pull_request.head.sha || github.sha }}
+          path: apps/memo_app/build/symbols
+          if-no-files-found: error
+          retention-days: 14
