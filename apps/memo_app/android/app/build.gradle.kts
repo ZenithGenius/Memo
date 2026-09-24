@@ -45,6 +45,21 @@ android {
         versionName = flutter.versionName
     }
 
+    // prod : l'application publiée. dev : tout le contenu embarqué, installable
+    // à côté de prod (identifiant et nom distincts).
+    flavorDimensions += "env"
+    productFlavors {
+        create("prod") {
+            dimension = "env"
+            resValue("string", "app_name", "Memo")
+        }
+        create("dev") {
+            dimension = "env"
+            applicationIdSuffix = ".dev"
+            resValue("string", "app_name", "Memo dev")
+        }
+    }
+
     signingConfigs {
         if (releaseStoreFile != null) {
             create("release") {

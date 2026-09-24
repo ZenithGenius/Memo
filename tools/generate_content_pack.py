@@ -170,7 +170,7 @@ root = pathlib.Path(__file__).resolve().parent.parent
 
 
 def write(path, pack):
-    path.write_text(json.dumps(pack, ensure_ascii=False, indent=2), encoding="utf-8")
+    path.write_text(json.dumps(pack, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(len(pack["pictograms"]), "pictogrammes écrits dans", path)
 
 
@@ -185,6 +185,9 @@ VERSION = 5
 write(root / "apps/memo_app/assets/content/pack.json",
       {"version": VERSION, "categories": [c for c in categories if c["code"] not in premium_cats],
        "pictograms": free, "phrases": phrases})
-write(root / "backend/supabase/functions/premium-pack/pack.json",
-      {"version": VERSION, "categories": [c for c in categories if c["code"] in premium_cats],
-       "pictograms": premium, "phrases": []})
+premium_pack = {"version": VERSION, "categories": [c for c in categories if c["code"] in premium_cats],
+                "pictograms": premium, "phrases": []}
+write(root / "backend/supabase/functions/premium-pack/pack.json", premium_pack)
+# Copie embarquée dans la seule variante dev (tests sans serveur) : absente de
+# l'APK de publication.
+write(root / "apps/memo_app/assets/content/dev/premium_pack.json", premium_pack)
