@@ -15,12 +15,20 @@ Application mobile de communication alternative et améliorée (CAA) par pictogr
 
 Prérequis : Flutter 3.47.5 (Dart 3.13.4), SDK Android.
 
+Toutes les commandes Flutter se lancent depuis `apps/memo_app` (à la racine du dépôt : « Target file lib/main.dart not found »).
+
 ```bash
 cd apps/memo_app
 flutter pub get
 dart run build_runner build --delete-conflicting-outputs
-flutter run
+flutter run                  # variante prod : les 20 pictogrammes gratuits
+flutter run --flavor dev     # variante dev : les 151 pictogrammes, sans serveur
 ```
+
+Deux variantes :
+
+- **prod** (par défaut) : l'application publiée. Le contenu payant n'y est pas : il est téléchargé après connexion d'un compte abonné (ADR-008).
+- **dev** : « Memo dev » (`com.creyativ.memo.dev`), installable à côté de prod, avec tout le contenu embarqué. Pour tester seulement, jamais publiée. La CI construit les deux APK.
 
 ## Configuration
 

@@ -1,0 +1,2698 @@
+{
+  "version": 5,
+  "categories": [
+    {
+      "code": "ACT",
+      "sortOrder": 2,
+      "icon": "hand",
+      "color": "#2F7D4F",
+      "labels": {
+        "fr": "Actions",
+        "en": "Actions"
+      }
+    },
+    {
+      "code": "ALI",
+      "sortOrder": 3,
+      "icon": "plate",
+      "color": "#B45F06",
+      "labels": {
+        "fr": "Alimentation",
+        "en": "Food"
+      }
+    },
+    {
+      "code": "EMO",
+      "sortOrder": 4,
+      "icon": "face",
+      "color": "#B5486D",
+      "labels": {
+        "fr": "Mes émotions",
+        "en": "My feelings"
+      }
+    },
+    {
+      "code": "SAN",
+      "sortOrder": 5,
+      "icon": "cross",
+      "color": "#2B6CB0",
+      "labels": {
+        "fr": "Santé",
+        "en": "Health"
+      }
+    },
+    {
+      "code": "PER",
+      "sortOrder": 6,
+      "icon": "person",
+      "color": "#6B4FA0",
+      "labels": {
+        "fr": "Personnes",
+        "en": "People"
+      }
+    },
+    {
+      "code": "LIE",
+      "sortOrder": 7,
+      "icon": "house",
+      "color": "#1F7A6C",
+      "labels": {
+        "fr": "Lieux",
+        "en": "Places"
+      }
+    },
+    {
+      "code": "HYG",
+      "sortOrder": 8,
+      "icon": "drop",
+      "color": "#1C7C9A",
+      "labels": {
+        "fr": "Hygiène",
+        "en": "Hygiene"
+      }
+    }
+  ],
+  "pictograms": [
+    {
+      "code": "CAA-CR-ACT-001",
+      "category": "ACT",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 1,
+      "tier": "premium",
+      "image": "assets/content/images/demo/manger.png",
+      "labelInImage": true,
+      "labels": {
+        "fr": {
+          "label": "Manger",
+          "spoken": "manger"
+        },
+        "en": {
+          "label": "Eat",
+          "spoken": "eat"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-002",
+      "category": "ACT",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 2,
+      "tier": "premium",
+      "image": "assets/content/images/demo/boire.png",
+      "labelInImage": true,
+      "labels": {
+        "fr": {
+          "label": "Boire",
+          "spoken": "boire"
+        },
+        "en": {
+          "label": "Drink",
+          "spoken": "drink"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-003",
+      "category": "ACT",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 3,
+      "tier": "premium",
+      "image": "assets/content/images/demo/dormir.png",
+      "labelInImage": true,
+      "labels": {
+        "fr": {
+          "label": "Dormir",
+          "spoken": "dormir"
+        },
+        "en": {
+          "label": "Sleep",
+          "spoken": "sleep"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-004",
+      "category": "ACT",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 4,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Jouer",
+          "spoken": "jouer"
+        },
+        "en": {
+          "label": "Play",
+          "spoken": "play"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-005",
+      "category": "ACT",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 5,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Marcher",
+          "spoken": "marcher"
+        },
+        "en": {
+          "label": "Walk",
+          "spoken": "walk"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-006",
+      "category": "ACT",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 6,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Courir",
+          "spoken": "courir"
+        },
+        "en": {
+          "label": "Run",
+          "spoken": "run"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-007",
+      "category": "ACT",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 7,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Lire",
+          "spoken": "lire"
+        },
+        "en": {
+          "label": "Read",
+          "spoken": "read"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-008",
+      "category": "ACT",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 8,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Écrire",
+          "spoken": "écrire"
+        },
+        "en": {
+          "label": "Write",
+          "spoken": "write"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-009",
+      "category": "ACT",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 9,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Travailler",
+          "spoken": "travailler"
+        },
+        "en": {
+          "label": "Work",
+          "spoken": "work"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-010",
+      "category": "ACT",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 10,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Laver",
+          "spoken": "laver"
+        },
+        "en": {
+          "label": "Wash",
+          "spoken": "wash"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-011",
+      "category": "ACT",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 11,
+      "tier": "premium",
+      "image": "assets/content/images/demo/s-habiller.png",
+      "labelInImage": true,
+      "labels": {
+        "fr": {
+          "label": "S'habiller",
+          "spoken": "s'habiller"
+        },
+        "en": {
+          "label": "Get dressed",
+          "spoken": "get dressed"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-012",
+      "category": "ACT",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 12,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Se déshabiller",
+          "spoken": "se déshabiller"
+        },
+        "en": {
+          "label": "Get undressed",
+          "spoken": "get undressed"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-013",
+      "category": "ACT",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 13,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Attendre",
+          "spoken": "attendre"
+        },
+        "en": {
+          "label": "Wait",
+          "spoken": "wait"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-014",
+      "category": "ACT",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 14,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Parler",
+          "spoken": "parler"
+        },
+        "en": {
+          "label": "Talk",
+          "spoken": "talk"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-015",
+      "category": "ACT",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 15,
+      "tier": "premium",
+      "image": "assets/content/images/demo/s-asseoir.png",
+      "labelInImage": true,
+      "labels": {
+        "fr": {
+          "label": "S'asseoir",
+          "spoken": "s'asseoir"
+        },
+        "en": {
+          "label": "Sit down",
+          "spoken": "sit down"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-016",
+      "category": "ACT",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 16,
+      "tier": "premium",
+      "image": "assets/content/images/demo/se-lever.png",
+      "labelInImage": true,
+      "labels": {
+        "fr": {
+          "label": "Se lever",
+          "spoken": "se lever"
+        },
+        "en": {
+          "label": "Stand up",
+          "spoken": "stand up"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-017",
+      "category": "ACT",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 17,
+      "tier": "premium",
+      "image": "assets/content/images/demo/ouvrir.png",
+      "labelInImage": true,
+      "labels": {
+        "fr": {
+          "label": "Ouvrir",
+          "spoken": "ouvrir"
+        },
+        "en": {
+          "label": "Open",
+          "spoken": "open"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-018",
+      "category": "ACT",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 18,
+      "tier": "premium",
+      "image": "assets/content/images/demo/fermer.png",
+      "labelInImage": true,
+      "labels": {
+        "fr": {
+          "label": "Fermer",
+          "spoken": "fermer"
+        },
+        "en": {
+          "label": "Close",
+          "spoken": "close"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-019",
+      "category": "ACT",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 19,
+      "tier": "premium",
+      "image": "assets/content/images/demo/regarder.png",
+      "labelInImage": true,
+      "labels": {
+        "fr": {
+          "label": "Regarder",
+          "spoken": "regarder"
+        },
+        "en": {
+          "label": "Look",
+          "spoken": "look"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-020",
+      "category": "ACT",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 20,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Écouter",
+          "spoken": "écouter"
+        },
+        "en": {
+          "label": "Listen",
+          "spoken": "listen"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-021",
+      "category": "ACT",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 21,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Prendre",
+          "spoken": "prendre"
+        },
+        "en": {
+          "label": "Take",
+          "spoken": "take"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-022",
+      "category": "ACT",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 22,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Donner",
+          "spoken": "donner"
+        },
+        "en": {
+          "label": "Give",
+          "spoken": "give"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-023",
+      "category": "ACT",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 23,
+      "tier": "premium",
+      "image": "assets/content/images/demo/aller.png",
+      "labelInImage": true,
+      "labels": {
+        "fr": {
+          "label": "Aller",
+          "spoken": "aller"
+        },
+        "en": {
+          "label": "Go",
+          "spoken": "go"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-024",
+      "category": "ACT",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 24,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Venir",
+          "spoken": "venir"
+        },
+        "en": {
+          "label": "Come",
+          "spoken": "come"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ACT-025",
+      "category": "ACT",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 25,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Se reposer",
+          "spoken": "se reposer"
+        },
+        "en": {
+          "label": "Rest",
+          "spoken": "rest"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-001",
+      "category": "ALI",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 1,
+      "tier": "premium",
+      "image": "assets/content/images/demo/eau.png",
+      "labelInImage": true,
+      "labels": {
+        "fr": {
+          "label": "Eau",
+          "spoken": "eau"
+        },
+        "en": {
+          "label": "Water",
+          "spoken": "water"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-002",
+      "category": "ALI",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 2,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Lait",
+          "spoken": "lait"
+        },
+        "en": {
+          "label": "Milk",
+          "spoken": "milk"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-003",
+      "category": "ALI",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 3,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Jus",
+          "spoken": "jus"
+        },
+        "en": {
+          "label": "Juice",
+          "spoken": "juice"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-004",
+      "category": "ALI",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 4,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Pain",
+          "spoken": "pain"
+        },
+        "en": {
+          "label": "Bread",
+          "spoken": "bread"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-005",
+      "category": "ALI",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 5,
+      "tier": "premium",
+      "image": "assets/content/images/demo/riz.png",
+      "labelInImage": true,
+      "labels": {
+        "fr": {
+          "label": "Riz",
+          "spoken": "riz"
+        },
+        "en": {
+          "label": "Rice",
+          "spoken": "rice"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-006",
+      "category": "ALI",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 6,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Plantain",
+          "spoken": "plantain"
+        },
+        "en": {
+          "label": "Plantain",
+          "spoken": "plantain"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-007",
+      "category": "ALI",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 7,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Manioc",
+          "spoken": "manioc"
+        },
+        "en": {
+          "label": "Cassava",
+          "spoken": "cassava"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-008",
+      "category": "ALI",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 8,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Macabo",
+          "spoken": "macabo"
+        },
+        "en": {
+          "label": "Cocoyam",
+          "spoken": "cocoyam"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-009",
+      "category": "ALI",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 9,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Igname",
+          "spoken": "igname"
+        },
+        "en": {
+          "label": "Yam",
+          "spoken": "yam"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-010",
+      "category": "ALI",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 10,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Maïs",
+          "spoken": "maïs"
+        },
+        "en": {
+          "label": "Corn",
+          "spoken": "corn"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-011",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 11,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Haricot",
+          "spoken": "haricot"
+        },
+        "en": {
+          "label": "Beans",
+          "spoken": "beans"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-012",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 12,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Arachide",
+          "spoken": "arachide"
+        },
+        "en": {
+          "label": "Groundnut",
+          "spoken": "groundnut"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-013",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 13,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Poisson",
+          "spoken": "poisson"
+        },
+        "en": {
+          "label": "Fish",
+          "spoken": "fish"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-014",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 14,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Poulet",
+          "spoken": "poulet"
+        },
+        "en": {
+          "label": "Chicken",
+          "spoken": "chicken"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-015",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 15,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Viande",
+          "spoken": "viande"
+        },
+        "en": {
+          "label": "Meat",
+          "spoken": "meat"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-016",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 16,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Beignet",
+          "spoken": "beignet"
+        },
+        "en": {
+          "label": "Beignet",
+          "spoken": "beignet"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-017",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 17,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Bouillie",
+          "spoken": "bouillie"
+        },
+        "en": {
+          "label": "Porridge",
+          "spoken": "porridge"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-018",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 18,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Ndolé",
+          "spoken": "ndolé"
+        },
+        "en": {
+          "label": "Ndolé",
+          "spoken": "ndolé"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-019",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 19,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Eru",
+          "spoken": "eru"
+        },
+        "en": {
+          "label": "Eru",
+          "spoken": "eru"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-020",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 20,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Bâton de manioc",
+          "spoken": "bâton de manioc"
+        },
+        "en": {
+          "label": "Cassava stick",
+          "spoken": "cassava stick"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-021",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 21,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Mangue",
+          "spoken": "mangue"
+        },
+        "en": {
+          "label": "Mango",
+          "spoken": "mango"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-022",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 22,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Papaye",
+          "spoken": "papaye"
+        },
+        "en": {
+          "label": "Papaya",
+          "spoken": "papaya"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-023",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 23,
+      "tier": "premium",
+      "image": "assets/content/images/demo/ananas.png",
+      "labelInImage": true,
+      "labels": {
+        "fr": {
+          "label": "Ananas",
+          "spoken": "ananas"
+        },
+        "en": {
+          "label": "Pineapple",
+          "spoken": "pineapple"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-024",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 24,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Avocat",
+          "spoken": "avocat"
+        },
+        "en": {
+          "label": "Avocado",
+          "spoken": "avocado"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-025",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 25,
+      "tier": "premium",
+      "image": "assets/content/images/demo/orange.png",
+      "labelInImage": true,
+      "labels": {
+        "fr": {
+          "label": "Orange",
+          "spoken": "orange"
+        },
+        "en": {
+          "label": "Orange",
+          "spoken": "orange"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-026",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 26,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Pastèque",
+          "spoken": "pastèque"
+        },
+        "en": {
+          "label": "Watermelon",
+          "spoken": "watermelon"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-027",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 27,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Bonbon",
+          "spoken": "bonbon"
+        },
+        "en": {
+          "label": "Sweet",
+          "spoken": "sweet"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-028",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 28,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Biscuit",
+          "spoken": "biscuit"
+        },
+        "en": {
+          "label": "Biscuit",
+          "spoken": "biscuit"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-029",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 29,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Glace",
+          "spoken": "glace"
+        },
+        "en": {
+          "label": "Ice cream",
+          "spoken": "ice cream"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-030",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 30,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Couscous",
+          "spoken": "couscous"
+        },
+        "en": {
+          "label": "Couscous",
+          "spoken": "couscous"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-031",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 31,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Œuf",
+          "spoken": "œuf"
+        },
+        "en": {
+          "label": "Egg",
+          "spoken": "egg"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-ALI-032",
+      "category": "ALI",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 32,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Banane",
+          "spoken": "banane"
+        },
+        "en": {
+          "label": "Banana",
+          "spoken": "banana"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-EMO-001",
+      "category": "EMO",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 1,
+      "tier": "premium",
+      "image": "assets/content/images/demo/content.png",
+      "labelInImage": true,
+      "labels": {
+        "fr": {
+          "label": "Content",
+          "spoken": "content"
+        },
+        "en": {
+          "label": "Happy",
+          "spoken": "happy"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-EMO-002",
+      "category": "EMO",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 2,
+      "tier": "premium",
+      "image": "assets/content/images/demo/triste.png",
+      "labelInImage": true,
+      "labels": {
+        "fr": {
+          "label": "Triste",
+          "spoken": "triste"
+        },
+        "en": {
+          "label": "Sad",
+          "spoken": "sad"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-EMO-003",
+      "category": "EMO",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 3,
+      "tier": "premium",
+      "image": "assets/content/images/demo/fache.png",
+      "labelInImage": true,
+      "labels": {
+        "fr": {
+          "label": "Fâché",
+          "spoken": "fâché"
+        },
+        "en": {
+          "label": "Angry",
+          "spoken": "angry"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-EMO-004",
+      "category": "EMO",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 4,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Peur",
+          "spoken": "peur"
+        },
+        "en": {
+          "label": "Scared",
+          "spoken": "scared"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-EMO-005",
+      "category": "EMO",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 5,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Fatigué",
+          "spoken": "fatigué"
+        },
+        "en": {
+          "label": "Tired",
+          "spoken": "tired"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-EMO-006",
+      "category": "EMO",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 6,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Malade",
+          "spoken": "malade"
+        },
+        "en": {
+          "label": "Sick",
+          "spoken": "sick"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-EMO-007",
+      "category": "EMO",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 7,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Calme",
+          "spoken": "calme"
+        },
+        "en": {
+          "label": "Calm",
+          "spoken": "calm"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-EMO-008",
+      "category": "EMO",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 8,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Inquiet",
+          "spoken": "inquiet"
+        },
+        "en": {
+          "label": "Worried",
+          "spoken": "worried"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-EMO-009",
+      "category": "EMO",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 9,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Surpris",
+          "spoken": "surpris"
+        },
+        "en": {
+          "label": "Surprised",
+          "spoken": "surprised"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-EMO-010",
+      "category": "EMO",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 10,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Ennuyé",
+          "spoken": "ennuyé"
+        },
+        "en": {
+          "label": "Bored",
+          "spoken": "bored"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-EMO-011",
+      "category": "EMO",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 11,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Excité",
+          "spoken": "excité"
+        },
+        "en": {
+          "label": "Excited",
+          "spoken": "excited"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-EMO-012",
+      "category": "EMO",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 12,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "J'ai chaud",
+          "spoken": "j'ai chaud"
+        },
+        "en": {
+          "label": "I'm hot",
+          "spoken": "I'm hot"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-EMO-013",
+      "category": "EMO",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 13,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "J'ai froid",
+          "spoken": "j'ai froid"
+        },
+        "en": {
+          "label": "I'm cold",
+          "spoken": "I'm cold"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-EMO-014",
+      "category": "EMO",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 14,
+      "tier": "premium",
+      "image": "assets/content/images/demo/j-ai-faim.png",
+      "labelInImage": true,
+      "labels": {
+        "fr": {
+          "label": "J'ai faim",
+          "spoken": "j'ai faim"
+        },
+        "en": {
+          "label": "I'm hungry",
+          "spoken": "I'm hungry"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-EMO-015",
+      "category": "EMO",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 15,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "J'ai soif",
+          "spoken": "j'ai soif"
+        },
+        "en": {
+          "label": "I'm thirsty",
+          "spoken": "I'm thirsty"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-001",
+      "category": "SAN",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 1,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "J'ai mal",
+          "spoken": "j'ai mal"
+        },
+        "en": {
+          "label": "It hurts",
+          "spoken": "it hurts"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-002",
+      "category": "SAN",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 2,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Tête",
+          "spoken": "tête"
+        },
+        "en": {
+          "label": "Head",
+          "spoken": "head"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-003",
+      "category": "SAN",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 3,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Œil",
+          "spoken": "œil"
+        },
+        "en": {
+          "label": "Eye",
+          "spoken": "eye"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-004",
+      "category": "SAN",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 4,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Oreille",
+          "spoken": "oreille"
+        },
+        "en": {
+          "label": "Ear",
+          "spoken": "ear"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-005",
+      "category": "SAN",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 5,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Bouche",
+          "spoken": "bouche"
+        },
+        "en": {
+          "label": "Mouth",
+          "spoken": "mouth"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-006",
+      "category": "SAN",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 6,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Dent",
+          "spoken": "dent"
+        },
+        "en": {
+          "label": "Tooth",
+          "spoken": "tooth"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-007",
+      "category": "SAN",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 7,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Gorge",
+          "spoken": "gorge"
+        },
+        "en": {
+          "label": "Throat",
+          "spoken": "throat"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-008",
+      "category": "SAN",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 8,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Ventre",
+          "spoken": "ventre"
+        },
+        "en": {
+          "label": "Tummy",
+          "spoken": "tummy"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-009",
+      "category": "SAN",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 9,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Dos",
+          "spoken": "dos"
+        },
+        "en": {
+          "label": "Back",
+          "spoken": "back"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-010",
+      "category": "SAN",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 10,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Bras",
+          "spoken": "bras"
+        },
+        "en": {
+          "label": "Arm",
+          "spoken": "arm"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-011",
+      "category": "SAN",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 11,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Main",
+          "spoken": "main"
+        },
+        "en": {
+          "label": "Hand",
+          "spoken": "hand"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-012",
+      "category": "SAN",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 12,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Jambe",
+          "spoken": "jambe"
+        },
+        "en": {
+          "label": "Leg",
+          "spoken": "leg"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-013",
+      "category": "SAN",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 13,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Pied",
+          "spoken": "pied"
+        },
+        "en": {
+          "label": "Foot",
+          "spoken": "foot"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-014",
+      "category": "SAN",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 14,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Médicament",
+          "spoken": "médicament"
+        },
+        "en": {
+          "label": "Medicine",
+          "spoken": "medicine"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-015",
+      "category": "SAN",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 15,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Médecin",
+          "spoken": "médecin"
+        },
+        "en": {
+          "label": "Doctor",
+          "spoken": "doctor"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-016",
+      "category": "SAN",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 16,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Infirmier ou infirmière",
+          "spoken": "infirmier ou infirmière"
+        },
+        "en": {
+          "label": "Nurse",
+          "spoken": "nurse"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-017",
+      "category": "SAN",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 17,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Hôpital",
+          "spoken": "hôpital"
+        },
+        "en": {
+          "label": "Hospital",
+          "spoken": "hospital"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-018",
+      "category": "SAN",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 18,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Urgence",
+          "spoken": "urgence"
+        },
+        "en": {
+          "label": "Emergency",
+          "spoken": "emergency"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-019",
+      "category": "SAN",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 19,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Poitrine",
+          "spoken": "poitrine"
+        },
+        "en": {
+          "label": "Chest",
+          "spoken": "chest"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-SAN-020",
+      "category": "SAN",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 20,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Je respire mal",
+          "spoken": "je respire mal"
+        },
+        "en": {
+          "label": "I can't breathe well",
+          "spoken": "I can't breathe well"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-PER-001",
+      "category": "PER",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 1,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Moi",
+          "spoken": "moi"
+        },
+        "en": {
+          "label": "Me",
+          "spoken": "me"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-PER-002",
+      "category": "PER",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 2,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Maman",
+          "spoken": "maman"
+        },
+        "en": {
+          "label": "Mum",
+          "spoken": "mum"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-PER-003",
+      "category": "PER",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 3,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Papa",
+          "spoken": "papa"
+        },
+        "en": {
+          "label": "Dad",
+          "spoken": "dad"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-PER-004",
+      "category": "PER",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 4,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Frère",
+          "spoken": "frère"
+        },
+        "en": {
+          "label": "Brother",
+          "spoken": "brother"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-PER-005",
+      "category": "PER",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 5,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Sœur",
+          "spoken": "sœur"
+        },
+        "en": {
+          "label": "Sister",
+          "spoken": "sister"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-PER-006",
+      "category": "PER",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 6,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Grand-mère",
+          "spoken": "grand-mère"
+        },
+        "en": {
+          "label": "Grandmother",
+          "spoken": "grandmother"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-PER-007",
+      "category": "PER",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 7,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Grand-père",
+          "spoken": "grand-père"
+        },
+        "en": {
+          "label": "Grandfather",
+          "spoken": "grandfather"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-PER-008",
+      "category": "PER",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 8,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Enfant",
+          "spoken": "enfant"
+        },
+        "en": {
+          "label": "Child",
+          "spoken": "child"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-PER-009",
+      "category": "PER",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 9,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Ami",
+          "spoken": "ami"
+        },
+        "en": {
+          "label": "Friend",
+          "spoken": "friend"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-PER-010",
+      "category": "PER",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 10,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Camarade",
+          "spoken": "camarade"
+        },
+        "en": {
+          "label": "Classmate",
+          "spoken": "classmate"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-PER-011",
+      "category": "PER",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 11,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Maîtresse",
+          "spoken": "maîtresse"
+        },
+        "en": {
+          "label": "Teacher",
+          "spoken": "teacher"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-PER-012",
+      "category": "PER",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 12,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Maître",
+          "spoken": "maître"
+        },
+        "en": {
+          "label": "Teacher",
+          "spoken": "teacher"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-PER-013",
+      "category": "PER",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 13,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Médecin",
+          "spoken": "médecin"
+        },
+        "en": {
+          "label": "Doctor",
+          "spoken": "doctor"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-PER-014",
+      "category": "PER",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 14,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Infirmière",
+          "spoken": "infirmière"
+        },
+        "en": {
+          "label": "Nurse",
+          "spoken": "nurse"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-PER-015",
+      "category": "PER",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 15,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Éducateur",
+          "spoken": "éducateur"
+        },
+        "en": {
+          "label": "Support worker",
+          "spoken": "support worker"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-LIE-001",
+      "category": "LIE",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 1,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Maison",
+          "spoken": "maison"
+        },
+        "en": {
+          "label": "Home",
+          "spoken": "home"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-LIE-002",
+      "category": "LIE",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 2,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "École",
+          "spoken": "école"
+        },
+        "en": {
+          "label": "School",
+          "spoken": "school"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-LIE-003",
+      "category": "LIE",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 3,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Classe",
+          "spoken": "classe"
+        },
+        "en": {
+          "label": "Classroom",
+          "spoken": "classroom"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-LIE-004",
+      "category": "LIE",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 4,
+      "tier": "premium",
+      "image": "assets/content/images/demo/toilettes.png",
+      "labelInImage": true,
+      "labels": {
+        "fr": {
+          "label": "Toilettes",
+          "spoken": "toilettes"
+        },
+        "en": {
+          "label": "Toilet",
+          "spoken": "toilet"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-LIE-005",
+      "category": "LIE",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 5,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Cuisine",
+          "spoken": "cuisine"
+        },
+        "en": {
+          "label": "Kitchen",
+          "spoken": "kitchen"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-LIE-006",
+      "category": "LIE",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 6,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Chambre",
+          "spoken": "chambre"
+        },
+        "en": {
+          "label": "Bedroom",
+          "spoken": "bedroom"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-LIE-007",
+      "category": "LIE",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 7,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Cour",
+          "spoken": "cour"
+        },
+        "en": {
+          "label": "Yard",
+          "spoken": "yard"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-LIE-008",
+      "category": "LIE",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 8,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Hôpital",
+          "spoken": "hôpital"
+        },
+        "en": {
+          "label": "Hospital",
+          "spoken": "hospital"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-LIE-009",
+      "category": "LIE",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 9,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Marché",
+          "spoken": "marché"
+        },
+        "en": {
+          "label": "Market",
+          "spoken": "market"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-LIE-010",
+      "category": "LIE",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 10,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Boutique",
+          "spoken": "boutique"
+        },
+        "en": {
+          "label": "Shop",
+          "spoken": "shop"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-LIE-011",
+      "category": "LIE",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 11,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Route",
+          "spoken": "route"
+        },
+        "en": {
+          "label": "Road",
+          "spoken": "road"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-LIE-012",
+      "category": "LIE",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 12,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Terrain de jeu",
+          "spoken": "terrain de jeu"
+        },
+        "en": {
+          "label": "Playground",
+          "spoken": "playground"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-LIE-013",
+      "category": "LIE",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 13,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Église",
+          "spoken": "église"
+        },
+        "en": {
+          "label": "Church",
+          "spoken": "church"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-LIE-014",
+      "category": "LIE",
+      "level": 2,
+      "audience": "all",
+      "sortOrder": 14,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Dehors",
+          "spoken": "dehors"
+        },
+        "en": {
+          "label": "Outside",
+          "spoken": "outside"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-HYG-001",
+      "category": "HYG",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 1,
+      "tier": "premium",
+      "image": "assets/content/images/demo/toilettes.png",
+      "labelInImage": true,
+      "labels": {
+        "fr": {
+          "label": "Toilettes",
+          "spoken": "toilettes"
+        },
+        "en": {
+          "label": "Toilet",
+          "spoken": "toilet"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-HYG-002",
+      "category": "HYG",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 2,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Douche",
+          "spoken": "douche"
+        },
+        "en": {
+          "label": "Shower",
+          "spoken": "shower"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-HYG-003",
+      "category": "HYG",
+      "level": 0,
+      "audience": "all",
+      "sortOrder": 3,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Savon",
+          "spoken": "savon"
+        },
+        "en": {
+          "label": "Soap",
+          "spoken": "soap"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-HYG-004",
+      "category": "HYG",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 4,
+      "tier": "premium",
+      "image": "assets/content/images/demo/eau.png",
+      "labelInImage": true,
+      "labels": {
+        "fr": {
+          "label": "Eau",
+          "spoken": "eau"
+        },
+        "en": {
+          "label": "Water",
+          "spoken": "water"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-HYG-005",
+      "category": "HYG",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 5,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Serviette",
+          "spoken": "serviette"
+        },
+        "en": {
+          "label": "Towel",
+          "spoken": "towel"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-HYG-006",
+      "category": "HYG",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 6,
+      "tier": "premium",
+      "image": "assets/content/images/demo/laver-mains.png",
+      "labelInImage": true,
+      "labels": {
+        "fr": {
+          "label": "Se laver les mains",
+          "spoken": "se laver les mains"
+        },
+        "en": {
+          "label": "Wash hands",
+          "spoken": "wash hands"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-HYG-007",
+      "category": "HYG",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 7,
+      "tier": "premium",
+      "image": "assets/content/images/demo/brosser-dents.png",
+      "labelInImage": true,
+      "labels": {
+        "fr": {
+          "label": "Se brosser les dents",
+          "spoken": "se brosser les dents"
+        },
+        "en": {
+          "label": "Brush teeth",
+          "spoken": "brush teeth"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-HYG-008",
+      "category": "HYG",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 8,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Propre",
+          "spoken": "propre"
+        },
+        "en": {
+          "label": "Clean",
+          "spoken": "clean"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-HYG-009",
+      "category": "HYG",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 9,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Sale",
+          "spoken": "sale"
+        },
+        "en": {
+          "label": "Dirty",
+          "spoken": "dirty"
+        }
+      }
+    },
+    {
+      "code": "CAA-CR-HYG-010",
+      "category": "HYG",
+      "level": 1,
+      "audience": "all",
+      "sortOrder": 10,
+      "tier": "premium",
+      "image": null,
+      "labelInImage": false,
+      "labels": {
+        "fr": {
+          "label": "Papier toilette",
+          "spoken": "papier toilette"
+        },
+        "en": {
+          "label": "Toilet paper",
+          "spoken": "toilet paper"
+        }
+      }
+    }
+  ],
+  "phrases": []
+}
