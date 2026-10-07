@@ -495,4 +495,16 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get licenseDeviceRevoked => 'Cet appareil a été retiré du compte.';
+
+  @override
+  String get loadingContent => 'Chargement…';
+
+  @override
+  String get errorTitle => 'Cet écran n\'a pas pu s\'afficher';
+
+  @override
+  String get errorHint => 'Rien n\'est perdu. Réessayez dans un instant.';
+
+  @override
+  String get errorRetry => 'Réessayer';
 }

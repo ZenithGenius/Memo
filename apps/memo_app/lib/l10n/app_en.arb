@@ -129,5 +129,9 @@
   "networkServer": "The server is not responding properly. Try again later.",
   "licenseNoSubscription": "Signed in, but no active subscription. Contact us to activate it.",
   "licenseDeviceLimit": "This account is already used on two devices.",
-  "licenseDeviceRevoked": "This device was removed from the account."
+  "licenseDeviceRevoked": "This device was removed from the account.",
+  "loadingContent": "Loading…",
+  "errorTitle": "This screen couldn't be shown",
+  "errorHint": "Nothing was lost. Try again in a moment.",
+  "errorRetry": "Try again"
 }
