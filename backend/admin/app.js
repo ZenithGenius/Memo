@@ -128,7 +128,7 @@ async function loadPlans() {
   if (error) return toast("Erreur de chargement des offres : " + error.message);
   plans = data;
   $("activate-plan").innerHTML = plans
-    .map((p) => `<option value="${p.code}">${p.name} — ${fcfa(p.price_fcfa)} / ${p.period_days} j</option>`)
+    .map((p) => `<option value="${esc(p.code)}">${esc(p.name)} — ${fcfa(p.price_fcfa)} / ${p.period_days} j</option>`)
     .join("");
 }
 
@@ -181,7 +181,7 @@ async function refreshAccount() {
       return `<tr>
         <td>${esc(s.plans?.name ?? s.plan_code)}</td>
         <td>${dateFr(s.valid_until)}</td>
-        <td><span class="badge ${active ? "ok" : s.status === "revoked" ? "off" : "warn"}">${active ? "actif" : s.status}</span></td>
+        <td><span class="badge ${active ? "ok" : s.status === "revoked" ? "off" : "warn"}">${active ? "actif" : esc(s.status)}</span></td>
         <td>${active ? `<button class="secondary danger revoke-sub" data-id="${s.id}">Résilier</button>` : ""}</td>
       </tr>`;
     })
@@ -190,8 +190,8 @@ async function refreshAccount() {
   $("devices-table").querySelector("tbody").innerHTML = (devices ?? [])
     .map(
       (d) => `<tr>
-        <td>${d.platform}</td>
-        <td><span class="badge ${d.integrity_level === "strong" ? "ok" : d.integrity_level === "unknown" ? "warn" : "off"}">${d.integrity_level}</span></td>
+        <td>${esc(d.platform)}</td>
+        <td><span class="badge ${d.integrity_level === "strong" ? "ok" : d.integrity_level === "unknown" ? "warn" : "off"}">${esc(d.integrity_level)}</span></td>
         <td>${dateFr(d.last_seen)}</td>
         <td>${d.revoked_at ? "révoqué" : "actif"}</td>
         <td><button class="secondary ${d.revoked_at ? "" : "danger"} toggle-device" data-id="${d.id}" data-revoke="${d.revoked_at ? "0" : "1"}">${d.revoked_at ? "Rétablir" : "Révoquer"}</button></td>
@@ -204,8 +204,8 @@ async function refreshAccount() {
       (i) => `<tr>
         <td>${dateFr(i.issued_at)}</td>
         <td>${dateFr(i.valid_until)}</td>
-        <td>${i.key_id}</td>
-        <td><span class="badge ${i.integrity_level === "strong" ? "ok" : "warn"}">${i.integrity_level}</span></td>
+        <td>${esc(i.key_id)}</td>
+        <td><span class="badge ${i.integrity_level === "strong" ? "ok" : "warn"}">${esc(i.integrity_level)}</span></td>
       </tr>`
     )
     .join("");
