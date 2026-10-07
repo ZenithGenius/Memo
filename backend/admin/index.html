@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Memo — Administration</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <section id="login-view">
+    <div class="card">
+      <h1>Memo — Administration</h1>
+      <form id="login-form">
+        <input type="email" id="login-email" placeholder="E-mail" required autocomplete="username" />
+        <input type="password" id="login-password" placeholder="Mot de passe" required autocomplete="current-password" />
+        <button type="submit" class="primary" style="width:100%">Se connecter</button>
+      </form>
+      <p id="login-error"></p>
+    </div>
+  </section>
+
+  <div id="app-view" class="hidden">
+    <header>
+      <h1>Memo — Administration</h1>
+      <div>
+        <span id="whoami" style="margin-right:1rem; font-size:.85rem; color:var(--muted)"></span>
+        <button id="logout-btn">Déconnexion</button>
+      </div>
+    </header>
+
+    <main>
+      <div class="kpis" id="kpis"></div>
+
+      <details class="not-tracked">
+        <summary>Indicateurs non disponibles ici</summary>
+        <p>L'application ne journalise pas encore les téléchargements, les essais ni le taux de
+          conversion (aucun suivi d'installation, pas d'état « essai » dans le schéma).
+          Ces chiffres viennent des tableaux de bord des boutiques (Play Console, App Store
+          Connect) tant qu'aucune analytique n'est ajoutée.</p>
+      </details>
+
+      <section class="card">
+        <h3 style="margin-top:0">Rechercher un compte</h3>
+        <form id="search-form">
+          <input id="search-input" placeholder="E-mail, téléphone ou nom" />
+          <button class="primary" type="submit">Rechercher</button>
+        </form>
+        <div id="search-results"></div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="account-dialog">
+    <div class="card-header">
+      <div>
+        <h2 id="account-email" style="margin:0 0 .2rem"></h2>
+        <span id="account-meta" style="font-size:.85rem;color:var(--muted)"></span>
+      </div>
+      <button class="secondary" id="account-close">Fermer</button>
+    </div>
+    <section>
+      <h3>Abonnements</h3>
+      <table id="subscriptions-table"><thead>
+        <tr><th>Offre</th><th>Valide jusqu'au</th><th>Statut</th><th></th></tr>
+      </thead><tbody></tbody></table>
+
+      <form id="activate-form">
+        <div><label>Offre</label><select id="activate-plan" required></select></div>
+        <div><label>Valide jusqu'au</label><input type="date" id="activate-until" required /></div>
+        <div class="full"><label>Note</label><input id="activate-note" placeholder="Optionnel" /></div>
+        <div class="full"><button class="primary" type="submit">Activer / prolonger</button></div>
+      </form>
+
+      <h3>Appareils</h3>
+      <table id="devices-table"><thead>
+        <tr><th>Plateforme</th><th>Intégrité</th><th>Dernière vue</th><th>Statut</th><th></th></tr>
+      </thead><tbody></tbody></table>
+
+      <h3>Jetons émis récemment</h3>
+      <table id="issuances-table"><thead>
+        <tr><th>Émis le</th><th>Valide jusqu'au</th><th>Clé</th><th>Intégrité</th></tr>
+      </thead><tbody></tbody></table>
+    </section>
+  </dialog>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
