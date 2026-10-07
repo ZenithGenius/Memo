@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memo/core/theme/app_colors.dart';
 import 'package:memo/core/ui/adaptive_grid.dart';
+import 'package:memo/core/ui/async_states.dart';
 import 'package:memo/features/caregiver/presentation/caregiver_gate.dart';
 import 'package:memo/features/catalog/domain/catalog.dart';
 import 'package:memo/features/catalog/presentation/catalog_providers.dart';
@@ -54,7 +55,7 @@ class _BoardScreenState extends ConsumerState<BoardScreen> {
         ],
       ),
       body: board == null
-          ? const Center(child: CircularProgressIndicator())
+          ? LoadingTiles(level: ref.watch(currentLevelProvider))
           : GridView.count(
               crossAxisCount: board.columns,
               mainAxisSpacing: 12,

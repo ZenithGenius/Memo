@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memo/core/ui/adaptive_grid.dart';
+import 'package:memo/core/ui/async_states.dart';
 import 'package:memo/features/caregiver/presentation/caregiver_lock_button.dart';
 import 'package:memo/features/catalog/domain/catalog.dart';
 import 'package:memo/features/catalog/presentation/catalog_providers.dart';
@@ -51,7 +52,7 @@ class HomeScreen extends ConsumerWidget {
               ),
               actions: const [SizedBox.shrink()],
             ),
-          Expanded(child: _grid(l10n, categories, level)),
+          Expanded(child: _grid(l10n, categories, level, ref)),
         ],
       ),
     );
@@ -61,6 +62,7 @@ class HomeScreen extends ConsumerWidget {
     AppLocalizations l10n,
     AsyncValue<List<Category>> categories,
     Level level,
+    WidgetRef ref,
   ) {
     return categories.when(
       data: (list) => GridView(
@@ -87,8 +89,11 @@ class HomeScreen extends ConsumerWidget {
           ),
         ],
       ),
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, _) => Center(child: Text('$e')),
+      loading: () => LoadingTiles(level: level),
+      error: (e, _) => ErrorState(
+        error: e,
+        onRetry: () => ref.invalidate(categoriesProvider),
+      ),
     );
   }
 }

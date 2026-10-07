@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memo/core/theme/app_colors.dart';
+import 'package:memo/core/ui/async_states.dart';
 import 'package:memo/features/stats/domain/usage.dart';
 import 'package:memo/features/stats/presentation/usage_providers.dart';
 import 'package:memo/l10n/app_localizations.dart';
@@ -29,8 +30,11 @@ class WordsScreen extends ConsumerWidget {
                 ),
               )
             : _Content(summary: s),
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('$e')),
+        loading: () => const LoadingTiles.rows(),
+        error: (e, _) => ErrorState(
+          error: e,
+          onRetry: () => ref.invalidate(usageSummaryProvider),
+        ),
       ),
     );
   }
