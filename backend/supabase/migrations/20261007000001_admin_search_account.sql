@@ -1,7 +1,7 @@
 -- Recherche de compte pour le panneau d'administration (ADR-008, issue #8).
 -- `auth.users` n'est jamais exposé par l'API : cette fonction expose
 -- seulement l'e-mail, et seulement à un administrateur.
-create function public.admin_search_account(query text)
+create or replace function public.admin_search_account(query text)
 returns table (
   user_id uuid,
   email text,
@@ -19,7 +19,7 @@ begin
     raise exception 'not_admin' using errcode = 'P0001';
   end if;
   return query
-  select u.id, u.email, a.display_name, a.phone, a.created_at
+  select u.id, u.email::text, a.display_name, a.phone, a.created_at
   from auth.users u
   join public.accounts a on a.user_id = u.id
   where u.email ilike '%' || query || '%'

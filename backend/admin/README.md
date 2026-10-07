@@ -8,6 +8,7 @@ sont pas des secrets, ils ne donnent aucun accès par eux-mêmes.
 ## Démarrage
 
 ```bash
+supabase migration up --workdir backend --local   # fonction admin_search_account
 cd backend/admin
 cp .env.example .env   # puis renseigner
 docker compose up --build
