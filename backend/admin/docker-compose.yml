@@ -1,0 +1,12 @@
+services:
+  admin:
+    build: .
+    ports:
+      - "8787:8080"
+    environment:
+      SUPABASE_URL: ${SUPABASE_URL:?définir SUPABASE_URL (voir .env.example)}
+      SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY:?définir SUPABASE_ANON_KEY (voir .env.example)}
+    # Pour joindre un Supabase local (`supabase start`) depuis le conteneur sur Linux :
+    # SUPABASE_URL=http://host.docker.internal:54321
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
