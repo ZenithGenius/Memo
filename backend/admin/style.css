@@ -1,5 +1,3 @@
-/* Langage visuel aligné sur le portail ISNOV : jetons sémantiques, Inter +
-   Poppins, surfaces ardoise, clair/sombre. */
 :root {
   --surface-page: #eef2f7;
   --surface-base: #ffffff;
@@ -455,4 +453,30 @@ dialog.confirm::backdrop { background: var(--surface-overlay); }
   .user-chip .label { display: none; }
   .form-grid { grid-template-columns: 1fr; }
   .drawer-head, .drawer-body { padding-left: 1rem; padding-right: 1rem; }
+}
+
+/* ─── Tableaux en cartes (petits écrans) ───────────────────────────────── */
+.cell-main { overflow-wrap: anywhere; }
+@media (max-width: 760px) {
+  table.stack thead { display: none; }
+  table.stack, table.stack tbody { display: block; }
+  table.stack tr {
+    display: grid; gap: 0.5rem;
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  table.stack tr:last-child { border-bottom: 0; }
+  table.stack td {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    padding: 0; border: 0; text-align: right;
+  }
+  table.stack td[data-label]::before {
+    content: attr(data-label);
+    flex-shrink: 0;
+    font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-muted); text-align: left;
+  }
+  table.stack td.primary { display: block; text-align: left; }
+  table.stack td.actions { justify-content: flex-end; }
+  table.stack td.hide-sm { display: none; }
 }
