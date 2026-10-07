@@ -10,6 +10,7 @@
 Hors ligne, la vérification du SDK est ignorée avec un avertissement.
 """
 import json
+import os
 import pathlib
 import re
 import subprocess
@@ -25,7 +26,11 @@ problems: list[str] = []
 
 
 def run(cmd: list[str], cwd: pathlib.Path) -> str:
-    return subprocess.run(cmd, cwd=cwd, check=True, capture_output=True, text=True).stdout
+    # Lancé depuis un hook git, GIT_DIR & co. pointent vers ce dépôt (ou une
+    # worktree) : Flutter, qui lit sa propre version avec git dans son SDK,
+    # rapporterait alors « 0.0.0-unknown ».
+    env = {k: v for k, v in os.environ.items() if not k.startswith("GIT_")}
+    return subprocess.run(cmd, cwd=cwd, env=env, check=True, capture_output=True, text=True).stdout
 
 
 def check_packages() -> None:
