@@ -1,5 +1,3 @@
-// supabase-js est embarqué et épinglé (vendor/, voir vendor/README.md) :
-// aucun script chargé depuis un CDN au moment de l'exécution.
 const { createClient } = window.supabase;
 
 let SUPABASE_URL, SUPABASE_ANON_KEY;
@@ -20,8 +18,6 @@ const $ = (id) => document.getElementById(id);
 const fcfa = (n) => new Intl.NumberFormat("fr-FR").format(n) + " FCFA";
 const dateFr = (iso) => (iso ? new Date(iso).toLocaleDateString("fr-FR", { day: "2-digit", month: "short", year: "numeric" }) : "—");
 const dateTimeFr = (iso) => (iso ? new Date(iso).toLocaleString("fr-FR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }) : "—");
-// Échappement : display_name, phone et email sont modifiables par le compte
-// lui-même (accounts_own_update) et affichés ici dans l'écran admin.
 const esc = (s) =>
   String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const icon = (name, style = "") => `<svg class="icon" ${style ? `style="${style}"` : ""}><use href="#i-${name}"/></svg>`;
@@ -34,6 +30,11 @@ function toast(message, kind = "success") {
   t.querySelector("span").textContent = message;
   $("toasts").appendChild(t);
   setTimeout(() => t.remove(), kind === "error" ? 6000 : 3200);
+}
+
+function fail(context, error, message) {
+  console.error(`[${context}]`, error);
+  if (message) toast(message, "error");
 }
 
 function confirmAction(title, text, okLabel = "Confirmer") {
@@ -100,8 +101,6 @@ async function checkSession() {
   const { data: { session } } = await sb.auth.getSession();
   if (!session) return showLogin();
 
-  // L'accès réel est décidé par is_admin() côté base (RLS) ; cette lecture
-  // sert seulement à afficher le bon écran tout de suite.
   const { data, error } = await sb.from("admins").select("user_id").eq("user_id", session.user.id).maybeSingle();
   if (error || !data) {
     await sb.auth.signOut();
@@ -135,10 +134,10 @@ $("login-form").addEventListener("submit", async (e) => {
       email: $("login-email").value.trim(),
       password: $("login-password").value,
     });
-    // Le message exact (clé API invalide, e-mail non confirmé, etc.) aide à
-    // diagnostiquer un config.js mal renseigné : erreur courante, la clé
-    // "secret"/service_role n'est pas la clé "anon" attendue ici.
-    if (error) return showLoginError(error.message === "Invalid login credentials" ? "E-mail ou mot de passe incorrect." : error.message);
+    if (error) {
+      fail("connexion", error);
+      return showLoginError(error.message === "Invalid login credentials" ? "E-mail ou mot de passe incorrect." : "Connexion impossible pour le moment. Réessayez.");
+    }
     await checkSession();
   });
 });
@@ -181,7 +180,7 @@ let plans = [];
 
 async function loadPlans() {
   const { data, error } = await sb.from("plans").select("code, name, period_days, price_fcfa").order("sort_order");
-  if (error) return toast("Offres indisponibles : " + error.message, "error");
+  if (error) return fail("offres", error, "Les offres n'ont pas pu être chargées.");
   plans = data;
   $("activate-plan").innerHTML = plans
     .map((p) => `<option value="${esc(p.code)}">${esc(p.name)} · ${fcfa(p.price_fcfa)} / ${p.period_days} j</option>`)
@@ -202,7 +201,7 @@ async function loadDashboard() {
     sb.from("devices").select("id, platform, integrity_level, last_seen, installed_from_store").is("revoked_at", null).in("integrity_level", ["basic", "failed"]).order("last_seen", { ascending: false }),
     sb.from("license_issuances").select("issued_at, valid_until, key_id, integrity_level, devices(platform)").order("issued_at", { ascending: false }).limit(10),
   ]);
-  if (subsRes.error) return toast("Abonnements indisponibles : " + subsRes.error.message, "error");
+  if (subsRes.error) return fail("abonnements", subsRes.error, "Le tableau de bord n'a pas pu être chargé.");
 
   const subs = subsRes.data;
   const now = new Date();
@@ -224,11 +223,9 @@ async function loadDashboard() {
   const kpis = [
     ["Abonnés actifs", activeUsers.size, "users", "blue", "Abonnement en cours"],
     ["Nouveaux abonnés", newThisMonth, "user-plus", "green", "Premier abonnement ce mois"],
-    // ponytail: pas de colonne updated_at sur subscriptions, donc pas de
-    // fenêtre temporelle fiable ici ; total affiché, pas « ce mois ».
     ["Résiliations", revoked, "user-x", "amber", "Total, toutes périodes"],
     ["Revenu mensuel estimé", fcfa(mrr), "wallet", "green", "Somme des offres actives"],
-    ["Alertes d'intégrité", alerts.length, "shield", alerts.length ? "red" : "green", "Appareils actifs en basic ou failed"],
+    ["Alertes d'intégrité", alerts.length, "shield", alerts.length ? "red" : "green", "Appareils à vérifier"],
   ];
   $("kpis").innerHTML = kpis
     .map(
@@ -242,30 +239,30 @@ async function loadDashboard() {
 
   const issuances = issuancesRes.data ?? [];
   $("recent-issuances").innerHTML = issuances.length
-    ? `<div class="table-wrap"><table>
+    ? `<div class="table-wrap"><table class="stack">
         <thead><tr><th>Émis</th><th>Appareil</th><th>Valide jusqu'au</th><th>Clé</th><th>Intégrité</th></tr></thead>
         <tbody>${issuances
           .map(
             (i) => `<tr>
-              <td>${dateTimeFr(i.issued_at)}</td>
-              <td><span class="chip">${esc(i.devices?.platform ?? "—")}</span></td>
-              <td>${dateFr(i.valid_until)}</td>
-              <td class="mono">${esc(i.key_id)}</td>
-              <td>${integrityBadge(i.integrity_level)}</td>
+              <td data-label="Émis">${dateTimeFr(i.issued_at)}</td>
+              <td data-label="Appareil"><span class="chip">${esc(i.devices?.platform ?? "—")}</span></td>
+              <td data-label="Valide jusqu'au">${dateFr(i.valid_until)}</td>
+              <td data-label="Clé" class="mono">${esc(i.key_id)}</td>
+              <td data-label="Intégrité">${integrityBadge(i.integrity_level)}</td>
             </tr>`
           )
           .join("")}</tbody></table></div>`
     : empty("key", "Aucun jeton émis", "Les jetons apparaissent ici à la première synchronisation d'un abonné.");
 
   $("integrity-alerts").innerHTML = alerts.length
-    ? `<div class="table-wrap"><table>
+    ? `<div class="table-wrap"><table class="stack">
         <thead><tr><th>Appareil</th><th>Intégrité</th><th>Vu le</th></tr></thead>
         <tbody>${alerts
           .map(
             (d) => `<tr>
-              <td><div class="cell-main">${esc(d.platform)}</div><div class="cell-sub">${d.installed_from_store === false ? "Hors boutique" : "Boutique"}</div></td>
-              <td>${integrityBadge(d.integrity_level)}</td>
-              <td>${dateFr(d.last_seen)}</td>
+              <td class="primary"><div class="cell-main">${esc(d.platform)}</div><div class="cell-sub">${d.installed_from_store === false ? "Hors boutique" : "Boutique"}</div></td>
+              <td data-label="Intégrité">${integrityBadge(d.integrity_level)}</td>
+              <td data-label="Vu le">${dateFr(d.last_seen)}</td>
             </tr>`
           )
           .join("")}</tbody></table></div>`
@@ -291,7 +288,8 @@ async function searchAccounts(query) {
   // Requête vide : les 20 comptes les plus récents.
   const { data, error } = await sb.rpc("admin_search_account", { query });
   if (error) {
-    $("accounts").innerHTML = empty("alert", "Recherche impossible", esc(error.message));
+    fail("recherche", error);
+    $("accounts").innerHTML = empty("alert", "Recherche impossible", "Réessayez dans un instant.");
     return;
   }
   if (!data.length) {
@@ -312,17 +310,17 @@ async function searchAccounts(query) {
   const current = new Map();
   for (const s of activeSubs ?? []) if (!current.has(s.user_id)) current.set(s.user_id, s);
 
-  $("accounts").innerHTML = `<div class="table-wrap"><table>
+  $("accounts").innerHTML = `<div class="table-wrap"><table class="stack">
     <thead><tr><th>Compte</th><th>Téléphone</th><th>Abonnement</th><th>Inscrit le</th><th></th></tr></thead>
     <tbody>${data
       .map((a) => {
         const sub = current.get(a.user_id);
         return `<tr class="clickable" data-id="${esc(a.user_id)}" data-email="${esc(a.email)}" data-created="${esc(a.created_at)}">
-          <td><div class="cell-main">${esc(a.email)}</div><div class="cell-sub">${a.display_name ? esc(a.display_name) : "Sans nom"}</div></td>
-          <td class="${a.phone ? "" : "muted"}">${a.phone ? esc(a.phone) : "—"}</td>
-          <td>${sub ? `<span class="badge success">${esc(sub.plans?.name)}</span> <span class="cell-sub">jusqu'au ${dateFr(sub.valid_until)}</span>` : `<span class="badge neutral">Gratuit</span>`}</td>
-          <td>${dateFr(a.created_at)}</td>
-          <td class="text-right muted">${icon("chevron")}</td>
+          <td class="primary"><div class="cell-main">${esc(a.email)}</div><div class="cell-sub">${a.display_name ? esc(a.display_name) : "Sans nom"}</div></td>
+          <td data-label="Téléphone" class="${a.phone ? "" : "muted"}">${a.phone ? esc(a.phone) : "—"}</td>
+          <td data-label="Abonnement">${sub ? `<span class="badge success">${esc(sub.plans?.name)}</span> <span class="cell-sub">jusqu'au ${dateFr(sub.valid_until)}</span>` : `<span class="badge neutral">Gratuit</span>`}</td>
+          <td data-label="Inscrit le">${dateFr(a.created_at)}</td>
+          <td class="text-right muted hide-sm">${icon("chevron")}</td>
         </tr>`;
       })
       .join("")}</tbody></table></div>`;
@@ -393,7 +391,7 @@ async function refreshAccount() {
   $("drawer-meta").textContent = `${$("drawer-meta").textContent.split(" · ")[0]} · ${activeDevices} appareil${activeDevices > 1 ? "s" : ""} actif${activeDevices > 1 ? "s" : ""}`;
 
   $("drawer-subs").innerHTML = subs?.length
-    ? `<div class="table-wrap"><table>
+    ? `<div class="table-wrap"><table class="stack">
         <thead><tr><th>Offre</th><th>Valide jusqu'au</th><th>Statut</th><th></th></tr></thead>
         <tbody>${subs
           .map((s) => {
@@ -404,40 +402,40 @@ async function refreshAccount() {
                 ? `<span class="badge danger">Résilié</span>`
                 : `<span class="badge neutral">Expiré</span>`;
             return `<tr>
-              <td><div class="cell-main">${esc(s.plans?.name ?? s.plan_code)}</div>${s.note ? `<div class="cell-sub">${esc(s.note)}</div>` : ""}</td>
-              <td>${dateFr(s.valid_until)}</td>
-              <td>${badge}</td>
-              <td class="text-right">${active ? `<button class="btn btn-sm btn-soft-danger revoke-sub" data-id="${esc(s.id)}">Résilier</button>` : ""}</td>
+              <td class="primary"><div class="cell-main">${esc(s.plans?.name ?? s.plan_code)}</div>${s.note ? `<div class="cell-sub">${esc(s.note)}</div>` : ""}</td>
+              <td data-label="Valide jusqu'au">${dateFr(s.valid_until)}</td>
+              <td data-label="Statut">${badge}</td>
+              <td class="text-right actions">${active ? `<button class="btn btn-sm btn-soft-danger revoke-sub" data-id="${esc(s.id)}">Résilier</button>` : ""}</td>
             </tr>`;
           })
           .join("")}</tbody></table></div>`
     : empty("wallet", "Aucun abonnement", "Ce compte utilise l'offre gratuite. Activez une offre ci-dessous.");
 
   $("drawer-devices").innerHTML = devices?.length
-    ? `<div class="table-wrap"><table>
+    ? `<div class="table-wrap"><table class="stack">
         <thead><tr><th>Appareil</th><th>Intégrité</th><th>Vu le</th><th></th></tr></thead>
         <tbody>${devices
           .map(
             (d) => `<tr>
-              <td><div class="cell-main">${esc(d.platform)}</div><div class="cell-sub">${d.revoked_at ? "Révoqué le " + dateFr(d.revoked_at) : d.installed_from_store === false ? "Hors boutique" : "Actif"}</div></td>
-              <td>${integrityBadge(d.integrity_level)}</td>
-              <td>${dateFr(d.last_seen)}</td>
-              <td class="text-right"><button class="btn btn-sm ${d.revoked_at ? "btn-soft-accent" : "btn-soft-danger"} toggle-device" data-id="${esc(d.id)}" data-revoke="${d.revoked_at ? "0" : "1"}">${d.revoked_at ? "Rétablir" : "Révoquer"}</button></td>
+              <td class="primary"><div class="cell-main">${esc(d.platform)}</div><div class="cell-sub">${d.revoked_at ? "Révoqué le " + dateFr(d.revoked_at) : d.installed_from_store === false ? "Hors boutique" : "Actif"}</div></td>
+              <td data-label="Intégrité">${integrityBadge(d.integrity_level)}</td>
+              <td data-label="Vu le">${dateFr(d.last_seen)}</td>
+              <td class="text-right actions"><button class="btn btn-sm ${d.revoked_at ? "btn-soft-accent" : "btn-soft-danger"} toggle-device" data-id="${esc(d.id)}" data-revoke="${d.revoked_at ? "0" : "1"}">${d.revoked_at ? "Rétablir" : "Révoquer"}</button></td>
             </tr>`
           )
           .join("")}</tbody></table></div>`
     : empty("phone", "Aucun appareil", "L'appareil s'enregistre à la première synchronisation depuis l'application.");
 
   $("drawer-issuances").innerHTML = issuances?.length
-    ? `<div class="table-wrap"><table>
+    ? `<div class="table-wrap"><table class="stack">
         <thead><tr><th>Émis</th><th>Valide jusqu'au</th><th>Clé</th><th>Intégrité</th></tr></thead>
         <tbody>${issuances
           .map(
             (i) => `<tr>
-              <td>${dateTimeFr(i.issued_at)}</td>
-              <td>${dateFr(i.valid_until)}</td>
-              <td class="mono">${esc(i.key_id)}</td>
-              <td>${integrityBadge(i.integrity_level)}</td>
+              <td data-label="Émis">${dateTimeFr(i.issued_at)}</td>
+              <td data-label="Valide jusqu'au">${dateFr(i.valid_until)}</td>
+              <td data-label="Clé" class="mono">${esc(i.key_id)}</td>
+              <td data-label="Intégrité">${integrityBadge(i.integrity_level)}</td>
             </tr>`
           )
           .join("")}</tbody></table></div>`
@@ -455,7 +453,7 @@ $("activate-form").addEventListener("submit", async (e) => {
       activated_by: session.user.id,
       note: $("activate-note").value.trim() || null,
     });
-    if (error) return toast("Activation impossible : " + error.message, "error");
+    if (error) return fail("activation", error, "L'abonnement n'a pas pu être activé.");
     $("activate-note").value = "";
     toast("Abonnement activé.");
     await refreshAccount();
@@ -469,7 +467,7 @@ $("drawer-subs").addEventListener("click", async (e) => {
   const ok = await confirmAction("Résilier cet abonnement ?", "Le contenu payant reste accessible jusqu'à l'expiration du jeton déjà émis (45 jours au plus), puis le compte retombe sur l'offre gratuite.", "Résilier");
   if (!ok) return;
   const { error } = await sb.from("subscriptions").update({ status: "revoked" }).eq("id", btn.dataset.id);
-  if (error) return toast("Résiliation impossible : " + error.message, "error");
+  if (error) return fail("résiliation", error, "L'abonnement n'a pas pu être résilié.");
   toast("Abonnement résilié.");
   await refreshAccount();
   searchAccounts($("search-input").value.trim());
@@ -481,7 +479,7 @@ $("drawer-devices").addEventListener("click", async (e) => {
   const revoke = btn.dataset.revoke === "1";
   if (revoke && !(await confirmAction("Révoquer cet appareil ?", "Il ne pourra plus recevoir de jeton ni télécharger le contenu payant. Vous pourrez le rétablir plus tard.", "Révoquer"))) return;
   const { error } = await sb.from("devices").update({ revoked_at: revoke ? new Date().toISOString() : null }).eq("id", btn.dataset.id);
-  if (error) return toast("Action impossible : " + error.message, "error");
+  if (error) return fail("appareil", error, "L'action sur l'appareil a échoué.");
   toast(revoke ? "Appareil révoqué." : "Appareil rétabli.");
   await refreshAccount();
 });

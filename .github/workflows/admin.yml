@@ -39,7 +39,7 @@ jobs:
           SUPABASE_ANON_KEY: ci-placeholder
 
       - name: Syntax check
-        run: node --check app.js && node --check theme.js
+        run: node --input-type=module --check < app.js && node --check theme.js
 
       - name: Vendored supabase-js integrity
         run: echo "d6a5c4414a5d4ce646d9c1de223aa7067d3ff664c15394ffeb7fcffc763354a3  vendor/supabase-js-2.117.3.umd.js" | sha256sum -c -
