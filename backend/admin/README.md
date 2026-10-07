@@ -31,6 +31,22 @@ cp config.example.js config.js   # puis renseigner
 python3 -m http.server 8787
 ```
 
+## Sécurité
+
+Le contrôle d'accès réel est côté base (`is_admin()`). Le conteneur ajoute :
+
+- port lié à `127.0.0.1` par défaut (`ADMIN_BIND_IP`), à placer derrière un
+  proxy TLS pour un accès distant ;
+- CSP stricte : aucun script tiers ni en ligne, appels réseau limités à
+  `SUPABASE_URL` ; `X-Frame-Options`, `nosniff`, `no-referrer` ;
+- supabase-js embarqué et épinglé, vérifié par empreinte (`vendor/README.md`),
+  rien n'est chargé depuis un CDN à l'exécution ;
+- image nginx non-root épinglée par empreinte, capacités retirées,
+  `no-new-privileges` ;
+- CI (`.github/workflows/admin.yml`) : hadolint, validation compose,
+  scan Trivy de l'image construite (HIGH/CRITICAL bloquants, jamais masqués
+  dans `.trivyignore`), SBOM.
+
 ## Devenir administrateur
 
 Aucune inscription ne donne ce rôle. Après s'être inscrit normalement dans

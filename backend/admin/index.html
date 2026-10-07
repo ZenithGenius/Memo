@@ -9,10 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
-  <script>
-    // Thème appliqué avant le premier rendu (pas de flash clair → sombre).
-    try { if (localStorage.getItem("memo-admin-theme") === "dark") document.documentElement.classList.add("dark"); } catch {}
-  </script>
+  <script src="theme.js"></script>
 </head>
 <body>
 
@@ -240,6 +237,7 @@
 
   <div class="toasts" id="toasts"></div>
 
+  <script src="vendor/supabase-js-2.117.3.umd.js"></script>
   <script type="module" src="app.js"></script>
 </body>
 </html>
