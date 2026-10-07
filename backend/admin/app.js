@@ -66,7 +66,10 @@ $("login-form").addEventListener("submit", async (e) => {
     email: $("login-email").value.trim(),
     password: $("login-password").value,
   });
-  if (error) return ($("login-error").textContent = "Identifiants invalides.");
+  // Le message exact (clé API invalide, e-mail non confirmé, etc.) aide à
+  // diagnostiquer un config.js mal renseigné : erreur courante, la clé
+  // "secret"/service_role n'est pas la clé "anon" attendue ici.
+  if (error) return ($("login-error").textContent = error.message);
   checkSession();
 });
 
