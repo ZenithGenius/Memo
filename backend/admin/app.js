@@ -1,4 +1,6 @@
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+// supabase-js est embarqué et épinglé (vendor/, voir vendor/README.md) :
+// aucun script chargé depuis un CDN au moment de l'exécution.
+const { createClient } = window.supabase;
 
 let SUPABASE_URL, SUPABASE_ANON_KEY;
 try {
