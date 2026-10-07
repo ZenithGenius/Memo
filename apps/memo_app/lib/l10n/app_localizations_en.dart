@@ -640,4 +640,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String routineOptions(String name) {
     return 'Options for $name';
   }
+
+  @override
+  String get loadingContent => 'Loading…';
+
+  @override
+  String get errorTitle => 'This screen couldn\'t be shown';
+
+  @override
+  String get errorHint => 'Nothing was lost. Try again in a moment.';
+
+  @override
+  String get errorRetry => 'Try again';
 }

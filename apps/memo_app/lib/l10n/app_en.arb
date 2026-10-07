@@ -171,5 +171,9 @@
   "routineStep": "Step {index} of {total}: {label}",
   "routineRemoveStep": "Remove {label}",
   "routineStepsTitle": "Steps of \"{name}\"",
-  "routineOptions": "Options for {name}"
+  "routineOptions": "Options for {name}",
+  "loadingContent": "Loading…",
+  "errorTitle": "This screen couldn't be shown",
+  "errorHint": "Nothing was lost. Try again in a moment.",
+  "errorRetry": "Try again"
 }

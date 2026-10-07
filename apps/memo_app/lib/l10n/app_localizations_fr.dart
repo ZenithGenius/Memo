@@ -643,4 +643,16 @@ class AppLocalizationsFr extends AppLocalizations {
   String routineOptions(String name) {
     return 'Options de $name';
   }
+
+  @override
+  String get loadingContent => 'Chargement…';
+
+  @override
+  String get errorTitle => 'Cet écran n\'a pas pu s\'afficher';
+
+  @override
+  String get errorHint => 'Rien n\'est perdu. Réessayez dans un instant.';
+
+  @override
+  String get errorRetry => 'Réessayer';
 }
