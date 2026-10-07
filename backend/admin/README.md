@@ -8,12 +8,23 @@ sont pas des secrets, ils ne donnent aucun accès par eux-mêmes.
 ## Démarrage
 
 ```bash
-cp backend/admin/config.example.js backend/admin/config.js   # puis renseigner
-cd backend/admin && python3 -m http.server 8787
+cd backend/admin
+cp .env.example .env   # puis renseigner
+docker compose up --build
 ```
 
-Ouvrir `http://localhost:8787`. En local, `SUPABASE_URL` et
-`SUPABASE_ANON_KEY` viennent de `supabase status` (voir `backend/README.md`).
+Ouvrir `http://localhost:8787`. En local, `SUPABASE_ANON_KEY` vient de
+`supabase status` (voir `backend/README.md`) ; `SUPABASE_URL` reste
+`http://host.docker.internal:54321` (le conteneur ne voit pas l'hôte sous
+`127.0.0.1`). `config.js` est généré au démarrage du conteneur depuis ces
+deux variables, jamais écrit dans l'image.
+
+Sans Docker :
+
+```bash
+cp config.example.js config.js   # puis renseigner
+python3 -m http.server 8787
+```
 
 ## Devenir administrateur
 
