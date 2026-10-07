@@ -3,6 +3,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:memo/core/theme/app_colors.dart';
 import 'package:memo/core/ui/action_feedback.dart';
 import 'package:memo/core/ui/adaptive_grid.dart';
+import 'package:memo/core/ui/async_states.dart';
 import 'package:memo/features/board/presentation/routines_view.dart';
 import 'package:memo/features/caregiver/presentation/caregiver_gate.dart';
 import 'package:memo/features/catalog/domain/catalog.dart';
@@ -78,7 +79,7 @@ class _BoardScreenState extends ConsumerState<BoardScreen>
         controller: _tabs,
         children: [
           if (board == null)
-            const Center(child: CircularProgressIndicator())
+            LoadingTiles(level: ref.watch(currentLevelProvider))
           else
             GridView.count(
               crossAxisCount: board.columns,
