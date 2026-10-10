@@ -1,7 +1,7 @@
 services:
   admin:
     build: .
-    # Lié à la boucle locale par défaut : le panneau n'est pas exposé sur le
+    # Lié à la boucle locale par défaut : le back-office n'est pas exposé sur le
     # réseau. Mettre ADMIN_BIND_IP derrière un proxy TLS pour un accès distant.
     ports:
       - "${ADMIN_BIND_IP:-127.0.0.1}:${ADMIN_PORT:-8787}:8080"
