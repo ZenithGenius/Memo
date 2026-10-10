@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useDb } from "@/app/db-context";
 
 export function useAdminEmails() {
@@ -29,7 +29,7 @@ export function useAudit({ entity, page, pageSize }: AuditFilters) {
       if (error) throw error;
       return { rows: data, total: count ?? 0 };
     },
-    placeholderData: (prev) => prev,
+    placeholderData: keepPreviousData,
   });
 }
 

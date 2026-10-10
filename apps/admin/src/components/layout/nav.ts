@@ -1,4 +1,4 @@
-import { LayoutDashboard, Users } from "lucide-react";
+import { Coins, FileClock, LayoutDashboard, ShieldCheck, Smartphone, Tags, Users } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 export interface NavItem { to: string; label: string; icon: LucideIcon }
@@ -10,6 +10,16 @@ export const NAV: NavSection[] = [
     title: "Gestion",
     items: [
       { to: "/comptes", label: "Comptes", icon: Users },
+      { to: "/abonnements", label: "Abonnements", icon: Coins },
+      { to: "/offres", label: "Offres", icon: Tags },
+      { to: "/appareils", label: "Appareils", icon: Smartphone },
+    ],
+  },
+  {
+    title: "Administration",
+    items: [
+      { to: "/administrateurs", label: "Administrateurs", icon: ShieldCheck },
+      { to: "/journal", label: "Journal d'activité", icon: FileClock },
     ],
   },
 ];
