@@ -34,7 +34,10 @@ def run(cmd: list[str], cwd: pathlib.Path) -> str:
 
 
 def check_packages() -> None:
-    data = json.loads(run(["flutter", "pub", "outdated", "--json"], APP))
+    out = run(["flutter", "pub", "outdated", "--json"], APP)
+    # Dans un dépôt fraîchement cloné, pub résout d'abord les dépendances et
+    # l'annonce sur la sortie standard, avant le JSON.
+    data = json.loads(out[out.index("{"):])
     for p in data["packages"]:
         name, cur = p["package"], (p.get("current") or {}).get("version", "?")
         if p.get("isDiscontinued"):
