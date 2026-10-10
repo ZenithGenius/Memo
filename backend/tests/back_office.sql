@@ -131,7 +131,7 @@ select pg_temp.assert_eq(
 select pg_temp.assert_eq(
   (select situation from public.admin_accounts('client1@test.local')), 'expired', 'abonnement résilié');
 select pg_temp.assert_eq(
-  (select count(*) from public.admin_accounts('test.local', 'expiring')), 1::bigint, 'filtre par situation');
+  (select count(*) from public.admin_accounts('client', 'expiring')), 1::bigint, 'filtre par situation');
 select pg_temp.expect_error($q$select * from public.admin_accounts('', 'nimporte')$q$, 'invalid_status');
 select pg_temp.assert_eq(
   (public.admin_dashboard() ->> 'revenue_this_month_fcfa')::int >= 3000, true, 'revenus encaissés du mois');
@@ -141,6 +141,29 @@ select pg_temp.assert_eq(
   jsonb_array_length(public.admin_dashboard() -> 'revenue_by_month'), 12, 'revenus sur 12 mois');
 select pg_temp.assert_eq(
   jsonb_array_length(public.admin_dashboard() -> 'retention'), 3, 'rétention à 3, 6 et 12 mois');
+
+-- ─── Listes (abonnements, paiements, appareils) ───────────────────────────
+select pg_temp.assert_eq(
+  (select email from public.admin_subscriptions('client2@test.local')), 'client2@test.local', 'abonnements avec e-mail');
+select pg_temp.assert_eq(
+  (select state from public.admin_subscriptions('client2@test.local')), 'expiring', 'état de l''abonnement calculé');
+select pg_temp.assert_eq(
+  (select count(*) from public.admin_subscriptions('client', 'revoked')), 1::bigint, 'filtre abonnements résiliés');
+select pg_temp.assert_eq(
+  (select total_amount_fcfa from public.admin_payments('client') limit 1), 3000::bigint, 'total encaissé sur la sélection');
+select pg_temp.assert_eq(
+  (select recorded_by_email from public.admin_payments('client1@test.local')), 'super@test.local', 'auteur du paiement');
+-- Les appareils ne sont créés que par la fonction serveur (rôle service).
+select pg_temp.as_service();
+insert into public.devices (user_id, fingerprint, platform, integrity_level)
+values ('00000000-0000-0000-0000-0000000000c2', 'fp-test-c2', 'android', 'failed');
+select pg_temp.as_user('00000000-0000-0000-0000-0000000000a1');
+select pg_temp.assert_eq(
+  (select count(*) from public.admin_devices('client2@test.local', 'alerts')), 1::bigint, 'appareil en alerte listé');
+select pg_temp.expect_error($q$select * from public.admin_devices('', 'nimporte')$q$, 'invalid_scope');
+select pg_temp.as_user('00000000-0000-0000-0000-0000000000c1');
+select pg_temp.expect_error($q$select * from public.admin_payments()$q$, 'forbidden');
+select pg_temp.as_user('00000000-0000-0000-0000-0000000000a1');
 
 -- Anonyme : aucune fonction d'administration.
 select pg_temp.as_service();
