@@ -16,9 +16,16 @@ import { report, userMessage } from "@/lib/errors";
 import { dateFr, dateTimeFr, endOfDay, extendUntil, fcfa, toDateInput } from "@/lib/format";
 import { PAYMENT_METHODS, integrityOf, methodLabel, paymentMethods, type PaymentMethod } from "@/lib/payments";
 import { canWrite } from "@/lib/roles";
+import { usePlans } from "@/features/plans/api";
 import {
-  useAccountDetail, useActivate, usePlans, useSetDeviceRevoked, useSetSubscriptionStatus, useUpdateProfile,
+  useAccountDetail, useActivate, useSetDeviceRevoked, useSetSubscriptionStatus, useUpdateProfile,
 } from "./api";
+
+function activeDevicesSubtitle(n: number): string {
+  if (n === 0) return "aucun appareil actif";
+  if (n === 1) return "1 appareil actif";
+  return `${n} appareils actifs`;
+}
 
 export interface AccountRef { userId: string; email: string }
 
@@ -56,7 +63,7 @@ export function AccountDrawer({ account, onClose }: { account: AccountRef | null
       open={account !== null}
       onClose={onClose}
       title={account?.email ?? ""}
-      subtitle={data ? `Inscrit le ${dateFr(data.profile.created_at)} · ${data.devices.filter((d) => !d.revoked_at).length} appareil(s) actif(s)` : undefined}
+      subtitle={data ? `Inscrit le ${dateFr(data.profile.created_at)} · ${activeDevicesSubtitle(data.devices.filter((d) => !d.revoked_at).length)}` : undefined}
       avatar={
         <div className="grid size-11 shrink-0 place-items-center rounded-xl bg-accent-muted font-heading text-lg font-semibold text-accent-strong">
           {(account?.email[0] ?? "?").toUpperCase()}

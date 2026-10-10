@@ -19,18 +19,6 @@ export function useAccounts(query: string, status: AccountFilter, page: number, 
   });
 }
 
-export function usePlans() {
-  const db = useDb();
-  return useQuery({
-    queryKey: ["plans"],
-    queryFn: async () => {
-      const { data, error } = await db.from("plans").select("code, name, price_fcfa, period_days, max_devices, active, sort_order").order("sort_order");
-      if (error) throw error;
-      return data;
-    },
-  });
-}
-
 export function useAccountDetail(userId: string | null) {
   const db = useDb();
   return useQuery({
@@ -58,11 +46,13 @@ export function useAccountDetail(userId: string | null) {
   });
 }
 
-/** Rafraîchit tout ce qui dépend d'un compte après une écriture. */
-function useInvalidateAll() {
+/** Rafraîchit les listes et tableaux de bord après une écriture back-office. */
+export function useInvalidateAll() {
   const qc = useQueryClient();
   return () => Promise.all(
-    ["account", "accounts", "dashboard", "subscriptions", "payments", "devices", "audit"].map((k) => qc.invalidateQueries({ queryKey: [k] })),
+    ["account", "accounts", "dashboard", "subscriptions", "payments", "devices", "plans", "admins", "audit"].map((k) =>
+      qc.invalidateQueries({ queryKey: [k] }),
+    ),
   );
 }
 
