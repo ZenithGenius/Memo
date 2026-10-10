@@ -16,7 +16,7 @@ docker compose up --build
 
 Ouvrir `http://localhost:8787`. Le conteneur ne sert que les fichiers
 statiques : `app.js` s'exécute dans le navigateur, sur l'hôte, donc
-`SUPABASE_URL` doit être joignable depuis le navigateur — `127.0.0.1`, pas
+`SUPABASE_URL` doit être joignable depuis le navigateur : `127.0.0.1`, pas
 `host.docker.internal` (qui ne vaut que pour des appels faits *depuis* le
 conteneur, ce qu'il ne fait pas ici). En local, `SUPABASE_ANON_KEY` vient de
 `supabase status` (voir `backend/README.md`) : prendre `ANON_KEY`, pas
