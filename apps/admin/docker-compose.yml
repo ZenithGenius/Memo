@@ -1,0 +1,13 @@
+services:
+  admin:
+    build: .
+    # Lié à la boucle locale par défaut : le back-office n'est pas exposé sur le
+    # réseau. Mettre ADMIN_BIND_IP derrière un proxy TLS pour un accès distant.
+    ports:
+      - "${ADMIN_BIND_IP:-127.0.0.1}:${ADMIN_PORT:-8787}:8080"
+    environment:
+      SUPABASE_URL: ${SUPABASE_URL:?définir SUPABASE_URL (voir .env.example)}
+      SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY:?définir SUPABASE_ANON_KEY (voir .env.example)}
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    restart: unless-stopped
