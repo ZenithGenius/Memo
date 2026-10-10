@@ -1,0 +1,65 @@
+name: admin
+on:
+  push:
+    branches: [main]
+    paths: [backend/admin/**, .github/workflows/admin.yml]
+  pull_request:
+    paths: [backend/admin/**, .github/workflows/admin.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: admin-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+# Panneau d'administration : l'image est construite puis scannée telle
+# qu'elle sera déployée. Une faille HIGH/CRITICAL corrigeable bloque : on
+# met à jour l'image ou la dépendance, on ne la masque pas dans .trivyignore.
+jobs:
+  image:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: backend/admin
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Dockerfile lint
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: backend/admin/Dockerfile
+
+      - name: Compose validation
+        run: docker compose config -q
+        env:
+          SUPABASE_URL: https://example.supabase.co
+          SUPABASE_ANON_KEY: ci-placeholder
+
+      - name: Syntax check
+        run: node --input-type=module --check < app.js && node --check theme.js
+
+      - name: Vendored supabase-js integrity
+        run: echo "d6a5c4414a5d4ce646d9c1de223aa7067d3ff664c15394ffeb7fcffc763354a3  vendor/supabase-js-2.117.3.umd.js" | sha256sum -c -
+
+      - name: Build image
+        run: docker build -t memo-admin:ci .
+
+      - uses: aquasecurity/setup-trivy@v0.3.1
+
+      - name: Trivy image scan
+        run: >-
+          trivy image --no-progress --exit-code 1
+          --scanners vuln,secret --severity HIGH,CRITICAL --ignore-unfixed
+          memo-admin:ci
+
+      - name: SBOM
+        run: trivy image --no-progress --format spdx-json --output memo-admin.sbom.spdx.json memo-admin:ci
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: memo-admin-sbom
+          path: backend/admin/memo-admin.sbom.spdx.json
+          retention-days: 30
