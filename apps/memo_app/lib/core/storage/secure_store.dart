@@ -10,8 +10,19 @@ abstract interface class SecureStore {
 }
 
 class FlutterSecureStore implements SecureStore {
-  const FlutterSecureStore([this._storage = const FlutterSecureStorage()]);
+  const FlutterSecureStore([this._storage = defaultStorage]);
   final FlutterSecureStorage _storage;
+
+  /// iOS : éléments du trousseau liés à ce téléphone (`this_device`), jamais
+  /// migrés par une sauvegarde iCloud ou un transfert. Sinon le secret de
+  /// l'appareil et le jeton de licence suivraient la copie, et le jeton lié
+  /// à l'appareil (ADR-008) serait valide sur un second téléphone. Android :
+  /// le stockage est exclu des sauvegardes (res/xml/backup_rules.xml).
+  static const defaultStorage = FlutterSecureStorage(
+    iOptions: IOSOptions(
+      accessibility: KeychainAccessibility.first_unlock_this_device,
+    ),
+  );
 
   @override
   Future<String?> read(String key) => _storage.read(key: key);
