@@ -42,7 +42,8 @@ jobs:
           trivy fs --quiet --format cyclonedx --output sbom/memo-admin-npm.cdx.json apps/admin/package-lock.json
           python3 -I tools/security/sbom_deno.py "$(command -v deno)" sbom/memo-functions.cdx.json \
             backend/supabase/functions/issue-license/index.ts \
-            backend/supabase/functions/premium-pack/index.ts
+            backend/supabase/functions/premium-pack/index.ts \
+            backend/supabase/functions/premium-image/index.ts
       - name: Failles connues dans les nomenclatures
         run: |
           for f in sbom/*.cdx.json; do

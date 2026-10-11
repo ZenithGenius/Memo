@@ -71,9 +71,32 @@ expect 204 "$(pack abcdefghijklmnop1234 "$VERSION")" "déjà à jour"
 expect 403 "$(pack inconnu-0000000000000)" "appareil inconnu"
 expect 403 "$(pack second-device-0000001)" "appareil révoqué"
 
+# Image envoyée depuis le back-office (issue #28) : servie aux abonnés une fois
+# publiée seulement. Le compte de test devient super-administrateur le temps du
+# test ; octets aléatoires ajoutés au PNG pour une empreinte neuve à chaque
+# exécution, puis catalogue remis dans son état.
+image() {
+  curl -s -o /tmp/premium.png -w '%{http_code}' \
+    "$API_URL/functions/v1/premium-image?fingerprint=abcdefghijklmnop1234&sha256=$1" \
+    -H "Authorization: Bearer $JWT" -H "apikey: $ANON_KEY"
+}
+PNG_B64=$( (echo 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==' | base64 -d; openssl rand 16) | base64 -w0)
+AS_ADMIN="insert into public.admins (user_id, role) values ('$UID_', 'super_admin') on conflict (user_id) do nothing;
+select set_config('request.jwt.claims', '{\"sub\": \"$UID_\", \"role\": \"authenticated\", \"aal\": \"aal2\"}', true);"
+SHA=$(psql_ -tA -c "$AS_ADMIN select public.admin_put_image('$PNG_B64', 'image/png');" | tail -1)
+expect 404 "$(image "$SHA")" "image envoyée mais pas publiée : jamais servie"
+psql_ -tA -c "$AS_ADMIN update public.content_pictograms set image_sha256 = '$SHA' where code = 'CAA-CR-ACT-001';
+  select public.admin_publish_content('e2e');" >/dev/null
+expect 200 "$(image "$SHA")" "image publiée servie"
+expect "$SHA" "$(sha256sum /tmp/premium.png | cut -d' ' -f1)" "octets identiques à l'envoi"
+psql_ -tA -c "$AS_ADMIN update public.content_pictograms set image_sha256 = null where code = 'CAA-CR-ACT-001';
+  select public.admin_publish_content('e2e : retour');
+  delete from public.admins where user_id = '$UID_';" >/dev/null
+
 # Abonnement révoqué : plus de jeton.
 psql_ -c "update public.subscriptions set status = 'revoked' where user_id = '$UID_';"
 expect 402 "$(code "$(call '{"fingerprint":"abcdefghijklmnop1234","platform":"android"}')")" "abonnement révoqué"
 expect 402 "$(pack abcdefghijklmnop1234)" "paquet refusé sans abonnement"
+expect 402 "$(image "$SHA")" "image refusée sans abonnement"
 
 echo "TOUS LES TESTS E2E PASSENT"
