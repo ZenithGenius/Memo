@@ -1,0 +1,56 @@
+name: sbom
+on:
+  push:
+    branches: [main]
+  pull_request:
+    paths:
+      - pubspec.lock
+      - apps/admin/package-lock.json
+      - backend/supabase/functions/**
+      - tools/security/sbom_deno.py
+      - .github/workflows/sbom.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sbom-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+# Nomenclature logicielle (CycloneDX) de chaque livrable, à partir des
+# dépendances figées : application mobile (pubspec.lock), back-office
+# (package-lock.json, dépendances embarquées seulement), fonctions serveur
+# (graphe résolu par Deno). L'image du back-office a la sienne (admin.yml).
+# Chaque nomenclature est aussi scannée : une faille HIGH/CRITICAL corrigeable
+# bloque.
+jobs:
+  sbom:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: aquasecurity/setup-trivy@v0.3.1
+      - uses: denoland/setup-deno@v2
+        with:
+          # Même version que les tests des fonctions (backend/tests/run_deno.sh).
+          deno-version: v2.1.4
+      - name: Nomenclatures
+        run: |
+          mkdir -p sbom
+          trivy fs --quiet --format cyclonedx --output sbom/memo-app.cdx.json pubspec.lock
+          trivy fs --quiet --format cyclonedx --output sbom/memo-admin-npm.cdx.json apps/admin/package-lock.json
+          python3 -I tools/security/sbom_deno.py "$(command -v deno)" sbom/memo-functions.cdx.json \
+            backend/supabase/functions/issue-license/index.ts \
+            backend/supabase/functions/premium-pack/index.ts
+      - name: Failles connues dans les nomenclatures
+        run: |
+          for f in sbom/*.cdx.json; do
+            trivy sbom --quiet --exit-code 1 --severity HIGH,CRITICAL --ignore-unfixed "$f"
+          done
+      - uses: actions/upload-artifact@v7
+        with:
+          name: memo-sbom-${{ github.event.pull_request.head.sha || github.sha }}
+          path: sbom/
+          if-no-files-found: error
+          retention-days: 90
