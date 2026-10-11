@@ -27,15 +27,34 @@ openssl pkey -in priv.pem -pubout -outform DER | tail -c 32 | base64 -w0    # cl
 
 En production, la clé privée est un secret du serveur. Deux clés publiques sont embarquées dans l'application pour permettre la rotation (identifiant `kid`).
 
+## Production : réglages à vérifier
+
+Sur le projet hébergé (Authentication), indispensables à la sécurité :
+
+- confirmation des e-mails activée : un rôle d'administration ne s'attribue
+  qu'à une adresse confirmée, et sans confirmation Supabase confirme toute
+  adresse dès l'inscription ;
+- MFA TOTP activé (Multi-Factor) : les administrateurs ne peuvent rien faire
+  sans second facteur (ADR-010).
+
+La configuration locale (`supabase/config.toml`) garde la confirmation
+désactivée pour les tests de bout en bout.
+
 ## Tests
 
 ```bash
+bash backend/tests/run_sql.sh    # migrations + tests SQL sur un PostgreSQL nu (variables PGHOST, PGPORT, PGUSER, PGPASSWORD)
 docker exec -i supabase_db_memo psql -U postgres -v ON_ERROR_STOP=1 < backend/tests/licence_rls.sql   # conteneur : supabase_db_<project_id>
 docker run --rm -v "$PWD/backend/supabase/functions:/app:ro" -w /app denoland/deno:alpine-2.1.4 deno test --no-lock
 bash backend/tests/e2e_issue_license.sh
 ```
 
-Le premier vérifie le schéma et la sécurité par ligne, le deuxième la logique de la fonction (dans un conteneur Deno, sans base), le troisième le parcours complet d'émission de jeton.
+`run_sql.sh` applique chaque migration sur une base neuve avec une doublure
+minimale de Supabase (`tests/support/supabase_stub.sql`) puis exécute tous les
+tests SQL ; c'est ce que fait la CI (`database.yml`). Ce n'est pas Supabase :
+la confirmation d'e-mail et le second facteur se testent sur `supabase start`.
+
+Pour le reste, le premier vérifie le schéma et la sécurité par ligne, le deuxième la logique de la fonction (dans un conteneur Deno, sans base), le troisième le parcours complet d'émission de jeton.
 
 Vérifier un jeton avec le vérificateur de l'application :
 

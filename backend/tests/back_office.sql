@@ -3,9 +3,12 @@
 -- Tout est annulé à la fin (rollback).
 begin;
 
+-- Session vérifiée par un second facteur (aal2), comme celle d'un
+-- administrateur connecté au back-office.
 create function pg_temp.as_user(uid uuid) returns void language plpgsql as $$
 begin
-  perform set_config('request.jwt.claims', json_build_object('sub', uid, 'role', 'authenticated')::text, true);
+  perform set_config('request.jwt.claims',
+    json_build_object('sub', uid, 'role', 'authenticated', 'aal', 'aal2')::text, true);
   execute 'set local role authenticated';
 end $$;
 
@@ -35,11 +38,11 @@ begin
 end $$;
 
 -- Jeu de données : un super-admin, un support, deux abonnés potentiels.
-insert into auth.users (id, email) values
-  ('00000000-0000-0000-0000-0000000000a1', 'super@test.local'),
-  ('00000000-0000-0000-0000-0000000000a2', 'support@test.local'),
-  ('00000000-0000-0000-0000-0000000000c1', 'client1@test.local'),
-  ('00000000-0000-0000-0000-0000000000c2', 'client2@test.local');
+insert into auth.users (id, email, email_confirmed_at) values
+  ('00000000-0000-0000-0000-0000000000a1', 'super@test.local', now()),
+  ('00000000-0000-0000-0000-0000000000a2', 'support@test.local', now()),
+  ('00000000-0000-0000-0000-0000000000c1', 'client1@test.local', now()),
+  ('00000000-0000-0000-0000-0000000000c2', 'client2@test.local', now());
 -- Isole le test des administrateurs déjà présents en local.
 delete from public.admins;
 insert into public.admins (user_id, role) values

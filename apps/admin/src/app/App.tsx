@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from "react-router";
 import { Shell } from "@/components/layout/shell";
 import { Skeleton } from "@/components/ui/feedback";
 import { LoginPage } from "@/features/auth/LoginPage";
+import { MfaPage } from "@/features/auth/MfaPage";
 import { useAuth } from "./auth";
 
 const DashboardPage = lazy(() => import("@/features/dashboard/DashboardPage"));
@@ -17,6 +18,7 @@ export function App() {
   const { state } = useAuth();
   if (state.status === "loading") return null;
   if (state.status === "signed-out") return <LoginPage reason={state.reason} />;
+  if (state.status === "mfa") return <MfaPage step={state.step} />;
 
   return (
     <Shell>

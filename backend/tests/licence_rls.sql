@@ -4,9 +4,12 @@
 -- Tout est annulé à la fin (rollback).
 begin;
 
+-- Session vérifiée par un second facteur (aal2), comme celle d'un
+-- administrateur connecté au back-office.
 create function pg_temp.as_user(uid uuid) returns void language plpgsql as $$
 begin
-  perform set_config('request.jwt.claims', json_build_object('sub', uid, 'role', 'authenticated')::text, true);
+  perform set_config('request.jwt.claims',
+    json_build_object('sub', uid, 'role', 'authenticated', 'aal', 'aal2')::text, true);
   execute 'set local role authenticated';
 end $$;
 

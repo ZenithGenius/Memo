@@ -1,46 +1,61 @@
 import type { Session } from "@supabase/supabase-js";
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
 import { report } from "@/lib/errors";
+import { mfaStep } from "@/lib/mfa";
 import { isAdminRole, type AdminRole } from "@/lib/roles";
+import type { Db } from "@/lib/supabase";
 import { useDb } from "./db-context";
 
 type AuthState =
   | { status: "loading" }
   | { status: "signed-out"; reason?: string }
+  // Mot de passe accepté, second facteur encore à saisir ou à configurer : la
+  // base refuse toute action d'administration tant que la session n'est pas aal2.
+  | { status: "mfa"; step: "verify" | "enroll"; role: AdminRole }
   | { status: "signed-in"; session: Session; role: AdminRole };
 
 interface AuthApi {
   state: AuthState;
   signIn: (email: string, password: string) => Promise<string | null>;
   signOut: () => Promise<void>;
+  /** À appeler après la vérification d'un code : relit la session (aal2). */
+  completeMfa: () => Promise<void>;
 }
 
+const NO_ACCESS = "Ce compte n'a pas accès à l'administration.";
+
 const AuthContext = createContext<AuthApi | null>(null);
+
+/** État d'une session : rôle d'administrateur, puis niveau d'authentification. */
+async function stateFor(db: Db, session: Session | null): Promise<AuthState> {
+  if (!session) return { status: "signed-out" };
+  const { data: role, error } = await db.rpc("admin_me");
+  if (error) report("rôle", error);
+  if (!isAdminRole(role)) {
+    await db.auth.signOut();
+    return { status: "signed-out", reason: NO_ACCESS };
+  }
+  const { data: aal, error: aalError } = await db.auth.mfa.getAuthenticatorAssuranceLevel();
+  if (aalError) report("niveau d'authentification", aalError);
+  const step = mfaStep(aal?.currentLevel ?? null, aal?.nextLevel ?? null);
+  return step === "done" ? { status: "signed-in", session, role } : { status: "mfa", step, role };
+}
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const db = useDb();
   const [state, setState] = useState<AuthState>({ status: "loading" });
 
+  const refresh = useCallback(async () => {
+    const { data } = await db.auth.getSession();
+    setState(await stateFor(db, data.session));
+  }, [db]);
+
   useEffect(() => {
     let cancelled = false;
-
-    async function resolve(session: Session | null) {
-      if (!session) {
-        if (!cancelled) setState({ status: "signed-out" });
-        return;
-      }
-      const { data, error } = await db.rpc("admin_me");
-      if (cancelled) return;
-      if (error) report("rôle", error);
-      if (!isAdminRole(data)) {
-        await db.auth.signOut();
-        setState({ status: "signed-out", reason: "Ce compte n'a pas accès à l'administration." });
-        return;
-      }
-      setState({ status: "signed-in", session, role: data });
-    }
-
-    void db.auth.getSession().then(({ data }) => resolve(data.session));
+    void db.auth.getSession().then(async ({ data }) => {
+      const next = await stateFor(db, data.session);
+      if (!cancelled) setState(next);
+    });
     const { data: sub } = db.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_OUT") setState({ status: "signed-out" });
       if (event === "TOKEN_REFRESHED" && session)
@@ -62,19 +77,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           ? "E-mail ou mot de passe incorrect."
           : "Connexion impossible pour le moment. Réessayez.";
       }
-      const { data: role, error: roleError } = await db.rpc("admin_me");
-      if (roleError) report("rôle", roleError);
-      if (!isAdminRole(role)) {
-        await db.auth.signOut();
-        return "Ce compte n'a pas accès à l'administration.";
-      }
-      setState({ status: "signed-in", session: data.session, role });
-      return null;
+      const next = await stateFor(db, data.session);
+      setState(next);
+      return next.status === "signed-out" ? (next.reason ?? NO_ACCESS) : null;
     },
     signOut: async () => {
       await db.auth.signOut();
       setState({ status: "signed-out" });
     },
+    completeMfa: refresh,
   };
 
   return <AuthContext value={api}>{children}</AuthContext>;
