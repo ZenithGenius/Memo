@@ -12,6 +12,7 @@ export function userMessage(error: unknown, fallback: string): string {
   const raw = typeof error === "object" && error && "message" in error ? String(error.message) : "";
   if (raw.includes("last_super_admin")) return "Il doit rester au moins un super-administrateur.";
   if (raw.includes("unknown_account")) return "Aucun compte avec cet e-mail : la personne doit d'abord s'inscrire.";
+  if (raw.includes("unconfirmed_email")) return "Adresse pas encore confirmée : la personne doit d'abord valider l'e-mail reçu à l'inscription.";
   if (raw.includes("invalid_until")) return "La date de fin doit être dans le futur.";
   if (raw.includes("forbidden") || raw.includes("row-level security") || raw.includes("permission denied"))
     return "Votre rôle ne permet pas cette action.";
