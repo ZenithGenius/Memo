@@ -13,7 +13,10 @@ COPY --from=build /app/dist /usr/share/nginx/html
 COPY docker/default.conf.template /etc/nginx/templates/default.conf.template
 COPY docker/40-admin-config.sh /docker-entrypoint.d/40-admin-config.sh
 USER 0
-RUN chmod +x /docker-entrypoint.d/40-admin-config.sh \
+# Correctifs de sécurité Alpine publiés après l'image épinglée (ex. tiff,
+# CVE-2026-4775) : appliqués ici sans attendre la prochaine image.
+RUN apk upgrade --no-cache \
+ && chmod +x /docker-entrypoint.d/40-admin-config.sh \
  && rm -f /usr/share/nginx/html/config.example.js \
  && chown 101:101 /usr/share/nginx/html
 USER 101
