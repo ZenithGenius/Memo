@@ -6,10 +6,20 @@ updates:
       interval: weekly
     commit-message:
       prefix: chore
-  # Image de base du panneau admin, épinglée par empreinte : Dependabot
+  # Back-office : dépendances npm, regroupées pour limiter le bruit.
+  - package-ecosystem: npm
+    directory: /apps/admin
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: chore
+    groups:
+      admin-npm:
+        patterns: ["*"]
+  # Images de base du back-office, épinglées par empreinte : Dependabot
   # propose la nouvelle empreinte quand l'image est republiée (correctifs).
   - package-ecosystem: docker
-    directory: /backend/admin
+    directory: /apps/admin
     schedule:
       interval: weekly
     commit-message:
