@@ -3,6 +3,9 @@ docs/
 guides/
 design/mocks/memo-*.html
 .dart_tool/
+.serena/
 
 # Captures du navigateur de test
 .playwright-mcp/
+
+backend/admin/.env
