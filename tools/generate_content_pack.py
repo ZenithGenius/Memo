@@ -178,9 +178,11 @@ free = [p for p in pictograms if p["tier"] == "free"]
 premium = [p for p in pictograms if p["tier"] == "premium"]
 premium_cats = {p["category"] for p in premium}
 
-# Paquet embarqué : contenu gratuit et phrases. Paquet payant : servi par la
-# fonction premium-pack aux seuls abonnés (ADR-008, couche 1). Les deux ont la
-# même version, incrémentée à chaque changement de contenu.
+# Paquet embarqué : contenu gratuit et phrases. Paquet payant de
+# démonstration : a servi d'import initial au contenu en base (migration
+# 20261011000003, ADR-011) ; premium-pack sert désormais la dernière
+# publication du back-office. Il reste la référence des tests de l'application
+# et de la variante dev.
 VERSION = 5
 write(root / "apps/memo_app/assets/content/pack.json",
       {"version": VERSION, "categories": [c for c in categories if c["code"] not in premium_cats],
