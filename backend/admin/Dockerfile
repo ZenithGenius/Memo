@@ -10,7 +10,10 @@ COPY docker-entrypoint.d/40-admin-config.sh /docker-entrypoint.d/40-admin-config
 # config.js est généré dans ce dossier à chaque démarrage (voir le script) :
 # l'utilisateur non-root de l'image doit pouvoir y écrire.
 USER 0
-RUN chmod +x /docker-entrypoint.d/40-admin-config.sh \
+# Correctifs de sécurité Alpine publiés après l'image épinglée (ex. tiff,
+# CVE-2026-4775) : appliqués ici sans attendre la prochaine image.
+RUN apk upgrade --no-cache \
+ && chmod +x /docker-entrypoint.d/40-admin-config.sh \
  && chown 101:101 /usr/share/nginx/html
 USER 101
 

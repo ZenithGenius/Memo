@@ -25,7 +25,7 @@ jobs:
       run:
         working-directory: backend/admin
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Dockerfile lint
         uses: hadolint/hadolint-action@v3.1.0
@@ -58,7 +58,7 @@ jobs:
       - name: SBOM
         run: trivy image --no-progress --format spdx-json --output memo-admin.sbom.spdx.json memo-admin:ci
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: memo-admin-sbom
           path: backend/admin/memo-admin.sbom.spdx.json
