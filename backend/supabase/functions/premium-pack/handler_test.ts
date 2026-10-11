@@ -8,6 +8,7 @@ function setup(over: {
   device?: { revoked: boolean } | null;
   subscribed?: boolean;
   fail?: boolean;
+  published?: boolean;
 } = {}) {
   const deps: PremiumHandlerDeps = {
     authenticate: () => Promise.resolve(over.user === undefined ? "u1" : over.user),
@@ -28,7 +29,8 @@ function setup(over: {
             : { planCode: "essentiel", validUntil: new Date("2027-01-01") },
         ),
     },
-    loadPack: () => Promise.resolve({ version: 3, pictograms: [] }),
+    loadPack: () =>
+      Promise.resolve(over.published === false ? null : { version: 3, pictograms: [] }),
     now: () => new Date("2026-09-23"),
   };
   return createPremiumHandler(deps);
@@ -62,4 +64,10 @@ Deno.test("erreur inattendue : 500 sans fuite de détail", async () => {
   const r = await setup({ fail: true })(get());
   assert.equal(r.status, 500);
   assert.equal(JSON.stringify(await r.json()).includes("secret"), false);
+});
+
+Deno.test("rien de publié depuis le back-office : 404", async () => {
+  const r = await setup({ published: false })(get());
+  assert.equal(r.status, 404);
+  assert.deepEqual(await r.json(), { error: "no_content" });
 });
