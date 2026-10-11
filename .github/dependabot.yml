@@ -6,6 +6,14 @@ updates:
       interval: weekly
     commit-message:
       prefix: chore
+  # Image de base du panneau admin, épinglée par empreinte : Dependabot
+  # propose la nouvelle empreinte quand l'image est republiée (correctifs).
+  - package-ecosystem: docker
+    directory: /backend/admin
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: chore
   - package-ecosystem: github-actions
     directory: /
     schedule:
