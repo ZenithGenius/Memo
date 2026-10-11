@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Sauvegarde automatique, Android 11 et avant (ADR-008).
+     Exclu : le stockage chiffré (jeton de licence, secret de l'appareil, état
+     de l'horloge, code accompagnant). Ses clés restent dans le Keystore du
+     téléphone d'origine : restauré ailleurs, il serait illisible, et le secret
+     de l'appareil ne doit jamais suivre une copie. Les profils, tableaux et
+     phrases (base locale) restent sauvegardés. -->
+<full-backup-content>
+    <exclude domain="sharedpref" path="." />
+</full-backup-content>
