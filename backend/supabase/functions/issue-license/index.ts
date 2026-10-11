@@ -1,5 +1,5 @@
 // Point d'entrée : lit la configuration, câble les dépendances, sert le gestionnaire.
-import { createClient } from "npm:@supabase/supabase-js@2";
+import { createClient } from "npm:@supabase/supabase-js@2.117.3";
 import { loadConfig } from "../_shared/config.ts";
 import { SupabaseLicenseRepository } from "../_shared/repository.ts";
 import { Ed25519Signer } from "../_shared/signer.ts";
