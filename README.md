@@ -30,6 +30,8 @@ Deux variantes :
 - **prod** (par défaut) : l'application publiée. Le contenu payant n'y est pas : il est téléchargé après connexion d'un compte abonné (ADR-008).
 - **dev** : « Memo dev » (`com.creyativ.memo.dev`), installable à côté de prod, avec tout le contenu embarqué. Pour tester seulement, jamais publiée. La CI construit les deux APK.
 
+Le dépôt est public : tout compte GitHub peut télécharger les artefacts de la CI, donc l'APK dev, et lire `assets/content/dev/` comme `backend/supabase/functions/premium-pack/pack.json`. Acceptable tant que le contenu payant n'est fait que de libellés et d'images de démonstration ; avant d'ajouter les pictogrammes définitifs, sortir le paquet payant du dépôt (stockage privé du serveur) et ne plus publier l'APK dev en artefact.
+
 ## Configuration
 
 Aucun identifiant, clé ou adresse de serveur n'est écrit dans le code. Tout passe par l'environnement.
