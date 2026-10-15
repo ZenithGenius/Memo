@@ -111,7 +111,8 @@ select pg_temp.assert_eq(
   (select count(*) from public.audit_log where entity = 'subscriptions' and action = 'update'
      and actor = '00000000-0000-0000-0000-0000000000a1'), 1::bigint, 'résiliation tracée dans le journal');
 select pg_temp.assert_eq(
-  (select count(*) from public.audit_log where entity = 'payments' and action = 'insert'), 1::bigint,
+  (select count(*) from public.audit_log where entity = 'payments' and action = 'insert'
+     and after ->> 'user_id' = '00000000-0000-0000-0000-0000000000c1'), 1::bigint,
   'paiement tracé dans le journal');
 select pg_temp.as_user('00000000-0000-0000-0000-0000000000a1');
 select pg_temp.expect_error($q$delete from public.audit_log$q$, 'permission denied');
