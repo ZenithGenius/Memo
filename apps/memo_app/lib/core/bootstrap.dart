@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memo/core/config/app_config.dart';
+import 'package:memo/core/config/flavor.dart';
 import 'package:memo/core/storage/secure_store.dart';
 import 'package:memo/data/content/content_importer.dart';
 import 'package:memo/data/content/content_pack_source.dart';
@@ -39,6 +40,7 @@ import 'package:memo/features/stats/presentation/usage_providers.dart';
 Future<ProviderContainer> createContainer({
   AppDatabase? db,
   ContentPackSource? source,
+  ContentPackSource? devPremiumSource,
   SpeechService? speech,
   SecureStore? secureStore,
   DateTime Function()? now,
@@ -52,6 +54,18 @@ Future<ProviderContainer> createContainer({
   final pack = await (source ?? const AssetContentPackSource()).load();
   final importer = ContentImporter(database);
   await importer.importIfNeeded(pack);
+  // Variante dev : le contenu payant est embarqué, sans serveur ni compte.
+  final devPremium =
+      devPremiumSource ??
+      (isDevFlavor
+          ? const AssetContentPackSource(assetPath: devPremiumAsset)
+          : null);
+  if (devPremium != null) {
+    await importer.importIfNeeded(
+      await devPremium.load(),
+      slot: ContentImporter.premiumSlot,
+    );
+  }
   final container = ProviderContainer(
     overrides: [
       catalogRepositoryProvider.overrideWithValue(

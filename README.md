@@ -16,12 +16,22 @@ Application mobile de communication alternative et améliorée (CAA) par pictogr
 
 Prérequis : Flutter 3.47.5 (Dart 3.13.4), SDK Android.
 
+Toutes les commandes Flutter se lancent depuis `apps/memo_app` (à la racine du dépôt : « Target file lib/main.dart not found »).
+
 ```bash
 cd apps/memo_app
 flutter pub get
 dart run build_runner build --delete-conflicting-outputs
-flutter run
+flutter run                  # variante prod : les 20 pictogrammes gratuits
+flutter run --flavor dev     # variante dev : les 151 pictogrammes, sans serveur
 ```
+
+Deux variantes :
+
+- **prod** (par défaut) : l'application publiée. Le contenu payant n'y est pas : il est téléchargé après connexion d'un compte abonné (ADR-008).
+- **dev** : « Memo dev » (`com.creyativ.memo.dev`), installable à côté de prod, avec tout le contenu embarqué. Pour tester seulement, jamais publiée. La CI construit les deux APK.
+
+Le dépôt est public : tout compte GitHub peut télécharger les artefacts de la CI, donc l'APK dev, et lire `assets/content/dev/` comme `backend/supabase/functions/premium-pack/pack.json`. Acceptable tant que le contenu payant n'est fait que de libellés et d'images de démonstration ; avant d'ajouter les pictogrammes définitifs, sortir le paquet payant du dépôt (stockage privé du serveur) et ne plus publier l'APK dev en artefact.
 
 ## Configuration
 
@@ -35,6 +45,23 @@ flutter run --dart-define-from-file=env/dev.json
 ```
 
 Serveur : variables d'environnement des fonctions (`backend/supabase/functions/.env.example`), voir `backend/README.md`. La clé `service_role` et la clé privée de signature ne quittent jamais le serveur.
+
+## Signature Android
+
+Une seule clé de publication signe `flutter run` et l'APK de la CI : l'un remplace l'autre sur un appareil sans désinstaller. Elle ne doit jamais être commitée (`*.jks` et `key.properties` sont ignorés par Git).
+
+En local : `memo-release.jks` et `key.properties` dans `apps/memo_app/android/`.
+
+```properties
+storeFile=memo-release.jks
+storePassword=...
+keyPassword=...
+keyAlias=memo
+```
+
+En CI, secrets du dépôt : `MEMO_KEYSTORE_BASE64` (`base64 -w0 memo-release.jks`), `MEMO_KEYSTORE_PASSWORD`, `MEMO_KEY_ALIAS`, `MEMO_KEY_PASSWORD`. Sans eux (PR de Dependabot, forks), l'APK est signé avec la clé de débogage.
+
+Perdre cette clé empêche toute mise à jour de l'application déjà installée : en garder une copie hors de la machine de développement.
 
 ## Qualité
 
