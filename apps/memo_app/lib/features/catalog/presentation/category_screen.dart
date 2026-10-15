@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memo/core/ui/adaptive_grid.dart';
+import 'package:memo/core/ui/async_states.dart';
 import 'package:memo/features/catalog/presentation/catalog_providers.dart';
 import 'package:memo/features/catalog/presentation/pictogram_tile.dart';
 import 'package:memo/features/message/presentation/message_actions.dart';
@@ -46,8 +47,11 @@ class CategoryScreen extends ConsumerWidget {
               ),
           ],
         ),
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('$e')),
+        loading: () => LoadingTiles(level: ref.watch(currentLevelProvider)),
+        error: (e, _) => ErrorState(
+          error: e,
+          onRetry: () => ref.invalidate(pictogramsProvider(code)),
+        ),
       ),
     );
   }

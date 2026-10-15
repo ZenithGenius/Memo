@@ -272,5 +272,21 @@
         "type": "String"
       }
     }
+  },
+  "loadingContent": "Chargement…",
+  "@loadingContent": {
+    "description": "Annonce lecteur d'écran pendant le chargement d'un écran"
+  },
+  "errorTitle": "Cet écran n'a pas pu s'afficher",
+  "@errorTitle": {
+    "description": "Titre de l'état d'erreur générique d'un écran"
+  },
+  "errorHint": "Rien n'est perdu. Réessayez dans un instant.",
+  "@errorHint": {
+    "description": "Explication rassurante sous le titre d'erreur"
+  },
+  "errorRetry": "Réessayer",
+  "@errorRetry": {
+    "description": "Bouton pour relancer le chargement"
   }
 }

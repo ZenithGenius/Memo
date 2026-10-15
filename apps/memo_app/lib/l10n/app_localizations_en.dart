@@ -492,4 +492,16 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get licenseDeviceRevoked =>
       'This device was removed from the account.';
+
+  @override
+  String get loadingContent => 'Loading…';
+
+  @override
+  String get errorTitle => 'This screen couldn\'t be shown';
+
+  @override
+  String get errorHint => 'Nothing was lost. Try again in a moment.';
+
+  @override
+  String get errorRetry => 'Try again';
 }

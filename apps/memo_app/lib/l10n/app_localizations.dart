@@ -877,6 +877,30 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Cet appareil a été retiré du compte.'**
   String get licenseDeviceRevoked;
+
+  /// Annonce lecteur d'écran pendant le chargement d'un écran
+  ///
+  /// In fr, this message translates to:
+  /// **'Chargement…'**
+  String get loadingContent;
+
+  /// Titre de l'état d'erreur générique d'un écran
+  ///
+  /// In fr, this message translates to:
+  /// **'Cet écran n\'a pas pu s\'afficher'**
+  String get errorTitle;
+
+  /// Explication rassurante sous le titre d'erreur
+  ///
+  /// In fr, this message translates to:
+  /// **'Rien n\'est perdu. Réessayez dans un instant.'**
+  String get errorHint;
+
+  /// Bouton pour relancer le chargement
+  ///
+  /// In fr, this message translates to:
+  /// **'Réessayer'**
+  String get errorRetry;
 }
 
 class _AppLocalizationsDelegate
