@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Fond du lancement : sable de la palette Sahel Warmth (AppColors.sand). -->
+    <color name="memo_sand">#FBF3E7</color>
+</resources>
