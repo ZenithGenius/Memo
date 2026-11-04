@@ -17,6 +17,8 @@ export interface LicenseConfig {
   shortTokenDays: number;
   /** Durée de vie maximale d'un jeton, qui doit égaler celle du client (ADR-008). */
   maxTokenDays: number;
+  /** Jetons émis au plus par compte et par heure, au-delà : 429. */
+  maxIssuancesPerHour: number;
 }
 
 const REQUIRED = [
@@ -30,6 +32,9 @@ const REQUIRED = [
 // Valeurs de politique (ADR-008), surchargeables. Ce ne sont pas des secrets.
 const DEFAULT_SHORT_TOKEN_DAYS = 7;
 const DEFAULT_MAX_TOKEN_DAYS = 45;
+// Une synchronisation normale émet un jeton ; 30 par heure n'est jamais atteint
+// par un usage réel, mais borne un script qui remplirait license_issuances.
+const DEFAULT_MAX_ISSUANCES_PER_HOUR = 30;
 
 export class ConfigError extends Error {}
 
@@ -56,6 +61,11 @@ export function loadConfig(env: EnvReader): LicenseConfig {
     privateKeyPkcs8: env.get("LICENSE_PRIVATE_KEY_PKCS8")!,
     shortTokenDays: positiveInt(env, "LICENSE_SHORT_TOKEN_DAYS", DEFAULT_SHORT_TOKEN_DAYS),
     maxTokenDays: positiveInt(env, "LICENSE_MAX_TOKEN_DAYS", DEFAULT_MAX_TOKEN_DAYS),
+    maxIssuancesPerHour: positiveInt(
+      env,
+      "LICENSE_MAX_ISSUANCES_PER_HOUR",
+      DEFAULT_MAX_ISSUANCES_PER_HOUR,
+    ),
   };
 }
 

@@ -41,6 +41,9 @@ class FakeRepo implements LicenseRepository {
     this.touched.push(id);
     return Promise.resolve();
   }
+  countIssuancesSince() {
+    return Promise.resolve(this.issuances.length);
+  }
 }
 
 const signer: TokenSigner = {
@@ -51,7 +54,7 @@ const signer: TokenSigner = {
 function setup(overrides: Partial<HandlerDeps> = {}) {
   const repo = new FakeRepo();
   const handler = createHandler({
-    config: { keyId: "k1", shortTokenDays: 7, maxTokenDays: 45 },
+    config: { keyId: "k1", shortTokenDays: 7, maxTokenDays: 45, maxIssuancesPerHour: 3 },
     authenticate: () => Promise.resolve("user-1"),
     repo,
     signer,
@@ -154,4 +157,17 @@ Deno.test("erreur inattendue : 500 sans fuite de détail", async () => {
   const r = await handler(post({ fingerprint: FP, platform: "android" }));
   assert.equal(r.status, 500);
   assert.equal(JSON.stringify(await r.json()).includes("secret"), false);
+});
+
+Deno.test("trop de jetons dans l'heure : 429 avant toute écriture", async () => {
+  const { handler, repo } = setup();
+  for (let i = 0; i < 3; i++) {
+    assert.equal((await handler(post({ fingerprint: FP, platform: "android" }))).status, 200);
+  }
+  const res = await handler(post({ fingerprint: "zzzzzzzzzzzzzzzz9999", platform: "android" }));
+  assert.equal(res.status, 429);
+  assert.equal(res.headers.get("Retry-After"), "3600");
+  assert.deepEqual(await res.json(), { error: "too_many_requests" });
+  assert.equal(repo.issuances.length, 3, "aucun jeton de plus");
+  assert.equal(repo.devices.size, 1, "aucun appareil enregistré au-delà de la limite");
 });

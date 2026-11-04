@@ -1,4 +1,4 @@
-import { createClient, type SupabaseClient } from "npm:@supabase/supabase-js@2";
+import { createClient, type SupabaseClient } from "npm:@supabase/supabase-js@2.117.3";
 import type { Device } from "./license.ts";
 import { DeviceLimitError, type LicenseRepository } from "./ports.ts";
 import type { Platform } from "./validation.ts";
@@ -86,6 +86,16 @@ export class SupabaseLicenseRepository implements LicenseRepository {
       integrity_level: input.integrityLevel,
     });
     if (error) throw error;
+  }
+
+  async countIssuancesSince(userId: string, since: Date) {
+    const { count, error } = await this.db
+      .from("license_issuances")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", userId)
+      .gte("issued_at", since.toISOString());
+    if (error) throw error;
+    return count ?? 0;
   }
 
   async touchDevice(deviceId: string, now: Date) {

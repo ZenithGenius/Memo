@@ -1,5 +1,5 @@
 // Point d'entrée : configuration, dépendances, gestionnaire.
-import { createClient } from "npm:@supabase/supabase-js@2";
+import { createClient } from "npm:@supabase/supabase-js@2.117.3";
 import { requireEnv } from "../_shared/config.ts";
 import { SupabaseLicenseRepository } from "../_shared/repository.ts";
 import { createPremiumHandler, type PremiumPack } from "./handler.ts";
