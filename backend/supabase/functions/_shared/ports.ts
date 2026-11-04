@@ -22,4 +22,6 @@ export interface LicenseRepository {
     integrityLevel: string;
   }): Promise<void>;
   touchDevice(deviceId: string, now: Date): Promise<void>;
+  /** Jetons émis pour ce compte depuis `since` (limite de fréquence). */
+  countIssuancesSince(userId: string, since: Date): Promise<number>;
 }

@@ -53,7 +53,25 @@ super-administrateur, sur un compte déjà inscrit :
 insert into admins (user_id, role) select id, 'super_admin' from auth.users where email = '<compte>';
 ```
 
-Les suivants s'ajoutent depuis l'écran Administrateurs.
+Les suivants s'ajoutent depuis l'écran Administrateurs, sur une adresse
+confirmée (la personne a validé l'e-mail reçu à l'inscription).
+
+## Double authentification
+
+Obligatoire (ADR-010) : la base n'ouvre les droits qu'à une session vérifiée
+par un code temporaire (TOTP). Au premier passage, l'écran affiche un code QR à
+scanner avec une application d'authentification (Google Authenticator,
+Microsoft Authenticator, Aegis…) ; ensuite, le code est demandé à chaque
+connexion. Activer TOTP sur le projet hébergé : Authentication >
+Multi-Factor.
+
+Téléphone perdu : un administrateur du projet Supabase supprime le facteur
+depuis l'éditeur SQL, puis la personne le reconfigure à sa prochaine
+connexion.
+
+```sql
+delete from auth.mfa_factors where user_id = (select id from auth.users where email = '<compte>');
+```
 
 ## Organisation
 
@@ -67,6 +85,7 @@ src/
 
 ## Sécurité
 
+- double authentification obligatoire, imposée par la base (ADR-010) ;
 - aucun HTML brut (règle ESLint), erreurs génériques à l'écran, détail en console ;
 - CSP stricte servie par nginx, aucune ressource tierce (polices embarquées) ;
 - dépendances figées, installées sans scripts, scannées par Trivy en CI ;

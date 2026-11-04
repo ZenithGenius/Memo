@@ -392,16 +392,6 @@ export type Database = {
         }[]
       }
       admin_remove: { Args: { target: string }; Returns: undefined }
-      admin_search_account: {
-        Args: { query: string }
-        Returns: {
-          created_at: string
-          display_name: string
-          email: string
-          phone: string
-          user_id: string
-        }[]
-      }
       admin_set_role: {
         Args: { new_role: string; target_email: string }
         Returns: undefined
@@ -424,6 +414,7 @@ export type Database = {
       }
       is_admin: { Args: never; Returns: boolean }
       is_super_admin: { Args: never; Returns: boolean }
+      session_aal2: { Args: never; Returns: boolean }
     }
     Enums: {
       [_ in never]: never

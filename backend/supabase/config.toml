@@ -298,9 +298,12 @@ auth_token = "env(SUPABASE_AUTH_SMS_TWILIO_AUTH_TOKEN)"
 max_enrolled_factors = 10
 
 # Control MFA via App Authenticator (TOTP)
+# Obligatoire pour les droits d'administration (migration 20261011000001) :
+# le back-office demande un code à chaque connexion. À activer aussi sur le
+# projet hébergé (Authentication > Multi-Factor).
 [auth.mfa.totp]
-enroll_enabled = false
-verify_enabled = false
+enroll_enabled = true
+verify_enabled = true
 
 # Configure MFA via Phone Messaging
 [auth.mfa.phone]

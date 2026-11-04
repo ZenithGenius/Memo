@@ -4,8 +4,15 @@ import type { TokenSigner } from "../_shared/signer.ts";
 import { json } from "../_shared/http.ts";
 import { parseIssueRequest } from "../_shared/validation.ts";
 
+const HOUR_MS = 3_600_000;
+
 export interface HandlerDeps {
-  config: { keyId: string; shortTokenDays: number; maxTokenDays: number };
+  config: {
+    keyId: string;
+    shortTokenDays: number;
+    maxTokenDays: number;
+    maxIssuancesPerHour: number;
+  };
   /** Retourne l'identifiant de l'appelant d'après son JWT, ou `null`. */
   authenticate(req: Request): Promise<string | null>;
   repo: LicenseRepository;
@@ -38,6 +45,13 @@ export function createHandler(deps: HandlerDeps): (req: Request) => Promise<Resp
       const { fingerprint, platform, label } = parsed.value;
 
       const now = deps.now();
+
+      // Limite de fréquence, avant toute écriture : chaque appel ajoute une
+      // ligne au journal d'émission.
+      const recent = await repo.countIssuancesSince(userId, new Date(now.getTime() - HOUR_MS));
+      if (recent >= config.maxIssuancesPerHour) {
+        return json(429, { error: "too_many_requests" }, { "Retry-After": "3600" });
+      }
 
       const existing = await repo.findDevice(userId, fingerprint);
       if (existing?.revoked) return json(403, { error: "device_revoked" });

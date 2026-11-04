@@ -1,0 +1,39 @@
+name: database
+on:
+  push:
+    branches: [main]
+    paths: [backend/supabase/migrations/**, backend/tests/**, .github/workflows/database.yml]
+  pull_request:
+    paths: [backend/supabase/migrations/**, backend/tests/**, .github/workflows/database.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: database-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+# Sécurité par ligne et fonctions d'administration : chaque migration est
+# appliquée sur une base neuve, puis tous les tests SQL de backend/tests.
+jobs:
+  sql:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v7
+      - run: bash backend/tests/run_sql.sh
+        env:
+          PGHOST: localhost
+          PGPORT: "5432"
+          PGUSER: postgres
+          PGPASSWORD: postgres
