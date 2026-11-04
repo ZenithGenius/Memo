@@ -73,9 +73,16 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   generate: true
+  # Variantes : prod (publication, contenu gratuit seul) et dev (tests, tout
+  # le contenu embarqué). `flutter run` sans --flavor construit prod.
+  default-flavor: prod
   assets:
     - assets/content/
     - assets/content/images/demo/
+    # Contenu payant embarqué pour les tests sans serveur. Jamais dans prod
+    # (ADR-008, couche 1).
+    - path: assets/content/dev/
+      flavors: [dev]
   fonts:
     - family: Manrope
       fonts:

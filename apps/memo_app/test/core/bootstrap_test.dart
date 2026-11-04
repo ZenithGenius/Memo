@@ -49,4 +49,50 @@ void main() {
     container.dispose();
     await db.close();
   });
+
+  test('variante dev : le contenu payant embarqué est importé', () async {
+    final db = AppDatabase.forTesting();
+    Map<String, Object?> pack(String category, String code, String tier) => {
+      'version': 1,
+      'categories': [
+        {
+          'code': category,
+          'sortOrder': 1,
+          'icon': 'bubble',
+          'labels': {'fr': category},
+        },
+      ],
+      'pictograms': [
+        {
+          'code': code,
+          'category': category,
+          'level': 0,
+          'audience': 'all',
+          'sortOrder': 1,
+          'tier': tier,
+          'image': null,
+          'labels': {
+            'fr': {'label': code, 'spoken': code},
+          },
+        },
+      ],
+    };
+    final container = await createContainer(
+      db: db,
+      source: InMemoryContentPackSource(
+        ContentPack.fromJson(pack('CBE', 'A1', 'free')),
+      ),
+      devPremiumSource: InMemoryContentPackSource(
+        ContentPack.fromJson(pack('ALI', 'B1', 'premium')),
+      ),
+      speech: FakeSpeechService(),
+    );
+    final cats = await container
+        .read(catalogRepositoryProvider)
+        .watchCategories('fr', includePremium: true)
+        .first;
+    expect(cats.map((c) => c.code), containsAll(['CBE', 'ALI']));
+    container.dispose();
+    await db.close();
+  });
 }

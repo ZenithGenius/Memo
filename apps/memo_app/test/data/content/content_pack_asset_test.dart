@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/painting.dart';
@@ -51,6 +52,16 @@ void main() {
       }
     },
   );
+
+  test('variante dev : copie exacte du paquet servi par le serveur', () async {
+    Future<Object?> read(String path) async =>
+        jsonDecode(await File(path).readAsString());
+    expect(
+      await read('assets/content/dev/premium_pack.json'),
+      await read('../../backend/supabase/functions/premium-pack/pack.json'),
+      reason: 'régénérer avec python3 tools/generate_content_pack.py',
+    );
+  });
 
   test(
     'position stable : monter de niveau ajoute des mots sans déplacer les autres',

@@ -58,10 +58,10 @@ jobs:
       - uses: actions/checkout@v7
       - run: bash backend/tests/run_deno.sh
 
-  # APK de publication (obfusqué, ADR-008), signé avec la clé de publication
-  # (secrets MEMO_KEYSTORE_*), ou la clé de débogage quand les secrets ne sont
-  # pas disponibles (PR de Dependabot, forks). Téléchargeable depuis la page
-  # du run.
+  # APK prod (obfusqué, ADR-008) et dev (tout le contenu embarqué), signés
+  # avec la clé de publication (secrets MEMO_KEYSTORE_*), ou la clé de
+  # débogage quand les secrets ne sont pas disponibles (PR de Dependabot,
+  # forks). Téléchargeables depuis la page du run.
   apk:
     runs-on: ubuntu-24.04
     timeout-minutes: 45
@@ -93,26 +93,48 @@ jobs:
           fi
           echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/memo-release.jks"
           echo "MEMO_KEYSTORE_PATH=$RUNNER_TEMP/memo-release.jks" >> "$GITHUB_ENV"
+      # prod : l'APK publiée, contenu gratuit seul. dev : tout le contenu
+      # embarqué, pour tester sans serveur ; installable à côté de prod.
       - run: >-
-          flutter build apk --release
+          flutter build apk --release --flavor prod
           --obfuscate --split-debug-info=build/symbols
         env:
           MEMO_KEYSTORE_PASSWORD: ${{ secrets.MEMO_KEYSTORE_PASSWORD }}
           MEMO_KEY_ALIAS: ${{ secrets.MEMO_KEY_ALIAS }}
           MEMO_KEY_PASSWORD: ${{ secrets.MEMO_KEY_PASSWORD }}
+      - run: flutter build apk --release --flavor dev
+        env:
+          MEMO_KEYSTORE_PASSWORD: ${{ secrets.MEMO_KEYSTORE_PASSWORD }}
+          MEMO_KEY_ALIAS: ${{ secrets.MEMO_KEY_ALIAS }}
+          MEMO_KEY_PASSWORD: ${{ secrets.MEMO_KEY_PASSWORD }}
+      # ADR-008, couche 1 : le contenu payant ne doit jamais être dans prod.
+      - name: Contenu payant absent de prod, présent dans dev
+        run: |
+          out=build/app/outputs/flutter-apk
+          if unzip -l "$out/app-prod-release.apk" | grep -q 'content/dev/'; then
+            echo "::error::Contenu payant embarqué dans l'APK prod."
+            exit 1
+          fi
+          unzip -l "$out/app-dev-release.apk" | grep -q 'content/dev/premium_pack.json'
       # Empreinte du certificat de signature, à comparer avec celle de la clé.
       - run: >-
           "$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)/apksigner"
-          verify --print-certs build/app/outputs/flutter-apk/app-release.apk
+          verify --print-certs build/app/outputs/flutter-apk/app-prod-release.apk
           | grep -E 'DN|SHA-256'
       - uses: actions/upload-artifact@v7
         with:
           name: memo-apk-${{ github.event.pull_request.head.sha || github.sha }}
-          path: apps/memo_app/build/app/outputs/flutter-apk/app-release.apk
+          path: apps/memo_app/build/app/outputs/flutter-apk/app-prod-release.apk
           if-no-files-found: error
           retention-days: 14
-      # Symboles de débogage : nécessaires pour lire une trace de plantage
-      # d'un binaire obfusqué.
+      - uses: actions/upload-artifact@v7
+        with:
+          name: memo-apk-dev-${{ github.event.pull_request.head.sha || github.sha }}
+          path: apps/memo_app/build/app/outputs/flutter-apk/app-dev-release.apk
+          if-no-files-found: error
+          retention-days: 14
+      # Symboles de débogage de prod : nécessaires pour lire une trace de
+      # plantage d'un binaire obfusqué.
       - uses: actions/upload-artifact@v7
         with:
           name: memo-symbols-${{ github.event.pull_request.head.sha || github.sha }}
