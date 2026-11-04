@@ -1,28 +1,19 @@
 import { json } from "../_shared/http.ts";
-import type { LicenseRepository } from "../_shared/ports.ts";
+import type { ContentRepository, PremiumPack } from "../_shared/ports.ts";
+import { refuseUnlessSubscriber, type SubscriberDeps } from "../_shared/subscriber.ts";
 
-/** Paquet de contenu payant, au format du paquet embarqué. */
-export interface PremiumPack {
-  version: number;
-  [key: string]: unknown;
+export type { PremiumPack };
+
+export interface PremiumHandlerDeps extends SubscriberDeps {
+  /** Dernière publication du back-office (issue #28). */
+  loadPack: ContentRepository["latestPack"];
 }
-
-export interface PremiumHandlerDeps {
-  /** Retourne l'identifiant de l'appelant d'après son JWT, ou `null`. */
-  authenticate(req: Request): Promise<string | null>;
-  repo: Pick<LicenseRepository, "findDevice" | "activeSubscription">;
-  loadPack(): Promise<PremiumPack>;
-  now(): Date;
-}
-
-const FINGERPRINT = /^[A-Za-z0-9+/=_-]{16,128}$/;
 
 /**
- * Livre le contenu payant (ADR-008, couche 1) : seulement à un abonné actif,
- * depuis un appareil déjà enregistré par issue-license et non révoqué.
- * GET ?fingerprint=…&have=<version> ; 204 si l'appareil a déjà cette version.
- * ponytail: le contrôle d'accès est fait ici, le paquet n'est pas chiffré ; à
- * chiffrer le jour où il sera servi depuis un stockage public (CDN).
+ * Livre le contenu payant publié depuis le back-office, aux seuls abonnés
+ * (voir refuseUnlessSubscriber). GET ?fingerprint=…&have=<version> ; 204 si
+ * l'appareil a déjà cette version. Les images envoyées depuis le back-office
+ * sont servies à part par premium-image.
  */
 export function createPremiumHandler(
   deps: PremiumHandlerDeps,
@@ -30,22 +21,12 @@ export function createPremiumHandler(
   return async (req) => {
     if (req.method !== "GET") return json(405, { error: "method_not_allowed" });
     try {
-      const userId = await deps.authenticate(req);
-      if (!userId) return json(401, { error: "unauthorized" });
-
       const url = new URL(req.url);
-      const fingerprint = url.searchParams.get("fingerprint") ?? "";
-      if (!FINGERPRINT.test(fingerprint)) return json(400, { error: "invalid_fingerprint" });
-
-      const device = await deps.repo.findDevice(userId, fingerprint);
-      if (!device) return json(403, { error: "device_unknown" });
-      if (device.revoked) return json(403, { error: "device_revoked" });
-
-      if (!(await deps.repo.activeSubscription(userId, deps.now()))) {
-        return json(402, { error: "no_active_subscription" });
-      }
+      const refused = await refuseUnlessSubscriber(deps, req, url);
+      if (refused) return refused;
 
       const pack = await deps.loadPack();
+      if (!pack) return json(404, { error: "no_content" });
       const have = Number(url.searchParams.get("have"));
       if (Number.isInteger(have) && have >= pack.version) {
         return new Response(null, { status: 204 });

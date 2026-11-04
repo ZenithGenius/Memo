@@ -62,8 +62,20 @@ Vérifier un jeton avec le vérificateur de l'application :
 cd apps/memo_app && dart run tool/verify_token.dart <jeton> <clé publique base64> <empreinte appareil>
 ```
 
-## Contenu
+## Contenu téléchargeable (ADR-011)
+
+Le contenu payant vit en base et se publie depuis le back-office :
+
+1. modifier le catalogue (`content_categories`, `content_pictograms`) ; une image s'envoie par `admin_put_image` (PNG ou WebP, 512 Kio au plus) et se rattache par son empreinte ;
+2. publier avec `admin_publish_content(notes)` : le paquet est construit, vérifié (valeurs, libellés, position stable, contraste) puis enregistré comme nouvelle version immuable ;
+3. les abonnés le reçoivent à la synchronisation suivante (`premium-pack`), et les images envoyées par `premium-image`.
+
+Un pictogramme publié ne se supprime pas : `active = false` le retire des publications suivantes.
+
+## Contenu du dossier
 
 - `supabase/migrations` : schéma versionné
 - `supabase/functions/issue-license` : enregistrement de l'appareil et signature du jeton
+- `supabase/functions/premium-pack` : dernière publication du contenu payant, aux abonnés
+- `supabase/functions/premium-image` : images de cette publication, aux mêmes conditions
 - `tests` : tests SQL et bout en bout
