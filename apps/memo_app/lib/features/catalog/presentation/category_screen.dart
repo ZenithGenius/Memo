@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memo/core/ui/adaptive_grid.dart';
 import 'package:memo/features/catalog/presentation/catalog_providers.dart';
 import 'package:memo/features/catalog/presentation/pictogram_tile.dart';
+import 'package:memo/features/favorites/presentation/favorite_actions.dart';
 import 'package:memo/features/message/presentation/message_actions.dart';
 
 class CategoryScreen extends ConsumerWidget {
@@ -36,13 +37,12 @@ class CategoryScreen extends ConsumerWidget {
                 icon: Icons.chat_bubble_outline,
                 selected: favoriteIds.contains(p.id),
                 onTap: () => addToMessage(context, ref, p),
-                onLongPress: () {
-                  final profile = ref.read(activeProfileProvider).value;
-                  if (profile == null) return;
-                  ref
-                      .read(favoritesRepositoryProvider)
-                      .toggle(profile.id, p.id);
-                },
+                onLongPress: () => toggleFavorite(
+                  context,
+                  ref,
+                  p,
+                  isFavorite: favoriteIds.contains(p.id),
+                ),
               ),
           ],
         ),

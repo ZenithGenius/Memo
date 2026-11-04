@@ -326,6 +326,24 @@ abstract class AppLocalizations {
   /// **'Appuyez longuement sur un pictogramme pour l\'ajouter à vos favoris'**
   String get favoritesEmpty;
 
+  /// No description provided for @favoriteAdded.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajouté aux favoris : {label}'**
+  String favoriteAdded(String label);
+
+  /// No description provided for @favoriteRemoved.
+  ///
+  /// In fr, this message translates to:
+  /// **'Retiré des favoris : {label}'**
+  String favoriteRemoved(String label);
+
+  /// No description provided for @favoritesRemoveHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Appuyez longuement sur un pictogramme pour le retirer de vos favoris'**
+  String get favoritesRemoveHint;
+
   /// No description provided for @boardTitle.
   ///
   /// In fr, this message translates to:

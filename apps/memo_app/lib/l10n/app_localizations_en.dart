@@ -159,6 +159,20 @@ class AppLocalizationsEn extends AppLocalizations {
       'Long-press a picture to add it to your favourites';
 
   @override
+  String favoriteAdded(String label) {
+    return 'Added to favourites: $label';
+  }
+
+  @override
+  String favoriteRemoved(String label) {
+    return 'Removed from favourites: $label';
+  }
+
+  @override
+  String get favoritesRemoveHint =>
+      'Long-press a picture to remove it from your favourites';
+
+  @override
   String get boardTitle => 'My board';
 
   @override

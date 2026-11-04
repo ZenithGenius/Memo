@@ -159,6 +159,20 @@ class AppLocalizationsFr extends AppLocalizations {
       'Appuyez longuement sur un pictogramme pour l\'ajouter à vos favoris';
 
   @override
+  String favoriteAdded(String label) {
+    return 'Ajouté aux favoris : $label';
+  }
+
+  @override
+  String favoriteRemoved(String label) {
+    return 'Retiré des favoris : $label';
+  }
+
+  @override
+  String get favoritesRemoveHint =>
+      'Appuyez longuement sur un pictogramme pour le retirer de vos favoris';
+
+  @override
   String get boardTitle => 'Mon tableau';
 
   @override
