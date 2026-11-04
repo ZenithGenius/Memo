@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:memo/core/config/flavor.dart';
 import 'package:memo/features/account/presentation/account_providers.dart';
 import 'package:memo/features/board/domain/board_repository.dart';
 import 'package:memo/features/catalog/domain/catalog.dart';
@@ -108,9 +109,11 @@ final currentLevelProvider = Provider<Level>(
 );
 
 /// Droit d'accès au contenu payant : jeton de licence vérifié (ADR-008).
-/// `--dart-define=UNLOCK_PREMIUM=true` le force, pour le développement.
+/// La variante dev et `--dart-define=UNLOCK_PREMIUM=true` le forcent, pour le
+/// développement.
 final premiumUnlockedProvider = Provider<bool>(
   (ref) =>
+      isDevFlavor ||
       const bool.fromEnvironment('UNLOCK_PREMIUM') ||
       (ref.watch(entitlementProvider).asData?.value?.isPremium ?? false),
 );
