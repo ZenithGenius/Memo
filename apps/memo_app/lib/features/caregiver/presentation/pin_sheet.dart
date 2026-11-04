@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memo/core/theme/app_colors.dart';
@@ -28,10 +29,48 @@ class _PinSheetState extends ConsumerState<PinSheet> {
   String? _message;
   bool _busy = false;
 
+  /// Fin du blocage après trop d'essais. Tant qu'elle n'est pas atteinte, le
+  /// pavé est désactivé et l'attente restante décompte chaque seconde.
+  DateTime? _lockedUntil;
+  Timer? _lockTicker;
+
   @override
   void initState() {
     super.initState();
     _decideStep();
+  }
+
+  @override
+  void dispose() {
+    _lockTicker?.cancel();
+    super.dispose();
+  }
+
+  int get _lockSecondsLeft {
+    final until = _lockedUntil;
+    if (until == null) return 0;
+    final ms = until.difference(ref.read(caregiverPinServiceProvider).now());
+    return ms.isNegative ? 0 : (ms.inMilliseconds / 1000).ceil();
+  }
+
+  void _startLock(Duration remaining) {
+    _lockedUntil = ref.read(caregiverPinServiceProvider).now().add(remaining);
+    // Annoncé une fois : la zone de message n'est pas relue à chaque seconde.
+    SemanticsService.sendAnnouncement(
+      View.of(context),
+      AppLocalizations.of(context).pinLocked(_lockSecondsLeft),
+      Directionality.of(context),
+    );
+    _lockTicker?.cancel();
+    _lockTicker = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!mounted) return timer.cancel();
+      setState(() {
+        if (_lockSecondsLeft == 0) {
+          timer.cancel();
+          _lockedUntil = null;
+        }
+      });
+    });
   }
 
   Future<void> _decideStep() async {
@@ -40,7 +79,9 @@ class _PinSheetState extends ConsumerState<PinSheet> {
   }
 
   void _onDigit(String d) {
-    if (_busy || _digits.length >= PinDots.length) return;
+    if (_busy || _lockedUntil != null || _digits.length >= PinDots.length) {
+      return;
+    }
     HapticFeedback.selectionClick();
     setState(() {
       _digits += d;
@@ -70,7 +111,7 @@ class _PinSheetState extends ConsumerState<PinSheet> {
           case PinRejected(:final attemptsLeft):
             message = l10n.pinWrong(attemptsLeft);
           case PinLocked(:final remaining):
-            message = l10n.pinLocked(remaining.inSeconds + 1);
+            _startLock(remaining);
         }
       case _Step.create:
         try {
@@ -149,6 +190,8 @@ class _PinSheetState extends ConsumerState<PinSheet> {
       _Step.confirm => l10n.pinConfirmTitle,
       null => '',
     };
+    final locked = _lockSecondsLeft;
+    final message = locked > 0 ? l10n.pinLocked(locked) : _message;
     final hint = switch (step) {
       _Step.enter => l10n.pinEnterHint,
       _Step.create => l10n.pinCreateHint,
@@ -190,12 +233,12 @@ class _PinSheetState extends ConsumerState<PinSheet> {
                   SizedBox(
                     height: 44,
                     child: Center(
-                      child: _message == null
+                      child: message == null
                           ? null
                           : Semantics(
-                              liveRegion: true,
+                              liveRegion: locked == 0,
                               child: Text(
-                                _message!,
+                                message,
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
                                   color: Color(0xFFB3261E),
@@ -208,7 +251,7 @@ class _PinSheetState extends ConsumerState<PinSheet> {
                   PinPad(
                     onDigit: _onDigit,
                     onDelete: _onDelete,
-                    enabled: !_busy,
+                    enabled: !_busy && locked == 0,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

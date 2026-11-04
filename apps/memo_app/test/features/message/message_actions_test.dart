@@ -50,12 +50,14 @@ void main() {
         child: MaterialApp(
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
-          home: Consumer(
-            builder: (context, ref, _) {
-              ctx = context;
-              widgetRef = ref;
-              return const SizedBox();
-            },
+          home: Scaffold(
+            body: Consumer(
+              builder: (context, ref, _) {
+                ctx = context;
+                widgetRef = ref;
+                return const SizedBox();
+              },
+            ),
           ),
         ),
       ),
@@ -71,6 +73,8 @@ void main() {
     expect(container.read(messageProvider), hasLength(1));
     expect(haptics, ['HapticFeedbackType.selectionClick']);
     expect(speech.spoken, ['eau']);
+    await tester.pump();
+    expect(find.byType(SnackBar), findsNothing);
   });
 
   testWidgets("c'est le texte parlé qui est prononcé, pas le libellé", (
@@ -113,5 +117,7 @@ void main() {
     );
     expect(haptics, ['HapticFeedbackType.heavyImpact']);
     expect(speech.spoken, isEmpty);
+    await tester.pump();
+    expect(find.text('Le message est plein'), findsOneWidget);
   });
 }

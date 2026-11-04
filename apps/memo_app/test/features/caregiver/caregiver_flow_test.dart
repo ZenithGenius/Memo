@@ -124,14 +124,21 @@ void main() {
       for (var i = 0; i < CaregiverPinService.maxAttempts; i++) {
         await pin(tester, '0001');
       }
-      expect(find.textContaining('Trop d\'essais'), findsOneWidget);
+      expect(find.text("Trop d'essais. Réessayez dans 30 s."), findsOneWidget);
 
       // Même le bon code est refusé pendant le blocage.
       await pin(tester, '4827');
       expect(app.container.read(caregiverSessionProvider), isFalse);
 
-      // Le blocage passé, le bon code fonctionne.
-      AppHarness.clock = AppHarness.clock.add(const Duration(seconds: 31));
+      // L'attente décompte sans nouvelle saisie.
+      AppHarness.clock = AppHarness.clock.add(const Duration(seconds: 10));
+      await tester.pump(const Duration(seconds: 1));
+      expect(find.text("Trop d'essais. Réessayez dans 20 s."), findsOneWidget);
+
+      // Le blocage passé, le message disparaît et le bon code fonctionne.
+      AppHarness.clock = AppHarness.clock.add(const Duration(seconds: 21));
+      await tester.pump(const Duration(seconds: 1));
+      expect(find.textContaining("Trop d'essais"), findsNothing);
       await pin(tester, '4827');
       expect(app.container.read(caregiverSessionProvider), isTrue);
       await app.dispose(tester);
