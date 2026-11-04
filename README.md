@@ -5,6 +5,7 @@ Application mobile de communication alternative et améliorée (CAA) par pictogr
 ## Organisation du dépôt
 
 - `apps/memo_app` : application Flutter
+- `apps/admin` : back-office (React, TypeScript), voir `apps/admin/README.md`
 - `adr/` : décisions d'architecture
 - `specs/` : conception
 - `plans/` : plans d'implémentation par jalon
