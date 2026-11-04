@@ -1,6 +1,12 @@
 import { createClient, type SupabaseClient } from "npm:@supabase/supabase-js@2.117.3";
 import type { Device } from "./license.ts";
-import { DeviceLimitError, type LicenseRepository } from "./ports.ts";
+import { fromBase64 } from "./encoding.ts";
+import {
+  type ContentRepository,
+  DeviceLimitError,
+  type LicenseRepository,
+  type PremiumPack,
+} from "./ports.ts";
 import type { Platform } from "./validation.ts";
 
 const DEVICE_COLUMNS = "id, revoked_at, integrity_level, installed_from_store";
@@ -14,7 +20,7 @@ function toDevice(row: any): Device {
   };
 }
 
-export class SupabaseLicenseRepository implements LicenseRepository {
+export class SupabaseLicenseRepository implements LicenseRepository, ContentRepository {
   private readonly db: SupabaseClient;
 
   constructor(url: string, serviceRoleKey: string) {
@@ -96,6 +102,23 @@ export class SupabaseLicenseRepository implements LicenseRepository {
       .gte("issued_at", since.toISOString());
     if (error) throw error;
     return count ?? 0;
+  }
+
+  async latestPack() {
+    const { data, error } = await this.db.rpc("content_latest_pack");
+    if (error) throw error;
+    return (data as PremiumPack | null) ?? null;
+  }
+
+  async publishedImage(sha256: string) {
+    const { data, error } = await this.db
+      .rpc("content_published_image", { target_sha256: sha256 })
+      .maybeSingle<{ mime: string; data_base64: string }>();
+    if (error) throw error;
+    // encode(…, 'base64') de PostgreSQL coupe les lignes : on retire les blancs.
+    return data
+      ? { mime: data.mime, bytes: fromBase64(data.data_base64.replace(/\s/g, "")) }
+      : null;
   }
 
   async touchDevice(deviceId: string, now: Date) {
