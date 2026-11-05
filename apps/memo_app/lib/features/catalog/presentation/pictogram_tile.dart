@@ -20,7 +20,8 @@ class PictogramTile extends StatelessWidget {
   final String? imageAsset;
   final IconData? icon;
 
-  /// Couleur de la catégorie : bordure et icône (regroupement visuel).
+  /// Couleur de la catégorie : fond teinté, bordure épaisse et icône, pour
+  /// reconnaître la catégorie d'un coup d'œil (favoris, tableau mélangés).
   final Color? accent;
 
   /// Le mot est déjà dans l'image : pas de légende en double.
@@ -41,55 +42,77 @@ class PictogramTile extends StatelessWidget {
       excludeSemantics: true,
       onTap: onTap,
       onLongPress: onLongPress,
-      child: Material(
-        color: AppColors.card,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-          side: BorderSide(
-            color: selected ? AppColors.terracotta : accent ?? AppColors.border,
-            width: selected ? 4 : 2,
-          ),
-        ),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(16),
-          onTap: onTap,
-          onLongPress: onLongPress,
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(minHeight: 96, minWidth: 48),
-            child: Padding(
-              padding: const EdgeInsets.all(8),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Center(
-                      child: imageAsset != null
-                          ? Image.asset(
-                              imageAsset!,
-                              fit: BoxFit.contain,
-                              errorBuilder: (_, _, _) => _fallbackIcon(),
-                            )
-                          : _fallbackIcon(),
-                    ),
+      child: Stack(
+        children: [
+          Material(
+            // ponytail: teinte légère, le texte sombre garde son contraste.
+            color: accent == null
+                ? AppColors.card
+                : Color.alphaBlend(
+                    accent!.withValues(alpha: 0.14),
+                    AppColors.card,
                   ),
-                  if (!labelInImage) ...[
-                    const SizedBox(height: 4),
-                    Text(
-                      label,
-                      textAlign: TextAlign.center,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: labelSize,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+              side: BorderSide(
+                color: selected
+                    ? AppColors.terracotta
+                    : accent ?? AppColors.border,
+                width: selected || accent != null ? 4 : 2,
+              ),
+            ),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(16),
+              onTap: onTap,
+              onLongPress: onLongPress,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(minHeight: 96, minWidth: 48),
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Center(
+                          child: imageAsset != null
+                              ? Image.asset(
+                                  imageAsset!,
+                                  fit: BoxFit.contain,
+                                  errorBuilder: (_, _, _) => _fallbackIcon(),
+                                )
+                              : _fallbackIcon(),
+                        ),
                       ),
-                    ),
-                  ],
-                ],
+                      if (!labelInImage) ...[
+                        const SizedBox(height: 4),
+                        Text(
+                          label,
+                          textAlign: TextAlign.center,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: labelSize,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
               ),
             ),
           ),
-        ),
+          // Favori : l'étoile le distingue même quand la couleur de la
+          // catégorie est proche de celle de la sélection.
+          if (selected)
+            const Positioned(
+              top: 6,
+              right: 6,
+              child: IgnorePointer(
+                child: Icon(Icons.star, size: 20, color: AppColors.terracotta),
+              ),
+            ),
+        ],
       ),
     );
   }
