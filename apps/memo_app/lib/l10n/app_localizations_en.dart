@@ -362,6 +362,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cancel => 'Cancel';
 
   @override
+  String get accountDelete => 'Delete my account';
+
+  @override
+  String get accountDeleteTitle => 'Delete the account?';
+
+  @override
+  String accountDeleteWarning(String email) {
+    return 'The account $email will be permanently deleted: the current subscription is lost and linked devices are signed out. Profiles, favourites and boards stay on this phone.';
+  }
+
+  @override
+  String get accountDeleteAction => 'Delete permanently';
+
+  @override
+  String get accountDeleted => 'Account deleted';
+
+  @override
   String get phraseAdded => 'Phrase added';
 
   @override

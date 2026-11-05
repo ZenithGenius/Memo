@@ -20,6 +20,8 @@ import { methodLabel } from "@/lib/payments";
 import type { PaymentRow } from "@/lib/rpc-types";
 import { usePayments, useSubscriptions, type SubscriptionFilter } from "./api";
 
+const DELETED_ACCOUNT = "Compte supprimé";
+
 const PAGE_SIZE = 25;
 const EXPORT_LIMIT = 500;
 
@@ -208,7 +210,7 @@ function PaymentsTab() {
         ["Date", "Compte", "Montant (FCFA)", "Moyen", "Référence", "Offre", "Saisi par"],
         rows.map((r: PaymentRow) => [
           dateTimeFr(r.paid_at),
-          r.email,
+          r.email ?? DELETED_ACCOUNT,
           r.amount_fcfa,
           methodLabel(r.method),
           r.reference ?? "",
@@ -273,8 +275,10 @@ function PaymentsTab() {
             <DataTable
               rows={payments.data.rows}
               rowKey={(r) => r.id}
-              rowLabel={(r) => `Ouvrir la fiche de ${r.email}`}
-              onRowClick={(r) => { setOpen({ userId: r.user_id, email: r.email }); }}
+              rowLabel={(r) => (r.email ? `Ouvrir la fiche de ${r.email}` : DELETED_ACCOUNT)}
+              onRowClick={(r) => {
+                if (r.user_id && r.email) setOpen({ userId: r.user_id, email: r.email });
+              }}
               columns={[
                 {
                   key: "date",
@@ -282,7 +286,11 @@ function PaymentsTab() {
                   primary: true,
                   cell: (r) => <span className="font-semibold text-fg">{dateTimeFr(r.paid_at)}</span>,
                 },
-                { key: "account", header: "Compte", cell: (r) => <span className="break-all">{r.email}</span> },
+                {
+                  key: "account",
+                  header: "Compte",
+                  cell: (r) => <span className="break-all">{r.email ?? DELETED_ACCOUNT}</span>,
+                },
                 { key: "amount", header: "Montant", cell: (r) => fcfa(r.amount_fcfa) },
                 { key: "method", header: "Moyen", cell: (r) => <Chip>{methodLabel(r.method)}</Chip> },
                 {

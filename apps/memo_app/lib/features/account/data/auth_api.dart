@@ -39,6 +39,9 @@ abstract interface class AuthApi {
   Future<AuthSession> signIn(String email, String password);
   Future<AuthSession> signUp(String email, String password);
   Future<AuthSession> refresh(String refreshToken);
+
+  /// Supprime le compte de la session (fonction `delete_my_account`).
+  Future<void> deleteAccount(String accessToken);
 }
 
 /// Authentification Supabase (GoTrue) par appels HTTP directs.
@@ -69,6 +72,33 @@ class HttpAuthApi implements AuthApi {
     {'refresh_token': refreshToken},
     refreshing: true,
   );
+
+  @override
+  Future<void> deleteAccount(String accessToken) async {
+    final http.Response response;
+    try {
+      response = await _client
+          .post(
+            config.supabaseUrl.resolve('/rest/v1/rpc/delete_my_account'),
+            headers: {
+              'apikey': config.supabaseAnonKey,
+              'Authorization': 'Bearer $accessToken',
+              'Content-Type': 'application/json',
+            },
+            body: '{}',
+          )
+          .timeout(timeout);
+    } on http.ClientException {
+      throw const AuthException(AuthError.offline);
+    } on SocketException {
+      throw const AuthException(AuthError.offline);
+    } on TimeoutException {
+      throw const AuthException(AuthError.offline);
+    }
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      throw const AuthException(AuthError.server);
+    }
+  }
 
   Future<AuthSession> _post(
     String path,

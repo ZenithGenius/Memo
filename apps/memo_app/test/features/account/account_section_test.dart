@@ -80,6 +80,54 @@ void main() {
     },
   );
 
+  testWidgets('supprimer le compte : avertissement, confirmation, compte '
+      'oublié', (tester) async {
+    final app = await AppHarness.start(
+      tester,
+      overrides: (db, store) => [
+        accountServiceProvider.overrideWithValue(
+          unsubscribedService(db, store),
+        ),
+      ],
+    );
+    final service = app.container.read(accountServiceProvider)!;
+    // Sans abonnement, la connexion échoue sur la licence mais garde la
+    // session : c'est l'état d'un compte qu'on veut supprimer.
+    try {
+      await service.signIn('amina@example.org', 'x');
+    } on LicenseApiException {
+      // attendu
+    }
+    app.container.invalidate(accountEmailProvider);
+    app.container.read(caregiverSessionProvider.notifier).unlock();
+    await tester.tap(find.text('Réglages'));
+    await settleDatabase(tester);
+
+    final delete = find.text('Supprimer mon compte');
+    await tester.ensureVisible(delete);
+    await tester.pumpAndSettle();
+    await tester.tap(delete);
+    await tester.pumpAndSettle();
+    expect(
+      find.textContaining('amina@example.org sera supprimé'),
+      findsOneWidget,
+    );
+
+    // Annuler ne supprime rien.
+    await tester.tap(find.text('Annuler'));
+    await tester.pumpAndSettle();
+    expect(await service.email, 'amina@example.org');
+
+    await tester.tap(delete);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Supprimer définitivement'));
+    await settleDatabase(tester);
+    expect(await service.email, isNull);
+    expect(find.text('Compte supprimé'), findsOneWidget);
+    expect(find.text('Se connecter'), findsOneWidget);
+    await app.dispose(tester);
+  });
+
   testWidgets('sans serveur configuré, pas de section Compte', (tester) async {
     final app = await AppHarness.start(tester);
     await tester.tap(find.text('Réglages'));

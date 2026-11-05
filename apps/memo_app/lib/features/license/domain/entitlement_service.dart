@@ -70,6 +70,9 @@ class EntitlementService {
     return current();
   }
 
+  /// Oublie le jeton : l'appareil repasse en gratuit (compte supprimé).
+  Future<void> forget() => tokens.clear();
+
   Entitlement _toEntitlement(LicenseCheck check) => Entitlement(
     check.status,
     plan: check.claims?.plan,

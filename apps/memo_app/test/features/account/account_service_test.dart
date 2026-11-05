@@ -42,6 +42,15 @@ class FakeAuth implements AuthApi {
     if (failWith != null) throw AuthException(failWith!);
     return _session('amina@example.org');
   }
+
+  final deleted = <String>[];
+  AuthError? deleteFailsWith;
+
+  @override
+  Future<void> deleteAccount(String accessToken) async {
+    if (deleteFailsWith != null) throw AuthException(deleteFailsWith!);
+    deleted.add(accessToken);
+  }
 }
 
 class FakeLicenseApi implements LicenseApi {
@@ -171,6 +180,25 @@ void main() {
       await ContentImporter(db).installedVersion(ContentImporter.premiumSlot),
       7,
     );
+  });
+
+  test('suppression du compte : serveur appelé, session et droits '
+      'oubliés', () async {
+    final s = await service();
+    await s.signIn('amina@example.org', 'x');
+    await s.deleteAccount();
+    expect(auth.deleted, ['jwt']);
+    expect(await s.email, isNull);
+    expect((await s.entitlements.current()).isPremium, isFalse);
+  });
+
+  test('suppression refusée hors ligne : rien n\'est oublié', () async {
+    final s = await service();
+    await s.signIn('amina@example.org', 'x');
+    auth.deleteFailsWith = AuthError.offline;
+    await expectLater(s.deleteAccount(), throwsA(isA<AuthException>()));
+    expect(await s.email, 'amina@example.org');
+    expect((await s.entitlements.current()).isPremium, isTrue);
   });
 
   test('déjà à jour : le paquet n\'est pas retéléchargé', () async {

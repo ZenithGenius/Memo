@@ -56,6 +56,18 @@ class AccountService {
     await store.delete(_emailKey);
   }
 
+  /// Supprime le compte sur le serveur (réseau requis), puis oublie la session
+  /// et le jeton de licence : l'appareil repasse en gratuit. Les profils, les
+  /// favoris et les tableaux restent sur l'appareil.
+  Future<void> deleteAccount() async {
+    final refresh = await store.read(_refreshKey);
+    if (refresh == null) throw const AuthException(AuthError.sessionExpired);
+    final session = await auth.refresh(refresh);
+    await auth.deleteAccount(session.accessToken);
+    await entitlements.forget();
+    await signOut();
+  }
+
   Future<Entitlement> _syncWith(AuthSession session) async {
     await store.write(_refreshKey, session.refreshToken);
     await store.write(_emailKey, session.email);
