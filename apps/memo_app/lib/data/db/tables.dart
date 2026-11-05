@@ -26,6 +26,10 @@ class Pictograms extends Table {
   IntColumn get categoryId =>
       integer().references(Categories, #id, onDelete: KeyAction.cascade)();
   TextColumn get imageAsset => text().nullable()();
+
+  /// Variantes d'un pictogramme qui représente une personne (#19).
+  TextColumn get imageFeminine => text().nullable()();
+  TextColumn get imageMasculine => text().nullable()();
   IntColumn get imageVersion => integer().withDefault(const Constant(1))();
   IntColumn get minLevel => integer()();
   TextColumn get audience => text()();
@@ -52,6 +56,7 @@ class Profiles extends Table {
   TextColumn get type => text()();
   IntColumn get level => integer()();
   TextColumn get language => text().withDefault(const Constant('fr'))();
+  TextColumn get gender => text().withDefault(const Constant('unspecified'))();
   DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
 }
 

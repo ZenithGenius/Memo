@@ -48,6 +48,38 @@ void main() {
     expect(tr.spokenText, 'je veux');
   });
 
+  test('variantes au féminin et au masculin importées', () async {
+    final pack = ContentPack.fromJson({
+      'version': 1,
+      'categories': [
+        {
+          'code': 'PER',
+          'sortOrder': 1,
+          'labels': {'fr': 'Personnes'},
+        },
+      ],
+      'pictograms': [
+        {
+          'code': 'P1',
+          'category': 'PER',
+          'level': 0,
+          'audience': 'all',
+          'sortOrder': 1,
+          'image': 'commun.png',
+          'imageVariants': {'feminine': 'fille.png', 'masculine': 'garcon.png'},
+          'labels': {
+            'fr': {'label': 'Enfant', 'spoken': 'enfant'},
+          },
+        },
+      ],
+    });
+    await importer.importIfNeeded(pack);
+    final row = await db.select(db.pictograms).getSingle();
+    expect(row.imageAsset, 'commun.png');
+    expect(row.imageFeminine, 'fille.png');
+    expect(row.imageMasculine, 'garcon.png');
+  });
+
   test('ne réimporte pas une version déjà installée', () async {
     await importer.importIfNeeded(samplePack());
     final again = await importer.importIfNeeded(samplePack());

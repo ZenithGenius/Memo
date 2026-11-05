@@ -44,7 +44,8 @@ final pictogramsProvider = StreamProvider.family<List<Pictogram>, String>((
         maxLevel: profile?.level ?? Level.beginner,
         audience: profile?.type.audience ?? Audience.all,
         includePremium: ref.watch(premiumUnlockedProvider),
-      );
+      )
+      .forGender(profile?.gender);
 });
 
 final favoritesRepositoryProvider = Provider<FavoritesRepository>(
@@ -71,7 +72,8 @@ final favoritePictogramsProvider = StreamProvider<List<Pictogram>>((ref) {
         ids.toList(),
         profile.language,
         includePremium: ref.watch(premiumUnlockedProvider),
-      );
+      )
+      .forGender(profile.gender);
 });
 
 final boardProvider = StreamProvider<BoardLayout?>((ref) {
@@ -93,6 +95,7 @@ final boardPictogramsProvider = StreamProvider<Map<int, Pictogram>>((ref) {
         profile.language,
         includePremium: ref.watch(premiumUnlockedProvider),
       )
+      .forGender(profile.gender)
       .map((list) => {for (final p in list) p.id: p});
 });
 
@@ -117,3 +120,11 @@ final premiumUnlockedProvider = Provider<bool>(
       const bool.fromEnvironment('UNLOCK_PREMIUM') ||
       (ref.watch(entitlementProvider).asData?.value?.isPremium ?? false),
 );
+
+extension on Stream<List<Pictogram>> {
+  /// Images au genre du profil actif (variantes féminine ou masculine).
+  Stream<List<Pictogram>> forGender(Gender? gender) =>
+      gender == null || gender == Gender.unspecified
+      ? this
+      : map((list) => [for (final p in list) p.forGender(gender)]);
+}

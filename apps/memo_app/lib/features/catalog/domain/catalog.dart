@@ -30,6 +30,10 @@ class Category extends Equatable {
   List<Object?> get props => [id, code, label, iconName, sortOrder, colorArgb];
 }
 
+/// Choisi à la création du profil : les pictogrammes qui représentent une
+/// personne s'affichent alors au féminin ou au masculin (#19).
+enum Gender { unspecified, feminine, masculine }
+
 class Pictogram extends Equatable {
   const Pictogram({
     required this.id,
@@ -41,6 +45,8 @@ class Pictogram extends Equatable {
     required this.audience,
     required this.sortOrder,
     this.imageAsset,
+    this.imageFeminine,
+    this.imageMasculine,
     this.tier = Tier.free,
     this.colorArgb,
     this.labelInImage = false,
@@ -52,6 +58,11 @@ class Pictogram extends Equatable {
   final String label;
   final String spokenText;
   final String? imageAsset;
+
+  /// Variantes au féminin et au masculin, quand le pictogramme représente une
+  /// personne. Absentes : l'image commune sert pour tous.
+  final String? imageFeminine;
+  final String? imageMasculine;
   final Level minLevel;
   final Audience audience;
   final int sortOrder;
@@ -63,6 +74,33 @@ class Pictogram extends Equatable {
   /// Le mot est déjà écrit dans l'image (démonstration) : pas de légende.
   final bool labelInImage;
 
+  /// Image affichée pour un profil : la variante de son genre si elle
+  /// existe, sinon l'image commune.
+  Pictogram forGender(Gender gender) {
+    final variant = switch (gender) {
+      Gender.feminine => imageFeminine,
+      Gender.masculine => imageMasculine,
+      Gender.unspecified => null,
+    };
+    if (variant == null) return this;
+    return Pictogram(
+      id: id,
+      code: code,
+      categoryId: categoryId,
+      label: label,
+      spokenText: spokenText,
+      minLevel: minLevel,
+      audience: audience,
+      sortOrder: sortOrder,
+      imageAsset: variant,
+      imageFeminine: imageFeminine,
+      imageMasculine: imageMasculine,
+      tier: tier,
+      colorArgb: colorArgb,
+      labelInImage: labelInImage,
+    );
+  }
+
   @override
   List<Object?> get props => [
     id,
@@ -71,6 +109,8 @@ class Pictogram extends Equatable {
     label,
     spokenText,
     imageAsset,
+    imageFeminine,
+    imageMasculine,
     minLevel,
     audience,
     sortOrder,

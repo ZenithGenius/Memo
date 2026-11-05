@@ -362,6 +362,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cancel => 'Cancel';
 
   @override
+  String get genderLabel => 'Gender';
+
+  @override
+  String get genderGirl => 'Girl';
+
+  @override
+  String get genderBoy => 'Boy';
+
+  @override
+  String get genderWoman => 'Woman';
+
+  @override
+  String get genderMan => 'Man';
+
+  @override
+  String get genderUnspecified => 'Prefer not to say';
+
+  @override
+  String get genderHint =>
+      'Optional. Pictures showing a person are displayed as female or male.';
+
+  @override
   String get accountForgotPassword => 'Forgot password?';
 
   @override

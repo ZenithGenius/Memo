@@ -4,6 +4,7 @@ import 'package:memo/core/theme/app_colors.dart';
 import 'package:memo/features/catalog/domain/catalog.dart';
 import 'package:memo/features/catalog/presentation/catalog_providers.dart';
 import 'package:memo/features/profiles/domain/profile.dart';
+import 'package:memo/features/profiles/presentation/gender_choice.dart';
 import 'package:memo/features/profiles/presentation/profile_labels.dart';
 import 'package:memo/l10n/app_localizations.dart';
 
@@ -23,6 +24,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   int _step = 0;
   ProfileType? _type;
   Level? _level;
+  Gender _gender = Gender.unspecified;
   final _name = TextEditingController();
 
   @override
@@ -41,6 +43,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               : _name.text.trim(),
           type: _type!,
           level: _level!,
+          gender: _gender,
         );
     widget.onDone?.call();
   }
@@ -84,7 +87,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                           selected: _type == t,
                           onTap: () => setState(() => _type = t),
                         ),
-                    if (_step == 2)
+                    if (_step == 2) ...[
                       TextField(
                         controller: _name,
                         maxLength: 30,
@@ -94,6 +97,13 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                           hintText: l10n.onboardingNameHint,
                         ),
                       ),
+                      const SizedBox(height: 16),
+                      GenderChoice(
+                        type: _type,
+                        value: _gender,
+                        onChanged: (g) => setState(() => _gender = g),
+                      ),
+                    ],
                     if (_step == 1)
                       for (final l in Level.values)
                         _ChoiceCard(

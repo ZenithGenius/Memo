@@ -126,6 +126,18 @@ void main() {
     await tester.tap(find.text('Enfant'));
     await tester.pumpAndSettle();
     await shot('onboarding.png');
+
+    // Dernière étape : prénom et genre (facultatifs).
+    await tester.tap(find.text('Suivant'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Débutant'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Suivant'));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField), 'Amina');
+    await tester.tap(find.text('Fille'));
+    await tester.pumpAndSettle();
+    await shot('onboarding_name.png');
     await disposeWidgetTestDb(tester, container, db);
   });
 }

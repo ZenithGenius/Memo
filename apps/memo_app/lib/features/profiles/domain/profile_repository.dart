@@ -13,6 +13,7 @@ abstract interface class ProfileRepository {
     required ProfileType type,
     required Level level,
     String language = 'fr',
+    Gender gender = Gender.unspecified,
   });
 
   /// Change le profil actif. Sans effet si le profil n'existe pas.
