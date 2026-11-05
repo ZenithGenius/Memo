@@ -87,6 +87,7 @@ export function describe(e: AuditEntry): string {
     case "accounts":
       return "Fiche compte modifiée";
     case "users":
+      if (e.action === "password_reset") return "Lien de réinitialisation du mot de passe envoyé";
       return e.action === "delete" ? "Compte supprimé par son titulaire" : "Compte modifié";
     default:
       return `${ENTITY_LABEL[e.entity] ?? e.entity} : ${e.action}`;

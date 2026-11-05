@@ -66,6 +66,28 @@ void main() {
     );
   });
 
+  test(
+    'mot de passe oublié : adresse envoyée, trop de demandes typé',
+    () async {
+      late http.Request seen;
+      await api((r) async {
+        seen = r;
+        return http.Response('{}', 200);
+      }).requestPasswordReset('amina@example.org');
+      expect(seen.url.path, '/auth/v1/recover');
+      expect(jsonDecode(seen.body), {'email': 'amina@example.org'});
+      expect(seen.headers.containsKey('Authorization'), isFalse);
+      expect(
+        await errorOf(
+          api(
+            (_) async => http.Response('{}', 429),
+          ).requestPasswordReset('a@b.org'),
+        ),
+        AuthError.rateLimited,
+      );
+    },
+  );
+
   test('erreurs de connexion et d\'inscription typées', () async {
     http.Response r(int code, Map<String, Object?> b) =>
         http.Response(jsonEncode(b), code);

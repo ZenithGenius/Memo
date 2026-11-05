@@ -362,6 +362,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cancel => 'Cancel';
 
   @override
+  String get accountForgotPassword => 'Forgot password?';
+
+  @override
+  String get accountResetSent =>
+      'If an account exists for this address, a link has just been emailed. It is valid for one hour: choose a new password, then sign in again here.';
+
+  @override
+  String get authRateLimited => 'Too many requests. Try again in an hour.';
+
+  @override
   String get accountDelete => 'Delete my account';
 
   @override
