@@ -1,9 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { BadgeCheck, KeyRound, Receipt, Smartphone, UserRound, Wallet } from "lucide-react";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import { useSession } from "@/app/auth";
+import { useDb } from "@/app/db-context";
 import { useToast } from "@/app/toast";
 import { Badge, Chip } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -77,6 +78,7 @@ export function AccountDrawer({ account, onClose }: { account: AccountRef | null
       ) : (
         <>
           <ProfileCard userId={account.userId} profile={data.profile} writable={writable} />
+          {writable && <PasswordResetCard userId={account.userId} />}
           <SubscriptionsCard subscriptions={data.subscriptions} writable={writable} />
           {writable && (
             <ActivationCard
@@ -129,6 +131,50 @@ function ProfileCard({ userId, profile, writable }: {
           </div>
         )}
       </form>
+    </Card>
+  );
+}
+
+/**
+ * Famille qui a perdu son mot de passe : un lien lui est envoyé par e-mail.
+ * L'administrateur ne voit ni ne choisit jamais le mot de passe ; la demande
+ * est tracée au journal avant l'envoi.
+ */
+function PasswordResetCard({ userId }: { userId: string }) {
+  const db = useDb();
+  const toast = useToast();
+  const confirm = useConfirm();
+  const [sending, setSending] = useState(false);
+
+  const send = async () => {
+    const ok = await confirm({
+      title: "Envoyer un lien de réinitialisation ?",
+      text: "La personne reçoit par e-mail un lien valable une heure pour choisir un nouveau mot de passe. Ses sessions ouvertes seront fermées après le changement.",
+      confirmLabel: "Envoyer le lien",
+    });
+    if (!ok) return;
+    setSending(true);
+    try {
+      const { data: email, error } = await db.rpc("admin_log_password_reset", { target: userId });
+      if (error) throw error;
+      const { error: sendError } = await db.auth.resetPasswordForEmail(email, { redirectTo: `${window.location.origin}/` });
+      if (sendError) throw sendError;
+      toast("Lien de réinitialisation envoyé.");
+    } catch (e) {
+      report("réinitialisation du mot de passe", e);
+      toast(userMessage(e, "Le lien n'a pas pu être envoyé. Réessayez plus tard."), "error");
+    } finally {
+      setSending(false);
+    }
+  };
+
+  return (
+    <Card>
+      <CardHeader title="Mot de passe" icon={<KeyRound className="size-4.5" />} />
+      <div className="flex flex-wrap items-center justify-between gap-3 p-5">
+        <p className="text-sm text-fg-muted">Mot de passe perdu : envoyer un lien pour en choisir un nouveau.</p>
+        <Button variant="secondary" loading={sending} onClick={() => void send()}>Envoyer un lien</Button>
+      </div>
     </Card>
   );
 }

@@ -128,6 +128,42 @@ void main() {
     await app.dispose(tester);
   });
 
+  testWidgets('mot de passe oublié : lien demandé, message sans erreur', (
+    tester,
+  ) async {
+    late FakeAuth auth;
+    final app = await AppHarness.start(
+      tester,
+      overrides: (db, store) {
+        final service = unsubscribedService(db, store);
+        auth = service.auth as FakeAuth;
+        return [accountServiceProvider.overrideWithValue(service)];
+      },
+    );
+    app.container.read(caregiverSessionProvider.notifier).unlock();
+    await tester.tap(find.text('Réglages'));
+    await tester.pumpAndSettle();
+    final signIn = find.widgetWithText(FilledButton, 'Se connecter');
+    await tester.ensureVisible(signIn);
+    await tester.pumpAndSettle();
+    await tester.tap(signIn);
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.byType(TextField).first, ' amina@example.org ');
+    await tester.pump();
+    await tester.tap(find.text('Mot de passe oublié ?'));
+    await settleDatabase(tester);
+
+    expect(auth.resetRequests, ['amina@example.org']);
+    expect(find.textContaining('un lien vient d\'être envoyé'), findsOneWidget);
+    expect(
+      find.text('Se connecter'),
+      findsOneWidget,
+      reason: 'toujours déconnecté',
+    );
+    await app.dispose(tester);
+  });
+
   testWidgets('sans serveur configuré, pas de section Compte', (tester) async {
     final app = await AppHarness.start(tester);
     await tester.tap(find.text('Réglages'));

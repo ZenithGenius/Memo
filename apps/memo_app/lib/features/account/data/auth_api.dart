@@ -12,6 +12,7 @@ enum AuthError {
   confirmationRequired,
   sessionExpired,
   offline,
+  rateLimited,
   server,
 }
 
@@ -42,6 +43,10 @@ abstract interface class AuthApi {
 
   /// Supprime le compte de la session (fonction `delete_my_account`).
   Future<void> deleteAccount(String accessToken);
+
+  /// Envoie par e-mail un lien pour choisir un nouveau mot de passe. Le
+  /// serveur répond de la même façon que l'adresse existe ou non.
+  Future<void> requestPasswordReset(String email);
 }
 
 /// Authentification Supabase (GoTrue) par appels HTTP directs.
@@ -74,18 +79,30 @@ class HttpAuthApi implements AuthApi {
   );
 
   @override
-  Future<void> deleteAccount(String accessToken) async {
+  Future<void> deleteAccount(String accessToken) =>
+      _send('/rest/v1/rpc/delete_my_account', {}, accessToken: accessToken);
+
+  @override
+  Future<void> requestPasswordReset(String email) =>
+      _send('/auth/v1/recover', {'email': email});
+
+  /// Appel sans session en retour : seul le code de réponse compte.
+  Future<void> _send(
+    String path,
+    Map<String, String> body, {
+    String? accessToken,
+  }) async {
     final http.Response response;
     try {
       response = await _client
           .post(
-            config.supabaseUrl.resolve('/rest/v1/rpc/delete_my_account'),
+            config.supabaseUrl.resolve(path),
             headers: {
               'apikey': config.supabaseAnonKey,
-              'Authorization': 'Bearer $accessToken',
+              if (accessToken != null) 'Authorization': 'Bearer $accessToken',
               'Content-Type': 'application/json',
             },
-            body: '{}',
+            body: jsonEncode(body),
           )
           .timeout(timeout);
     } on http.ClientException {
@@ -94,6 +111,9 @@ class HttpAuthApi implements AuthApi {
       throw const AuthException(AuthError.offline);
     } on TimeoutException {
       throw const AuthException(AuthError.offline);
+    }
+    if (response.statusCode == 429) {
+      throw const AuthException(AuthError.rateLimited);
     }
     if (response.statusCode < 200 || response.statusCode >= 300) {
       throw const AuthException(AuthError.server);

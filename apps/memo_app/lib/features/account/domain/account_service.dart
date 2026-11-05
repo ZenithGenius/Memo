@@ -56,6 +56,11 @@ class AccountService {
     await store.delete(_emailKey);
   }
 
+  /// Lien de réinitialisation envoyé par e-mail ; le nouveau mot de passe se
+  /// choisit sur la page du lien, puis on se reconnecte ici.
+  Future<void> requestPasswordReset(String email) =>
+      auth.requestPasswordReset(email.trim());
+
   /// Supprime le compte sur le serveur (réseau requis), puis oublie la session
   /// et le jeton de licence : l'appareil repasse en gratuit. Les profils, les
   /// favoris et les tableaux restent sur l'appareil.
