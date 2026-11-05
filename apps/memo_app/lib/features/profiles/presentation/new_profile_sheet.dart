@@ -6,6 +6,7 @@ import 'package:memo/features/catalog/domain/catalog.dart';
 import 'package:memo/features/catalog/presentation/catalog_providers.dart';
 import 'package:memo/features/message/presentation/message_notifier.dart';
 import 'package:memo/features/profiles/domain/profile.dart';
+import 'package:memo/features/profiles/presentation/gender_choice.dart';
 import 'package:memo/features/profiles/presentation/profile_labels.dart';
 import 'package:memo/l10n/app_localizations.dart';
 
@@ -23,6 +24,7 @@ class _NewProfileSheetState extends ConsumerState<NewProfileSheet> {
   final _name = TextEditingController();
   ProfileType _type = ProfileType.child;
   Level _level = Level.beginner;
+  Gender _gender = Gender.unspecified;
   bool _saving = false;
 
   @override
@@ -44,6 +46,7 @@ class _NewProfileSheetState extends ConsumerState<NewProfileSheet> {
           name: _name.text.trim(),
           type: _type,
           level: _level,
+          gender: _gender,
           language: language,
         );
     ref.read(caregiverSessionProvider.notifier).lock();
@@ -91,6 +94,12 @@ class _NewProfileSheetState extends ConsumerState<NewProfileSheet> {
                     onSelected: (_) => setState(() => _type = t),
                   ),
               ],
+            ),
+            const SizedBox(height: 16),
+            GenderChoice(
+              type: _type,
+              value: _gender,
+              onChanged: (g) => setState(() => _gender = g),
             ),
             const SizedBox(height: 16),
             Text(

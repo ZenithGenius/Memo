@@ -31,6 +31,8 @@ class PackPictogram {
     required this.sortOrder,
     required this.labels,
     this.imageAsset,
+    this.imageFeminine,
+    this.imageMasculine,
     this.tier = 'free',
     this.labelInImage = false,
   });
@@ -40,6 +42,10 @@ class PackPictogram {
   final String audience;
   final int sortOrder;
   final String? imageAsset;
+
+  /// Variantes au féminin et au masculin (`imageVariants` dans le paquet).
+  final String? imageFeminine;
+  final String? imageMasculine;
 
   /// `free` (livré dans l'application) ou `premium` (ADR-008).
   final String tier;
@@ -103,6 +109,12 @@ class ContentPack {
             audience: p['audience']! as String,
             sortOrder: p['sortOrder']! as int,
             imageAsset: p['image'] as String?,
+            imageFeminine:
+                (p['imageVariants'] as Map<String, Object?>?)?['feminine']
+                    as String?,
+            imageMasculine:
+                (p['imageVariants'] as Map<String, Object?>?)?['masculine']
+                    as String?,
             tier: (p['tier'] as String?) ?? 'free',
             labelInImage: (p['labelInImage'] as bool?) ?? false,
             labels: (p['labels']! as Map<String, Object?>).map((lang, v) {
