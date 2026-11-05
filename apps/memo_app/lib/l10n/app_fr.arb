@@ -200,6 +200,9 @@
   "phraseDeleteConfirm": "Supprimer « {text} » ?",
   "phraseDeleteAction": "Supprimer",
   "cancel": "Annuler",
+  "phraseAdded": "Phrase ajoutée",
+  "phraseDeleted": "Phrase supprimée",
+  "boardSaved": "Tableau enregistré",
   "@phraseDeleteConfirm": {
     "placeholders": {
       "text": {
