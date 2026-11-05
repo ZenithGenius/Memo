@@ -252,6 +252,21 @@ void main() {
       await app.dispose(tester);
     });
 
+    testWidgets('terminer la modification du tableau est confirmé', (
+      tester,
+    ) async {
+      final app = await AppHarness.start(tester);
+      await createCodeAndUnlock(tester);
+      app.container.read(appRouterProvider).go('/board');
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(Icons.edit_outlined));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(Icons.check));
+      await tester.pump();
+      expect(find.text('Tableau enregistré'), findsOneWidget);
+      await app.dispose(tester);
+    });
+
     testWidgets('ajouter une phrase demande le code puis l\'enregistre', (
       tester,
     ) async {
@@ -271,6 +286,7 @@ void main() {
       await tester.tap(find.text('Enregistrer'));
       await settleDatabase(tester);
       expect(find.text('Il fait très chaud'), findsOneWidget);
+      expect(find.text('Phrase ajoutée'), findsOneWidget);
       await app.dispose(tester);
     });
 
@@ -295,6 +311,7 @@ void main() {
       await tester.tap(find.text('Supprimer'));
       await settleDatabase(tester);
       expect(find.text('À supprimer'), findsNothing);
+      expect(find.text('Phrase supprimée'), findsOneWidget);
       await app.dispose(tester);
     });
 

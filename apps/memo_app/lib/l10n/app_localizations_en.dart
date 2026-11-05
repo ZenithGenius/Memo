@@ -362,6 +362,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cancel => 'Cancel';
 
   @override
+  String get phraseAdded => 'Phrase added';
+
+  @override
+  String get phraseDeleted => 'Phrase deleted';
+
+  @override
+  String get boardSaved => 'Board saved';
+
+  @override
   String get profileSwitchTitle => 'Who is talking?';
 
   @override

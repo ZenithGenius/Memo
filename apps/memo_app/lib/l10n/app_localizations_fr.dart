@@ -365,6 +365,15 @@ class AppLocalizationsFr extends AppLocalizations {
   String get cancel => 'Annuler';
 
   @override
+  String get phraseAdded => 'Phrase ajoutée';
+
+  @override
+  String get phraseDeleted => 'Phrase supprimée';
+
+  @override
+  String get boardSaved => 'Tableau enregistré';
+
+  @override
   String get profileSwitchTitle => 'Qui parle ?';
 
   @override

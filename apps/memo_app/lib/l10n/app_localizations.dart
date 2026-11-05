@@ -638,6 +638,24 @@ abstract class AppLocalizations {
   /// **'Annuler'**
   String get cancel;
 
+  /// No description provided for @phraseAdded.
+  ///
+  /// In fr, this message translates to:
+  /// **'Phrase ajoutée'**
+  String get phraseAdded;
+
+  /// No description provided for @phraseDeleted.
+  ///
+  /// In fr, this message translates to:
+  /// **'Phrase supprimée'**
+  String get phraseDeleted;
+
+  /// No description provided for @boardSaved.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tableau enregistré'**
+  String get boardSaved;
+
   /// No description provided for @profileSwitchTitle.
   ///
   /// In fr, this message translates to:
