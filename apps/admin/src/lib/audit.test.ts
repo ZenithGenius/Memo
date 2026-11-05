@@ -23,6 +23,9 @@ suite("journal d'activité lisible", () => {
     expect(describe({ action: "update", entity: "devices", before: { revoked_at: null }, after: { revoked_at: "2026-10-10T10:00:00Z" } })).toBe("Appareil révoqué");
     expect(describe({ action: "update", entity: "devices", before: { revoked_at: "x" }, after: { revoked_at: null } })).toBe("Appareil rétabli");
   });
+  it("compte supprimé par son titulaire", () => {
+    expect(describe({ action: "delete", entity: "users", before: null, after: null })).toBe("Compte supprimé par son titulaire");
+  });
 });
 
 suite("changedFields", () => {
