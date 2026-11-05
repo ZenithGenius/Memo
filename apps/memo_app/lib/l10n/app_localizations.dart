@@ -638,6 +638,36 @@ abstract class AppLocalizations {
   /// **'Annuler'**
   String get cancel;
 
+  /// No description provided for @accountDelete.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer mon compte'**
+  String get accountDelete;
+
+  /// No description provided for @accountDeleteTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer le compte ?'**
+  String get accountDeleteTitle;
+
+  /// No description provided for @accountDeleteWarning.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le compte {email} sera supprimé définitivement : l\'abonnement en cours est perdu et les appareils associés sont déconnectés. Les profils, favoris et tableaux restent sur ce téléphone.'**
+  String accountDeleteWarning(String email);
+
+  /// No description provided for @accountDeleteAction.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer définitivement'**
+  String get accountDeleteAction;
+
+  /// No description provided for @accountDeleted.
+  ///
+  /// In fr, this message translates to:
+  /// **'Compte supprimé'**
+  String get accountDeleted;
+
   /// No description provided for @phraseAdded.
   ///
   /// In fr, this message translates to:
