@@ -69,6 +69,8 @@ class ContentImporter {
           audience: p.audience,
           sortOrder: p.sortOrder,
           imageAsset: Value(p.imageAsset),
+          imageFeminine: Value(p.imageFeminine),
+          imageMasculine: Value(p.imageMasculine),
           tier: Value(p.tier),
           labelInImage: Value(p.labelInImage),
         );

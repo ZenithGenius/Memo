@@ -119,6 +119,8 @@ class DriftCatalogRepository implements CatalogRepository {
         imageAsset: _showImage(r, lang)
             ? r.readTable(_db.pictograms).imageAsset
             : null,
+        imageFeminine: r.readTable(_db.pictograms).imageFeminine,
+        imageMasculine: r.readTable(_db.pictograms).imageMasculine,
         minLevel: Level.values[r.readTable(_db.pictograms).minLevel],
         audience: Audience.values.byName(r.readTable(_db.pictograms).audience),
         sortOrder: r.readTable(_db.pictograms).sortOrder,

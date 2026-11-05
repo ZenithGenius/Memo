@@ -45,12 +45,17 @@ void main() {
     await tester.pump();
     await tester.tap(find.text('Suivant'));
     await tester.pump();
+    // Enfant : fille ou garçon, facultatif.
+    expect(find.text('Femme'), findsNothing);
+    await tester.tap(find.text('Fille'));
+    await tester.pump();
     await tester.tap(find.text('Commencer'));
     await tester.pump();
 
     final profile = await tester.runAsync(() => repo.watchActive().first);
     expect(profile?.type, ProfileType.child);
     expect(profile?.level, Level.beginner);
+    expect(profile?.gender, Gender.feminine);
     expect(done, isTrue);
 
     await disposeWidgetTestDb(tester, container, db);

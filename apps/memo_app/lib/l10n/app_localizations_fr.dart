@@ -365,6 +365,28 @@ class AppLocalizationsFr extends AppLocalizations {
   String get cancel => 'Annuler';
 
   @override
+  String get genderLabel => 'Genre';
+
+  @override
+  String get genderGirl => 'Fille';
+
+  @override
+  String get genderBoy => 'Garçon';
+
+  @override
+  String get genderWoman => 'Femme';
+
+  @override
+  String get genderMan => 'Homme';
+
+  @override
+  String get genderUnspecified => 'Ne pas préciser';
+
+  @override
+  String get genderHint =>
+      'Facultatif. Les pictogrammes qui représentent une personne s\'affichent au féminin ou au masculin.';
+
+  @override
   String get accountForgotPassword => 'Mot de passe oublié ?';
 
   @override

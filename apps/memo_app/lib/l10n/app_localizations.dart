@@ -638,6 +638,48 @@ abstract class AppLocalizations {
   /// **'Annuler'**
   String get cancel;
 
+  /// No description provided for @genderLabel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Genre'**
+  String get genderLabel;
+
+  /// No description provided for @genderGirl.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fille'**
+  String get genderGirl;
+
+  /// No description provided for @genderBoy.
+  ///
+  /// In fr, this message translates to:
+  /// **'Garçon'**
+  String get genderBoy;
+
+  /// No description provided for @genderWoman.
+  ///
+  /// In fr, this message translates to:
+  /// **'Femme'**
+  String get genderWoman;
+
+  /// No description provided for @genderMan.
+  ///
+  /// In fr, this message translates to:
+  /// **'Homme'**
+  String get genderMan;
+
+  /// No description provided for @genderUnspecified.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ne pas préciser'**
+  String get genderUnspecified;
+
+  /// No description provided for @genderHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Facultatif. Les pictogrammes qui représentent une personne s\'affichent au féminin ou au masculin.'**
+  String get genderHint;
+
   /// No description provided for @accountForgotPassword.
   ///
   /// In fr, this message translates to:

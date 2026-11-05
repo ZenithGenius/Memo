@@ -3,6 +3,29 @@ import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memo/data/db/app_database.dart';
 
+// Tables présentes depuis la version 1 que chaque migration peut modifier.
+const _profilesV1 = '''
+  CREATE TABLE profiles (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL, type TEXT NOT NULL, level INTEGER NOT NULL,
+    language TEXT NOT NULL DEFAULT 'fr',
+    created_at INTEGER NOT NULL DEFAULT (strftime('%s','now'))
+  )''';
+
+const _pictogramsV3 = '''
+  CREATE TABLE pictograms (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    code TEXT NOT NULL UNIQUE,
+    category_id INTEGER NOT NULL,
+    image_asset TEXT NULL,
+    image_version INTEGER NOT NULL DEFAULT 1,
+    min_level INTEGER NOT NULL,
+    audience TEXT NOT NULL,
+    sort_order INTEGER NOT NULL,
+    tier TEXT NOT NULL DEFAULT 'free',
+    label_in_image INTEGER NOT NULL DEFAULT 0
+  )''';
+
 void main() {
   test(
     'migration v1 vers v2 : les données restent, les colonnes arrivent',
@@ -36,6 +59,7 @@ void main() {
               "INSERT INTO pictograms (code, category_id, min_level, audience, sort_order) "
               "VALUES ('CAA-CR-CBE-001', 1, 0, 'all', 1)",
             );
+            raw.execute(_profilesV1);
             raw.execute('PRAGMA user_version = 1');
           },
         ),
@@ -94,6 +118,7 @@ void main() {
               "INSERT INTO pictograms (code, category_id, min_level, audience, sort_order, tier) "
               "VALUES ('CAA-CR-ACT-001', 1, 0, 'all', 1, 'premium')",
             );
+            raw.execute(_profilesV1);
             raw.execute('PRAGMA user_version = 2');
           },
         ),
@@ -121,6 +146,7 @@ void main() {
           raw.execute(
             "INSERT INTO profiles (name, type, level) VALUES ('T','child',0)",
           );
+          raw.execute(_pictogramsV3);
           raw.execute('PRAGMA user_version = 3');
         },
       ),
@@ -155,6 +181,7 @@ void main() {
           raw.execute(
             "INSERT INTO profiles (name, type, level) VALUES ('T','child',0)",
           );
+          raw.execute(_pictogramsV3);
           raw.execute('PRAGMA user_version = 4');
         },
       ),
@@ -170,5 +197,33 @@ void main() {
           ),
         );
     expect(await db.select(db.spokenSentences).get(), hasLength(1));
+  });
+
+  test('migration v5 vers v6 : genre du profil et variantes d\'images', () async {
+    final db = AppDatabase(
+      NativeDatabase.memory(
+        setup: (raw) {
+          raw.execute(_profilesV1);
+          raw.execute(_pictogramsV3);
+          raw.execute(
+            "INSERT INTO profiles (name, type, level) VALUES ('Amina','child',0)",
+          );
+          raw.execute(
+            "INSERT INTO pictograms (code, category_id, image_asset, min_level, audience, sort_order) "
+            "VALUES ('P1', 1, 'commun.png', 0, 'all', 1)",
+          );
+          raw.execute('PRAGMA user_version = 5');
+        },
+      ),
+    );
+    addTearDown(db.close);
+
+    final profile = await db.select(db.profiles).getSingle();
+    expect(profile.name, 'Amina');
+    expect(profile.gender, 'unspecified');
+    final p = await db.select(db.pictograms).getSingle();
+    expect(p.imageAsset, 'commun.png');
+    expect(p.imageFeminine, isNull);
+    expect(p.imageMasculine, isNull);
   });
 }
