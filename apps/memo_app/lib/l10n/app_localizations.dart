@@ -326,6 +326,24 @@ abstract class AppLocalizations {
   /// **'Appuyez longuement sur un pictogramme pour l\'ajouter à vos favoris'**
   String get favoritesEmpty;
 
+  /// No description provided for @favoriteAdded.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajouté aux favoris : {label}'**
+  String favoriteAdded(String label);
+
+  /// No description provided for @favoriteRemoved.
+  ///
+  /// In fr, this message translates to:
+  /// **'Retiré des favoris : {label}'**
+  String favoriteRemoved(String label);
+
+  /// No description provided for @favoritesRemoveHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Appuyez longuement sur un pictogramme pour le retirer de vos favoris'**
+  String get favoritesRemoveHint;
+
   /// No description provided for @boardTitle.
   ///
   /// In fr, this message translates to:
@@ -619,6 +637,54 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Annuler'**
   String get cancel;
+
+  /// No description provided for @accountDelete.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer mon compte'**
+  String get accountDelete;
+
+  /// No description provided for @accountDeleteTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer le compte ?'**
+  String get accountDeleteTitle;
+
+  /// No description provided for @accountDeleteWarning.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le compte {email} sera supprimé définitivement : l\'abonnement en cours est perdu et les appareils associés sont déconnectés. Les profils, favoris et tableaux restent sur ce téléphone.'**
+  String accountDeleteWarning(String email);
+
+  /// No description provided for @accountDeleteAction.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer définitivement'**
+  String get accountDeleteAction;
+
+  /// No description provided for @accountDeleted.
+  ///
+  /// In fr, this message translates to:
+  /// **'Compte supprimé'**
+  String get accountDeleted;
+
+  /// No description provided for @phraseAdded.
+  ///
+  /// In fr, this message translates to:
+  /// **'Phrase ajoutée'**
+  String get phraseAdded;
+
+  /// No description provided for @phraseDeleted.
+  ///
+  /// In fr, this message translates to:
+  /// **'Phrase supprimée'**
+  String get phraseDeleted;
+
+  /// No description provided for @boardSaved.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tableau enregistré'**
+  String get boardSaved;
 
   /// No description provided for @profileSwitchTitle.
   ///

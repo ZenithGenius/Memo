@@ -55,6 +55,7 @@ export const ENTITY_LABEL: Record<string, string> = {
   admins: "Administrateur",
   devices: "Appareil",
   accounts: "Fiche compte",
+  users: "Compte",
 };
 
 /** Phrase lisible pour une ligne du journal d'activité. */
@@ -85,6 +86,8 @@ export function describe(e: AuditEntry): string {
       return after.revoked_at ? "Appareil révoqué" : "Appareil rétabli";
     case "accounts":
       return "Fiche compte modifiée";
+    case "users":
+      return e.action === "delete" ? "Compte supprimé par son titulaire" : "Compte modifié";
     default:
       return `${ENTITY_LABEL[e.entity] ?? e.entity} : ${e.action}`;
   }

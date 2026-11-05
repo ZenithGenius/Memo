@@ -13,7 +13,8 @@ import 'package:memo/l10n/app_localizations.dart';
 ///
 /// Selon les réglages : le mot est prononcé aussitôt (retour immédiat avant
 /// que la phrase existe) et l'appareil vibre. Une annonce est envoyée aux
-/// lecteurs d'écran, l'ajout n'étant sinon visible qu'à l'écran.
+/// lecteurs d'écran, l'ajout n'étant sinon visible qu'à l'écran. Un message
+/// plein est dit à l'écran : sans cela, l'application semble ne plus répondre.
 void addToMessage(BuildContext context, WidgetRef ref, Pictogram pictogram) {
   final l10n = AppLocalizations.of(context);
   final settings =
@@ -33,6 +34,11 @@ void addToMessage(BuildContext context, WidgetRef ref, Pictogram pictogram) {
     ref
         .read(speechServiceProvider)
         .speak(pictogram.spokenText, language: language);
+  }
+  if (!added) {
+    ScaffoldMessenger.maybeOf(context)
+      ?..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text(l10n.messageFull)));
   }
   SemanticsService.sendAnnouncement(
     View.of(context),

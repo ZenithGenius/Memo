@@ -124,14 +124,21 @@ void main() {
       for (var i = 0; i < CaregiverPinService.maxAttempts; i++) {
         await pin(tester, '0001');
       }
-      expect(find.textContaining('Trop d\'essais'), findsOneWidget);
+      expect(find.text("Trop d'essais. Réessayez dans 30 s."), findsOneWidget);
 
       // Même le bon code est refusé pendant le blocage.
       await pin(tester, '4827');
       expect(app.container.read(caregiverSessionProvider), isFalse);
 
-      // Le blocage passé, le bon code fonctionne.
-      AppHarness.clock = AppHarness.clock.add(const Duration(seconds: 31));
+      // L'attente décompte sans nouvelle saisie.
+      AppHarness.clock = AppHarness.clock.add(const Duration(seconds: 10));
+      await tester.pump(const Duration(seconds: 1));
+      expect(find.text("Trop d'essais. Réessayez dans 20 s."), findsOneWidget);
+
+      // Le blocage passé, le message disparaît et le bon code fonctionne.
+      AppHarness.clock = AppHarness.clock.add(const Duration(seconds: 21));
+      await tester.pump(const Duration(seconds: 1));
+      expect(find.textContaining("Trop d'essais"), findsNothing);
       await pin(tester, '4827');
       expect(app.container.read(caregiverSessionProvider), isTrue);
       await app.dispose(tester);
@@ -245,6 +252,21 @@ void main() {
       await app.dispose(tester);
     });
 
+    testWidgets('terminer la modification du tableau est confirmé', (
+      tester,
+    ) async {
+      final app = await AppHarness.start(tester);
+      await createCodeAndUnlock(tester);
+      app.container.read(appRouterProvider).go('/board');
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(Icons.edit_outlined));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(Icons.check));
+      await tester.pump();
+      expect(find.text('Tableau enregistré'), findsOneWidget);
+      await app.dispose(tester);
+    });
+
     testWidgets('ajouter une phrase demande le code puis l\'enregistre', (
       tester,
     ) async {
@@ -264,6 +286,7 @@ void main() {
       await tester.tap(find.text('Enregistrer'));
       await settleDatabase(tester);
       expect(find.text('Il fait très chaud'), findsOneWidget);
+      expect(find.text('Phrase ajoutée'), findsOneWidget);
       await app.dispose(tester);
     });
 
@@ -288,6 +311,7 @@ void main() {
       await tester.tap(find.text('Supprimer'));
       await settleDatabase(tester);
       expect(find.text('À supprimer'), findsNothing);
+      expect(find.text('Phrase supprimée'), findsOneWidget);
       await app.dispose(tester);
     });
 

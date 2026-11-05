@@ -83,6 +83,11 @@
   "settingsTooltip": "Réglages",
   "favoritesTitle": "Mes favoris",
   "favoritesEmpty": "Appuyez longuement sur un pictogramme pour l'ajouter à vos favoris",
+  "favoriteAdded": "Ajouté aux favoris : {label}",
+  "@favoriteAdded": {"placeholders": {"label": {"type": "String"}}},
+  "favoriteRemoved": "Retiré des favoris : {label}",
+  "@favoriteRemoved": {"placeholders": {"label": {"type": "String"}}},
+  "favoritesRemoveHint": "Appuyez longuement sur un pictogramme pour le retirer de vos favoris",
   "boardTitle": "Mon tableau",
   "boardEdit": "Modifier le tableau",
   "boardDone": "Terminer",
@@ -195,6 +200,15 @@
   "phraseDeleteConfirm": "Supprimer « {text} » ?",
   "phraseDeleteAction": "Supprimer",
   "cancel": "Annuler",
+  "accountDelete": "Supprimer mon compte",
+  "accountDeleteTitle": "Supprimer le compte ?",
+  "accountDeleteWarning": "Le compte {email} sera supprimé définitivement : l'abonnement en cours est perdu et les appareils associés sont déconnectés. Les profils, favoris et tableaux restent sur ce téléphone.",
+  "@accountDeleteWarning": {"placeholders": {"email": {"type": "String"}}},
+  "accountDeleteAction": "Supprimer définitivement",
+  "accountDeleted": "Compte supprimé",
+  "phraseAdded": "Phrase ajoutée",
+  "phraseDeleted": "Phrase supprimée",
+  "boardSaved": "Tableau enregistré",
   "@phraseDeleteConfirm": {
     "placeholders": {
       "text": {

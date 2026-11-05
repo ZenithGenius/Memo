@@ -159,6 +159,20 @@ class AppLocalizationsFr extends AppLocalizations {
       'Appuyez longuement sur un pictogramme pour l\'ajouter à vos favoris';
 
   @override
+  String favoriteAdded(String label) {
+    return 'Ajouté aux favoris : $label';
+  }
+
+  @override
+  String favoriteRemoved(String label) {
+    return 'Retiré des favoris : $label';
+  }
+
+  @override
+  String get favoritesRemoveHint =>
+      'Appuyez longuement sur un pictogramme pour le retirer de vos favoris';
+
+  @override
   String get boardTitle => 'Mon tableau';
 
   @override
@@ -349,6 +363,32 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get cancel => 'Annuler';
+
+  @override
+  String get accountDelete => 'Supprimer mon compte';
+
+  @override
+  String get accountDeleteTitle => 'Supprimer le compte ?';
+
+  @override
+  String accountDeleteWarning(String email) {
+    return 'Le compte $email sera supprimé définitivement : l\'abonnement en cours est perdu et les appareils associés sont déconnectés. Les profils, favoris et tableaux restent sur ce téléphone.';
+  }
+
+  @override
+  String get accountDeleteAction => 'Supprimer définitivement';
+
+  @override
+  String get accountDeleted => 'Compte supprimé';
+
+  @override
+  String get phraseAdded => 'Phrase ajoutée';
+
+  @override
+  String get phraseDeleted => 'Phrase supprimée';
+
+  @override
+  String get boardSaved => 'Tableau enregistré';
 
   @override
   String get profileSwitchTitle => 'Qui parle ?';

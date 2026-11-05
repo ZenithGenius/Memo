@@ -11,7 +11,7 @@ import { actorName, useAdminEmails, useAudit } from "./api";
 
 const PAGE_SIZE = 25;
 
-type EntityFilter = "all" | "subscriptions" | "payments" | "plans" | "devices" | "admins" | "accounts";
+type EntityFilter = "all" | "subscriptions" | "payments" | "plans" | "devices" | "admins" | "accounts" | "users";
 
 const ENTITY_TABS: { value: EntityFilter; label: string }[] = [
   { value: "all", label: "Tout" },
@@ -21,6 +21,7 @@ const ENTITY_TABS: { value: EntityFilter; label: string }[] = [
   { value: "devices", label: "Appareils" },
   { value: "admins", label: "Administrateurs" },
   { value: "accounts", label: "Fiches compte" },
+  { value: "users", label: "Comptes" },
 ];
 
 export default function AuditPage() {
