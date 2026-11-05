@@ -1,7 +1,16 @@
 # Journal
 
+## 05/11/2026
+
+- PR #48 (`fix/recette-seance-1`) : #33 message plein affiché, #34 décompte du code bloqué, #39 retour sur les actions, #40 retrait des favoris, #38 couleurs des catégories, #36 suppression du compte (migration `20261105000001`, tests `backend/tests/suppression_compte.sql`), image nginx corrigée (Trivy sans faille HIGH). CI verte.
+- PR #49 (`feat/mot-de-passe-oublie`) : #42 réinitialisation du mot de passe (back-office, application, fiche compte, journal ; migration `20261105000002`). Parcours vérifié dans un navigateur avec Mailpit, y compris un compte à double authentification.
+- PR #50 (`feat/genre-profil`) : #19 genre au premier lancement et variantes d'images (base locale v6).
+- Ticket #35 corrigé : 9 mots gratuits sans image, et non 5.
+- Fusion par l'agent refusée par les permissions : les PR attendent le propriétaire.
+
 ## 04/11/2026
 
+- Fusion des PR #16, #29, #30, #32, #3, #4, #31 dans `main` ; #1 fermée ; tickets #5, #6, #8 fermés.
 - Création des fichiers de passation (`AGENTS.md`, `CLAUDE.md`, `.agents/`).
 
 ## 24/10/2026
