@@ -25,6 +25,7 @@ suite("journal d'activité lisible", () => {
   });
   it("compte supprimé par son titulaire", () => {
     expect(describe({ action: "delete", entity: "users", before: null, after: null })).toBe("Compte supprimé par son titulaire");
+    expect(describe({ action: "password_reset", entity: "users", before: null, after: null })).toBe("Lien de réinitialisation du mot de passe envoyé");
   });
 });
 

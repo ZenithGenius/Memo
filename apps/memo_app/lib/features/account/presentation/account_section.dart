@@ -23,6 +23,9 @@ class _AccountSectionState extends ConsumerState<AccountSection> {
   bool _busy = false;
   String? _message;
 
+  /// Information sans erreur (lien de réinitialisation envoyé).
+  String? _info;
+
   /// Les opérations durent (réseau) : on garde le conteneur, pas le widget,
   /// qui peut être détruit entre-temps.
   Future<bool> _run(Future<Entitlement?> Function() action) async {
@@ -31,6 +34,7 @@ class _AccountSectionState extends ConsumerState<AccountSection> {
     setState(() {
       _busy = true;
       _message = null;
+      _info = null;
     });
     String? message;
     try {
@@ -61,6 +65,16 @@ class _AccountSectionState extends ConsumerState<AccountSection> {
       builder: (_) => const _SignInDialog(),
     );
     if (credentials == null || !mounted) return;
+    if (credentials.forgot) {
+      final sent = await _run(() async {
+        await service.requestPasswordReset(credentials.email);
+        return null;
+      });
+      if (sent && mounted) {
+        setState(() => _info = AppLocalizations.of(context).accountResetSent);
+      }
+      return;
+    }
     await _run(
       () => credentials.create
           ? service.signUp(credentials.email, credentials.password)
@@ -148,6 +162,11 @@ class _AccountSectionState extends ConsumerState<AccountSection> {
               ),
             ),
           ),
+        if (_info != null)
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: Semantics(liveRegion: true, child: Text(_info!)),
+          ),
         const SizedBox(height: 12),
         if (_busy)
           const Center(child: CircularProgressIndicator())
@@ -188,6 +207,7 @@ String authErrorText(AppLocalizations l10n, AuthError error) => switch (error) {
   AuthError.confirmationRequired => l10n.authConfirmationRequired,
   AuthError.sessionExpired => l10n.authSessionExpired,
   AuthError.offline => l10n.networkOffline,
+  AuthError.rateLimited => l10n.authRateLimited,
   AuthError.server => l10n.networkServer,
 };
 
@@ -202,10 +222,18 @@ String licenseErrorText(AppLocalizations l10n, LicenseApiError error) =>
     };
 
 class _Credentials {
-  const _Credentials(this.email, this.password, {required this.create});
+  const _Credentials(
+    this.email,
+    this.password, {
+    required this.create,
+    this.forgot = false,
+  });
   final String email;
   final String password;
   final bool create;
+
+  /// Mot de passe oublié : seule l'adresse est renseignée.
+  final bool forgot;
 }
 
 class _SignInDialog extends StatefulWidget {
@@ -265,6 +293,20 @@ class _SignInDialogState extends State<_SignInDialog> {
               onPressed: () => setState(() => _create = !_create),
               child: Text(_create ? l10n.accountHaveOne : l10n.accountNoneYet),
             ),
+            if (!_create)
+              TextButton(
+                onPressed: _email.text.contains('@')
+                    ? () => Navigator.of(context).pop(
+                        _Credentials(
+                          _email.text,
+                          '',
+                          create: false,
+                          forgot: true,
+                        ),
+                      )
+                    : null,
+                child: Text(l10n.accountForgotPassword),
+              ),
           ],
         ),
       ),

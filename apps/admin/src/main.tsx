@@ -8,11 +8,16 @@ import { DbProvider } from "@/app/db-context";
 import { ToastProvider } from "@/app/toast";
 import { ConfirmProvider } from "@/components/ui/overlay";
 import { readConfig } from "@/lib/config";
+import { readAuthLink } from "@/lib/recovery";
 import { createDb } from "@/lib/supabase";
 import "./styles.css";
 
 const root = createRoot(document.getElementById("root") as HTMLElement);
 const config = readConfig();
+// Avant createDb : le client efface le fragment d'URL en ouvrant la session.
+const authLink = readAuthLink(window.location.hash);
+// Lien expiré : le message d'erreur du serveur ne reste pas dans l'adresse.
+if (authLink === "expired") window.history.replaceState(null, "", window.location.pathname);
 
 if (!config) {
   root.render(
@@ -28,7 +33,7 @@ if (!config) {
         <QueryClientProvider client={queryClient}>
           <ToastProvider>
             <ConfirmProvider>
-              <AuthProvider>
+              <AuthProvider link={authLink}>
                 <BrowserRouter>
                   <App />
                 </BrowserRouter>

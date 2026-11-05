@@ -46,6 +46,14 @@ class FakeAuth implements AuthApi {
   final deleted = <String>[];
   AuthError? deleteFailsWith;
 
+  final resetRequests = <String>[];
+
+  @override
+  Future<void> requestPasswordReset(String email) async {
+    if (failWith != null) throw AuthException(failWith!);
+    resetRequests.add(email);
+  }
+
   @override
   Future<void> deleteAccount(String accessToken) async {
     if (deleteFailsWith != null) throw AuthException(deleteFailsWith!);

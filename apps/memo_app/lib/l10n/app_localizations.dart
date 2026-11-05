@@ -638,6 +638,24 @@ abstract class AppLocalizations {
   /// **'Annuler'**
   String get cancel;
 
+  /// No description provided for @accountForgotPassword.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mot de passe oublié ?'**
+  String get accountForgotPassword;
+
+  /// No description provided for @accountResetSent.
+  ///
+  /// In fr, this message translates to:
+  /// **'Si un compte existe pour cette adresse, un lien vient d\'être envoyé par e-mail. Il est valable une heure : choisissez un nouveau mot de passe, puis reconnectez-vous ici.'**
+  String get accountResetSent;
+
+  /// No description provided for @authRateLimited.
+  ///
+  /// In fr, this message translates to:
+  /// **'Trop de demandes. Réessayez dans une heure.'**
+  String get authRateLimited;
+
   /// No description provided for @accountDelete.
   ///
   /// In fr, this message translates to:

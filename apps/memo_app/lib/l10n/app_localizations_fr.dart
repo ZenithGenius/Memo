@@ -365,6 +365,16 @@ class AppLocalizationsFr extends AppLocalizations {
   String get cancel => 'Annuler';
 
   @override
+  String get accountForgotPassword => 'Mot de passe oublié ?';
+
+  @override
+  String get accountResetSent =>
+      'Si un compte existe pour cette adresse, un lien vient d\'être envoyé par e-mail. Il est valable une heure : choisissez un nouveau mot de passe, puis reconnectez-vous ici.';
+
+  @override
+  String get authRateLimited => 'Trop de demandes. Réessayez dans une heure.';
+
+  @override
   String get accountDelete => 'Supprimer mon compte';
 
   @override

@@ -36,6 +36,14 @@ Sur le projet hébergé (Authentication), indispensables à la sécurité :
   adresse dès l'inscription ;
 - MFA TOTP activé (Multi-Factor) : les administrateurs ne peuvent rien faire
   sans second facteur (ADR-010).
+- envoi d'e-mails par un serveur SMTP réel (section `[auth.email.smtp]`, mot
+  de passe fourni par variable d'environnement) : le serveur intégré de
+  Supabase est limité à quelques e-mails par heure et réservé aux essais ;
+- `site_url` égal à l'adresse publique du back-office, et cette adresse suivie
+  de `/` dans `additional_redirect_urls` : les liens de réinitialisation du
+  mot de passe, y compris ceux demandés depuis l'application, y mènent ;
+- modèles d'e-mail en français (`supabase/templates/`) : réinitialisation du
+  mot de passe et avis de changement.
 
 La configuration locale (`supabase/config.toml`) garde la confirmation
 désactivée pour les tests de bout en bout.
