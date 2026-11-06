@@ -1003,6 +1003,132 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Cet appareil a été retiré du compte.'**
   String get licenseDeviceRevoked;
+
+  /// No description provided for @boardTabGrid.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tableau'**
+  String get boardTabGrid;
+
+  /// No description provided for @boardTabRoutines.
+  ///
+  /// In fr, this message translates to:
+  /// **'Routines'**
+  String get boardTabRoutines;
+
+  /// No description provided for @routineNew.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nouvelle routine'**
+  String get routineNew;
+
+  /// No description provided for @routineEmpty.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune routine pour l\'instant. Une routine montre, en une ligne, les étapes d\'un moment de la journée.'**
+  String get routineEmpty;
+
+  /// No description provided for @routineName.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nom de la routine'**
+  String get routineName;
+
+  /// No description provided for @routineNameHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Par exemple : Le matin'**
+  String get routineNameHint;
+
+  /// No description provided for @routineSave.
+  ///
+  /// In fr, this message translates to:
+  /// **'Enregistrer'**
+  String get routineSave;
+
+  /// No description provided for @routineRename.
+  ///
+  /// In fr, this message translates to:
+  /// **'Renommer'**
+  String get routineRename;
+
+  /// No description provided for @routineEditSteps.
+  ///
+  /// In fr, this message translates to:
+  /// **'Modifier les étapes'**
+  String get routineEditSteps;
+
+  /// No description provided for @routineDelete.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer'**
+  String get routineDelete;
+
+  /// No description provided for @routineDeleteConfirm.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer la routine « {name} » ?'**
+  String routineDeleteConfirm(String name);
+
+  /// No description provided for @routineRestart.
+  ///
+  /// In fr, this message translates to:
+  /// **'Recommencer'**
+  String get routineRestart;
+
+  /// No description provided for @routineProgress.
+  ///
+  /// In fr, this message translates to:
+  /// **'{done} sur {total}'**
+  String routineProgress(int done, int total);
+
+  /// No description provided for @routineFinished.
+  ///
+  /// In fr, this message translates to:
+  /// **'Routine terminée, bravo !'**
+  String get routineFinished;
+
+  /// No description provided for @routineNoSteps.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune étape pour l\'instant.'**
+  String get routineNoSteps;
+
+  /// No description provided for @routineAddStep.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajouter une étape'**
+  String get routineAddStep;
+
+  /// No description provided for @routineStepDone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fait'**
+  String get routineStepDone;
+
+  /// No description provided for @routineStep.
+  ///
+  /// In fr, this message translates to:
+  /// **'Étape {index} sur {total} : {label}'**
+  String routineStep(int index, int total, String label);
+
+  /// No description provided for @routineRemoveStep.
+  ///
+  /// In fr, this message translates to:
+  /// **'Retirer {label}'**
+  String routineRemoveStep(String label);
+
+  /// No description provided for @routineStepsTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Étapes de « {name} »'**
+  String routineStepsTitle(String name);
+
+  /// No description provided for @routineOptions.
+  ///
+  /// In fr, this message translates to:
+  /// **'Options de {name}'**
+  String routineOptions(String name);
 }
 
 class _AppLocalizationsDelegate

@@ -13,6 +13,7 @@ import 'package:memo/features/account/data/premium_pack_api.dart';
 import 'package:memo/features/account/domain/account_service.dart';
 import 'package:memo/features/account/presentation/account_providers.dart';
 import 'package:memo/features/board/data/drift_board_repository.dart';
+import 'package:memo/features/board/data/drift_routine_repository.dart';
 import 'package:memo/features/caregiver/domain/caregiver_pin_service.dart';
 import 'package:memo/features/caregiver/presentation/caregiver_providers.dart';
 import 'package:memo/features/catalog/data/drift_catalog_repository.dart';
@@ -89,6 +90,9 @@ Future<ProviderContainer> createContainer({
         DriftFavoritesRepository(database),
       ),
       boardRepositoryProvider.overrideWithValue(DriftBoardRepository(database)),
+      routineRepositoryProvider.overrideWithValue(
+        DriftRoutineRepository(database, now: clock),
+      ),
       phraseRepositoryProvider.overrideWithValue(
         DriftPhraseRepository(database),
       ),

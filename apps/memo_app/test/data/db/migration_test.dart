@@ -227,4 +227,33 @@ void main() {
     expect(p.imageMasculine, isNull);
     expect(p.imageSha256, isNull, reason: 'colonne de la version 7');
   });
+
+  test('migration v7 vers v8 : les tables des routines sont créées', () async {
+    final db = AppDatabase(
+      NativeDatabase.memory(
+        setup: (raw) {
+          raw.execute(_profilesV1);
+          raw.execute(
+            "ALTER TABLE profiles ADD COLUMN gender TEXT NOT NULL DEFAULT 'unspecified'",
+          );
+          raw.execute(_pictogramsV3);
+          raw.execute(
+            "INSERT INTO profiles (name, type, level) VALUES ('Amina','child',0)",
+          );
+          raw.execute('PRAGMA user_version = 7');
+        },
+      ),
+    );
+    addTearDown(db.close);
+
+    final profile = await db.select(db.profiles).getSingle();
+    expect(profile.name, 'Amina');
+    final id = await db
+        .into(db.routines)
+        .insert(
+          RoutinesCompanion.insert(profileId: profile.id, name: 'Le matin'),
+        );
+    expect((await db.select(db.routines).getSingle()).id, id);
+    expect(await db.select(db.routineSteps).get(), isEmpty);
+  });
 }

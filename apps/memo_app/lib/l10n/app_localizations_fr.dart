@@ -567,4 +567,80 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get licenseDeviceRevoked => 'Cet appareil a été retiré du compte.';
+
+  @override
+  String get boardTabGrid => 'Tableau';
+
+  @override
+  String get boardTabRoutines => 'Routines';
+
+  @override
+  String get routineNew => 'Nouvelle routine';
+
+  @override
+  String get routineEmpty =>
+      'Aucune routine pour l\'instant. Une routine montre, en une ligne, les étapes d\'un moment de la journée.';
+
+  @override
+  String get routineName => 'Nom de la routine';
+
+  @override
+  String get routineNameHint => 'Par exemple : Le matin';
+
+  @override
+  String get routineSave => 'Enregistrer';
+
+  @override
+  String get routineRename => 'Renommer';
+
+  @override
+  String get routineEditSteps => 'Modifier les étapes';
+
+  @override
+  String get routineDelete => 'Supprimer';
+
+  @override
+  String routineDeleteConfirm(String name) {
+    return 'Supprimer la routine « $name » ?';
+  }
+
+  @override
+  String get routineRestart => 'Recommencer';
+
+  @override
+  String routineProgress(int done, int total) {
+    return '$done sur $total';
+  }
+
+  @override
+  String get routineFinished => 'Routine terminée, bravo !';
+
+  @override
+  String get routineNoSteps => 'Aucune étape pour l\'instant.';
+
+  @override
+  String get routineAddStep => 'Ajouter une étape';
+
+  @override
+  String get routineStepDone => 'Fait';
+
+  @override
+  String routineStep(int index, int total, String label) {
+    return 'Étape $index sur $total : $label';
+  }
+
+  @override
+  String routineRemoveStep(String label) {
+    return 'Retirer $label';
+  }
+
+  @override
+  String routineStepsTitle(String name) {
+    return 'Étapes de « $name »';
+  }
+
+  @override
+  String routineOptions(String name) {
+    return 'Options de $name';
+  }
 }

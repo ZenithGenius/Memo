@@ -75,6 +75,7 @@ void main() {
       'navPhrases',
       'languageFrench',
       'languageEnglish',
+      'boardTabRoutines',
     };
     for (final k in keys(fr)) {
       if (same.contains(k)) continue;

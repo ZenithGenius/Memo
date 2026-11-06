@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memo/core/config/flavor.dart';
 import 'package:memo/features/account/presentation/account_providers.dart';
 import 'package:memo/features/board/domain/board_repository.dart';
+import 'package:memo/features/board/domain/routine.dart';
 import 'package:memo/features/catalog/domain/catalog.dart';
 import 'package:memo/features/catalog/domain/catalog_repository.dart';
 import 'package:memo/features/favorites/domain/favorites_repository.dart';
@@ -92,6 +93,37 @@ final boardPictogramsProvider = StreamProvider<Map<int, Pictogram>>((ref) {
       .watch(catalogRepositoryProvider)
       .watchByIds(
         board.cells.values.toList(),
+        profile.language,
+        includePremium: ref.watch(premiumUnlockedProvider),
+      )
+      .forGender(profile.gender)
+      .map((list) => {for (final p in list) p.id: p});
+});
+
+final routineRepositoryProvider = Provider<RoutineRepository>(
+  (ref) => throw UnimplementedError('à surcharger au démarrage'),
+);
+
+final routinesProvider = StreamProvider<List<Routine>>((ref) {
+  final profile = ref.watch(activeProfileProvider).value;
+  if (profile == null) return Stream.value(const <Routine>[]);
+  return ref.watch(routineRepositoryProvider).watch(profile.id);
+});
+
+/// Pictogrammes des étapes de toutes les routines du profil actif.
+final routinePictogramsProvider = StreamProvider<Map<int, Pictogram>>((ref) {
+  final profile = ref.watch(activeProfileProvider).value;
+  final ids = {
+    for (final r in ref.watch(routinesProvider).value ?? const <Routine>[])
+      for (final s in r.steps) s.pictogramId,
+  };
+  if (profile == null || ids.isEmpty) {
+    return Stream.value(const <int, Pictogram>{});
+  }
+  return ref
+      .watch(catalogRepositoryProvider)
+      .watchByIds(
+        ids.toList(),
         profile.language,
         includePremium: ref.watch(premiumUnlockedProvider),
       )

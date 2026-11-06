@@ -152,3 +152,28 @@ class WordEvents extends Table {
       integer().references(Pictograms, #id, onDelete: KeyAction.cascade)();
   DateTimeColumn get usedAt => dateTime()();
 }
+
+/// Routine d'un profil (« Le matin ») : une suite d'étapes en pictogrammes.
+@DataClassName('RoutineRow')
+class Routines extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get profileId =>
+      integer().references(Profiles, #id, onDelete: KeyAction.cascade)();
+  TextColumn get name => text()();
+}
+
+/// Étape d'une routine. `doneOn` est le jour (AAAA-MM-JJ) où elle a été
+/// faite : une étape cochée un autre jour ne l'est plus, d'où la remise à
+/// zéro quotidienne sans tâche planifiée.
+@DataClassName('RoutineStepRow')
+class RoutineSteps extends Table {
+  IntColumn get routineId =>
+      integer().references(Routines, #id, onDelete: KeyAction.cascade)();
+  IntColumn get position => integer()();
+  IntColumn get pictogramId =>
+      integer().references(Pictograms, #id, onDelete: KeyAction.cascade)();
+  TextColumn get doneOn => text().nullable()();
+
+  @override
+  Set<Column<Object>> get primaryKey => {routineId, position};
+}
