@@ -2,8 +2,11 @@ import assert from "node:assert/strict";
 import { createImageHandler, type ImageHandlerDeps } from "./handler.ts";
 
 const FP = "abcdefghijklmnop1234";
-const SHA = "a".repeat(64);
 const PNG = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+const SHA = Array.from(
+  new Uint8Array(await crypto.subtle.digest("SHA-256", PNG)),
+  (x) => x.toString(16).padStart(2, "0"),
+).join("");
 
 function setup(over: {
   user?: string | null;
@@ -11,6 +14,7 @@ function setup(over: {
   subscribed?: boolean;
   published?: boolean;
   fail?: boolean;
+  bytes?: Uint8Array;
 } = {}) {
   const asked: string[] = [];
   const deps: ImageHandlerDeps = {
@@ -35,7 +39,9 @@ function setup(over: {
     publishedImage: (sha) => {
       asked.push(sha);
       if (over.fail) return Promise.reject(new Error("secret interne"));
-      return Promise.resolve(over.published === false ? null : { mime: "image/png", bytes: PNG });
+      return Promise.resolve(
+        over.published === false ? null : { mime: "image/png", bytes: over.bytes ?? PNG },
+      );
     },
     now: () => new Date("2026-10-11"),
   };
@@ -54,6 +60,18 @@ Deno.test("abonné, image publiée : octets, type, cache long et privé", async 
   assert.equal(r.headers.get("Content-Length"), "8");
   assert.equal(r.headers.get("Cache-Control"), "private, max-age=31536000, immutable");
   assert.equal(r.headers.get("X-Content-Type-Options"), "nosniff");
+});
+
+Deno.test("objet altéré dans le stockage : jamais servi", async () => {
+  const altered = new Uint8Array([...PNG, 0x00]);
+  assert.equal((await setup({ bytes: altered }).handler(get())).status, 500);
+  const notPng = new Uint8Array([0x3c, 0x73, 0x76, 0x67, 0x3e, 0, 0, 0]);
+  const { handler } = setup({ bytes: notPng });
+  const sha = Array.from(
+    new Uint8Array(await crypto.subtle.digest("SHA-256", notPng)),
+    (x) => x.toString(16).padStart(2, "0"),
+  ).join("");
+  assert.equal((await handler(get(`fingerprint=${FP}&sha256=${sha}`))).status, 500);
 });
 
 Deno.test("image absente de la dernière publication : 404", async () => {

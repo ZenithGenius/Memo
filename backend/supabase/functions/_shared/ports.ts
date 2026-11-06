@@ -13,7 +13,8 @@ export interface PremiumPack {
 export interface ContentRepository {
   /** Dernière publication, `null` si rien n'a encore été publié. */
   latestPack(): Promise<PremiumPack | null>;
-  /** Image référencée par la dernière publication, `null` sinon. */
+  /** Image référencée par la dernière publication, `null` sinon. Les octets
+   * viennent du stockage objet (ADR-012). */
   publishedImage(sha256: string): Promise<{ mime: string; bytes: Uint8Array } | null>;
 }
 

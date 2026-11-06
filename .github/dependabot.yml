@@ -24,6 +24,12 @@ updates:
       interval: weekly
     commit-message:
       prefix: chore
+  - package-ecosystem: docker-compose
+    directory: /backend/storage
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: chore
   - package-ecosystem: github-actions
     directory: /
     schedule:
