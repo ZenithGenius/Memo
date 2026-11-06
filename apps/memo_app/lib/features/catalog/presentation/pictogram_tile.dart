@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:memo/core/theme/app_colors.dart';
 
@@ -74,13 +76,20 @@ class PictogramTile extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Center(
-                          child: imageAsset != null
-                              ? Image.asset(
-                                  imageAsset!,
-                                  fit: BoxFit.contain,
-                                  errorBuilder: (_, _, _) => _fallbackIcon(),
-                                )
-                              : _fallbackIcon(),
+                          child: switch (imageAsset) {
+                            null => _fallbackIcon(),
+                            // Image téléchargée : chemin absolu sur l'appareil.
+                            final path when path.startsWith('/') => Image.file(
+                              File(path),
+                              fit: BoxFit.contain,
+                              errorBuilder: (_, _, _) => _fallbackIcon(),
+                            ),
+                            final asset => Image.asset(
+                              asset,
+                              fit: BoxFit.contain,
+                              errorBuilder: (_, _, _) => _fallbackIcon(),
+                            ),
+                          },
                         ),
                       ),
                       if (!labelInImage) ...[

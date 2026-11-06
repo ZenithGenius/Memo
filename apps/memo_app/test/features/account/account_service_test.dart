@@ -1,8 +1,13 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:cryptography/cryptography.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memo/core/storage/secure_store.dart';
 import 'package:memo/data/content/content_importer.dart';
 import 'package:memo/data/content/content_pack.dart';
+import 'package:memo/data/content/image_store.dart';
 import 'package:memo/data/db/app_database.dart';
 import 'package:memo/features/account/data/auth_api.dart';
 import 'package:memo/features/account/data/premium_pack_api.dart';
@@ -74,9 +79,31 @@ class FakeLicenseApi implements LicenseApi {
   }) => issue_(fingerprint);
 }
 
+/// Image servie par la fausse fonction, et son empreinte (SHA-256 de « abc »).
+final imageBytes = Uint8List.fromList(utf8.encode('abc'));
+const imageSha =
+    'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad';
+
 class FakePacks implements PremiumPackApi {
   int version = 7;
   final requestedHave = <int?>[];
+
+  /// Le paquet référence une image envoyée depuis le back-office.
+  bool withImage = false;
+  final imageRequests = <String>[];
+  LicenseApiError? imageFailsWith;
+  Uint8List Function()? imageOverride;
+
+  @override
+  Future<Uint8List> fetchImage({
+    required String accessToken,
+    required String fingerprint,
+    required String sha256,
+  }) async {
+    imageRequests.add(sha256);
+    if (imageFailsWith != null) throw LicenseApiException(imageFailsWith!);
+    return imageOverride?.call() ?? imageBytes;
+  }
 
   @override
   Future<ContentPack?> fetch({
@@ -103,6 +130,8 @@ class FakePacks implements PremiumPackApi {
           'audience': 'all',
           'sortOrder': 1,
           'tier': 'premium',
+          if (withImage)
+            'imageObject': {'sha256': imageSha, 'mime': 'image/png', 'size': 3},
           'labels': {
             'fr': {'label': 'Eau', 'spoken': 'eau'},
           },
@@ -120,6 +149,7 @@ void main() {
   late FakeAuth auth;
   late FakePacks packs;
   late bool subscribed;
+  late Directory imageDir;
 
   Future<AccountService> service() async {
     final device = SecureStoreDeviceIdentity(store);
@@ -127,6 +157,7 @@ void main() {
       auth: auth,
       store: store,
       packs: packs,
+      images: ImageStore(imageDir),
       importer: ContentImporter(db),
       device: device,
       entitlements: EntitlementService(
@@ -172,8 +203,12 @@ void main() {
     auth = FakeAuth();
     packs = FakePacks();
     subscribed = true;
+    imageDir = await Directory.systemTemp.createTemp('memo-images');
   });
-  tearDown(() => db.close());
+  tearDown(() async {
+    await db.close();
+    await imageDir.delete(recursive: true);
+  });
 
   Future<int> premiumCount() async =>
       (await db.select(db.pictograms).get()).length;
@@ -208,6 +243,35 @@ void main() {
     expect(await s.email, 'amina@example.org');
     expect((await s.entitlements.current()).isPremium, isTrue);
   });
+
+  test(
+    'images envoyées : téléchargées une fois, vérifiées, retentées',
+    () async {
+      packs.withImage = true;
+      packs.imageFailsWith = LicenseApiError.offline;
+      final s = await service();
+      await s.signIn('a@b.org', 'x');
+      final store = ImageStore(imageDir);
+      expect(await store.has(imageSha), isFalse, reason: 'réseau coupé');
+
+      // Contenu altéré en route : jamais enregistré.
+      packs
+        ..imageFailsWith = null
+        ..imageOverride = () => Uint8List.fromList(utf8.encode('abd'));
+      await s.sync();
+      expect(await store.has(imageSha), isFalse);
+
+      // Synchronisation suivante : l'image arrive, même sans nouveau paquet.
+      packs.imageOverride = null;
+      await s.sync();
+      expect(await store.has(imageSha), isTrue);
+      expect(await store.fileFor(imageSha).readAsBytes(), imageBytes);
+
+      packs.imageRequests.clear();
+      await s.sync();
+      expect(packs.imageRequests, isEmpty, reason: 'déjà présente');
+    },
+  );
 
   test('déjà à jour : le paquet n\'est pas retéléchargé', () async {
     final s = await service();

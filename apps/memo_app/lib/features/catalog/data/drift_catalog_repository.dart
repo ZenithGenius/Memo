@@ -4,8 +4,11 @@ import 'package:memo/features/catalog/domain/catalog.dart';
 import 'package:memo/features/catalog/domain/catalog_repository.dart';
 
 class DriftCatalogRepository implements CatalogRepository {
-  DriftCatalogRepository(this._db);
+  DriftCatalogRepository(this._db, {this.imageDir});
   final AppDatabase _db;
+
+  /// Dossier des images téléchargées (ImageStore) ; `null` sans serveur.
+  final String? imageDir;
 
   @override
   Stream<List<Category>> watchCategories(
@@ -110,15 +113,22 @@ class DriftCatalogRepository implements CatalogRepository {
   bool _showImage(TypedResult r, String lang) =>
       lang == 'fr' || !r.readTable(_db.pictograms).labelInImage;
 
+  /// Image téléchargée (chemin absolu) en priorité, sinon image embarquée.
+  /// Tant que le téléchargement n'a pas eu lieu, la tuile affiche l'icône.
+  String? _imageOf(TypedResult r) {
+    final p = r.readTable(_db.pictograms);
+    final dir = imageDir;
+    if (p.imageSha256 != null && dir != null) return '$dir/${p.imageSha256}';
+    return p.imageAsset;
+  }
+
   List<Pictogram> _mapRows(List<TypedResult> rows, String lang) => [
     for (final r in rows)
       Pictogram(
         id: r.readTable(_db.pictograms).id,
         code: r.readTable(_db.pictograms).code,
         categoryId: r.readTable(_db.pictograms).categoryId,
-        imageAsset: _showImage(r, lang)
-            ? r.readTable(_db.pictograms).imageAsset
-            : null,
+        imageAsset: _showImage(r, lang) ? _imageOf(r) : null,
         imageFeminine: r.readTable(_db.pictograms).imageFeminine,
         imageMasculine: r.readTable(_db.pictograms).imageMasculine,
         minLevel: Level.values[r.readTable(_db.pictograms).minLevel],
