@@ -1,5 +1,9 @@
 # Journal
 
+## 06/11/2026 (fin, suite) : feuilles en plein écran
+
+- Les feuilles s'ouvraient dans la zone de l'onglet, coupées par la barre du message qui restait utilisable derrière. Elles s'ouvrent maintenant sur tout l'écran ; éditeur de routine aussi. Vérifié sur émulateur. PR #57.
+
 ## 06/11/2026 (fin) : paquet gratuit (#41) et variantes serveur (#19)
 
 - #41 : palier free ou premium par pictogramme, 20 mots gratuits dans le catalogue serveur, fonction `free-pack` sans compte, mise à jour du gratuit au démarrage de l'application. ADR-013. Vérifié de bout en bout (Pharmacie passé en gratuit puis repassé en abonnés, visible puis masqué sur l'émulateur sans compte). PR #55.

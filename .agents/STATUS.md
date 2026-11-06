@@ -4,7 +4,7 @@ Mis à jour le 06/11/2026 (soir).
 
 ## Bloqué / urgent
 
-- PR à fusionner par le propriétaire, dans l'ordre : #48 (corrections de recette), #49 (mot de passe oublié), #50 (genre du profil), #52 (écran Contenu, images en stockage objet), #53 (images affichées dans l'application), #54 (routines), #55 (paquet gratuit réglable), #56 (variantes fille ou garçon côté serveur). Chaque PR part de la précédente.
+- PR à fusionner par le propriétaire, dans l'ordre : #48 (corrections de recette), #49 (mot de passe oublié), #50 (genre du profil), #52 (écran Contenu, images en stockage objet), #53 (images affichées dans l'application), #54 (routines), #55 (paquet gratuit réglable), #56 (variantes fille ou garçon côté serveur), #57 (feuilles en plein écran). Chaque PR part de la précédente.
 - PR Dependabot : #44 à fermer (dossier `backend/admin` supprimé), #45 rendue inutile par #48 (même image nginx), #43, #46, #47 à examiner.
 - Images à fournir par CREYATIV : 9 des 20 mots gratuits sans pictogramme (#35), 23 pictogrammes payants sur 131 avec image, aucune variante fille ou garçon (#19).
 - Bloquants boutiques restants : politique de confidentialité publiée, version iOS (#13), SMTP de production pour les e-mails.
@@ -15,7 +15,6 @@ Mis à jour le 06/11/2026 (soir).
 - Paliers payants (#18) : nombre à décider avec le client ; le format (`tier`) les accueille déjà.
 - Au déploiement de #55 : publier une fois depuis le back-office pour que les 20 mots gratuits entrent dans la publication, et déployer la fonction `free-pack`.
 - Production : déployer SeaweedFS (`backend/storage`) derrière Supabase Storage, sauvegarder son volume avec la base (ADR-012).
-- Le sélecteur de pictogrammes (grille et routines) passe en partie sous la barre du message : à corriger.
 - #38 : validation de la palette des catégories par CREYATIV.
 - Corrections du cahier de recette en attente (sur demande seulement) : Brice créé en B08, B04 reporté en séance 2, chemin de suppression d'un profil, nombre réel de mots gratuits sans image.
 
