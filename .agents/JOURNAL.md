@@ -1,5 +1,13 @@
 # Journal
 
+## 06/11/2026
+
+- Décisions du propriétaire notées dans #35 (attendre les images), #37 (routines dans « Mon tableau », remise à zéro quotidienne), #41 (paliers plus tard).
+- Images en stockage objet : Supabase Storage, SeaweedFS en production, MinIO écarté (ADR-012, migration `20261106000001`).
+- PR #52 (`feat/contenu-back-office`) : écran « Contenu » du back-office ; testé dans un navigateur (création avec image, publication de la version 8).
+- PR #53 (`feat/images-telechargees`) : l'application télécharge et affiche les images ; vérifié sur émulateur (tuile « Pharmacie »).
+- Storage vérifié avec SeaweedFS 4.48 (envoi, métadonnées, relecture identique).
+
 ## 05/11/2026
 
 - PR #48 (`fix/recette-seance-1`) : #33 message plein affiché, #34 décompte du code bloqué, #39 retour sur les actions, #40 retrait des favoris, #38 couleurs des catégories, #36 suppression du compte (migration `20261105000001`, tests `backend/tests/suppression_compte.sql`), image nginx corrigée (Trivy sans faille HIGH). CI verte.

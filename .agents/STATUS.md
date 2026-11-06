@@ -1,10 +1,10 @@
 # État du projet
 
-Mis à jour le 05/11/2026.
+Mis à jour le 06/11/2026.
 
 ## Bloqué / urgent
 
-- PR à fusionner par le propriétaire, dans l'ordre : #48 (corrections de recette), puis #49 (mot de passe oublié), puis #50 (genre du profil). Chaque PR part de la précédente.
+- PR à fusionner par le propriétaire, dans l'ordre : #48 (corrections de recette), #49 (mot de passe oublié), #50 (genre du profil), #52 (écran Contenu, images en stockage objet), #53 (images affichées dans l'application). Chaque PR part de la précédente.
 - PR Dependabot : #44 à fermer (dossier `backend/admin` supprimé), #45 rendue inutile par #48 (même image nginx), #43, #46, #47 à examiner.
 - Images à fournir par CREYATIV : 9 des 20 mots gratuits sans pictogramme (#35), 23 pictogrammes payants sur 131 avec image, aucune variante fille ou garçon (#19).
 - Bloquants boutiques restants : politique de confidentialité publiée, version iOS (#13), SMTP de production pour les e-mails.
@@ -12,7 +12,8 @@ Mis à jour le 05/11/2026.
 ## En cours / à faire
 
 - Recette : séance 1 faite le 24/10/2026. Séances 2 et 3 à faire après fusion des PR.
-- Évolutions : #37 (tableaux de routine), #41 (paquet gratuit réglable), #28 (gestion du contenu, avec les variantes d'images de #19).
+- Évolutions : #37 (tableaux de routine : dans « Mon tableau », étapes cochées remises à zéro chaque jour), #41 (paquet gratuit réglable, paliers décidés plus tard avec le client), variantes fille ou garçon côté serveur (#19).
+- Production : déployer SeaweedFS (`backend/storage`) derrière Supabase Storage, sauvegarder son volume avec la base (ADR-012).
 - #38 : validation de la palette des catégories par CREYATIV.
 - Corrections du cahier de recette en attente (sur demande seulement) : Brice créé en B08, B04 reporté en séance 2, chemin de suppression d'un profil, nombre réel de mots gratuits sans image.
 
