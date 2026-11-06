@@ -1,5 +1,12 @@
 # Journal
 
+## 06/11/2026 (suite) : routines (#37)
+
+- Onglet « Routines » dans « Mon tableau » : une ligne d'étapes par routine, toucher prononce, « Fait » coche, remise à zéro par le jour enregistré sur chaque étape (base locale v8).
+- Gestion (créer, renommer, étapes, supprimer) derrière le code accompagnant.
+- Vérifié sur émulateur en mode avion, horloge avancée d'un jour : la routine repart à zéro. Plantage du champ de nom trouvé et corrigé pendant cette vérification.
+- Preuve : PR #54 (base #53), 291 tests.
+
 ## 06/11/2026
 
 - Décisions du propriétaire notées dans #35 (attendre les images), #37 (routines dans « Mon tableau », remise à zéro quotidienne), #41 (paliers plus tard).
