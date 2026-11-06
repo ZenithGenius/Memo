@@ -1,4 +1,5 @@
--- Tests du contenu en base (20261011000002, 20261011000003, 20261107000001) : droits,
+-- Tests du contenu en base (20261011000002, 20261011000003, 20261107000001,
+-- 20261107000002) : droits,
 -- validation, publication, images. Exécution :
 --   docker exec -i "$SUPABASE_DB_CONTAINER" psql -U postgres -v ON_ERROR_STOP=1 < backend/tests/contenu.sql
 -- Tout est annulé à la fin (rollback).
@@ -245,6 +246,55 @@ set local role service_role;
 select pg_temp.assert_eq(jsonb_array_length(public.content_free_pack() -> 'pictograms'), 21, 'le mot passé en gratuit est dans le paquet gratuit');
 select pg_temp.assert_eq(jsonb_array_length(public.content_free_pack() -> 'categories'), 2, 'avec sa catégorie');
 select pg_temp.assert_eq(public.content_free_image((select sha from png)), 'image/png', 'son image est servie sans abonnement');
+reset role;
+
+-- ─── Variantes fille ou garçon (#19) ───────────────────────────────────────
+select pg_temp.as_user('00000000-0000-0000-0000-0000000000a1');
+insert into storage.objects (bucket_id, name, metadata) values
+  ('content-images', repeat('d', 64), '{"size": 70, "mimetype": "image/png"}'),
+  ('content-images', repeat('e', 64), '{"size": 71, "mimetype": "image/webp"}');
+select public.admin_register_image(repeat('d', 64), 'image/png');
+select public.admin_register_image(repeat('e', 64), 'image/webp');
+select pg_temp.expect_error(
+  $q$update public.content_pictograms set image_feminine_sha256 = repeat('9', 64) where code = 'CAA-CR-ACT-001'$q$,
+  'foreign key');
+update public.content_pictograms
+  set image_feminine_sha256 = repeat('d', 64), image_masculine_sha256 = repeat('e', 64)
+  where code = 'CAA-CR-ACT-001';
+update public.content_pictograms set image_feminine_sha256 = repeat('d', 64) where code = 'CAA-CR-ACT-002';
+select pg_temp.assert_eq(public.admin_publish_content('Variantes'), 11, 'variantes publiées');
+select pg_temp.assert_eq(
+  (select jsonb_path_query_first(pack, '$.pictograms[*] ? (@.code == "CAA-CR-ACT-001").imageVariantObjects')
+   from public.content_releases where version = 11),
+  jsonb_build_object(
+    'feminine', jsonb_build_object('sha256', repeat('d', 64), 'mime', 'image/png', 'size', 70),
+    'masculine', jsonb_build_object('sha256', repeat('e', 64), 'mime', 'image/webp', 'size', 71)),
+  'les deux variantes dans le paquet');
+select pg_temp.assert_eq(
+  (select jsonb_path_query_first(pack, '$.pictograms[*] ? (@.code == "CAA-CR-ACT-002").imageVariantObjects')
+   from public.content_releases where version = 11),
+  jsonb_build_object('feminine', jsonb_build_object('sha256', repeat('d', 64), 'mime', 'image/png', 'size', 70)),
+  'une seule variante : seule elle figure');
+select pg_temp.assert_eq(
+  (select jsonb_path_exists(pack, '$.pictograms[*] ? (@.code == "CAA-CR-ACT-003").imageVariantObjects')
+   from public.content_releases where version = 11),
+  false, 'sans variante : rien dans le paquet');
+select pg_temp.as_service();
+set local role service_role;
+select pg_temp.assert_eq(public.content_free_image(repeat('e', 64)), 'image/webp', 'variante d''un mot gratuit servie sans abonnement');
+select pg_temp.assert_eq(public.content_published_image(repeat('e', 64)), 'image/webp', 'variante servie aux abonnés');
+reset role;
+-- Variante d'un mot payant : pas par le paquet gratuit.
+select pg_temp.as_user('00000000-0000-0000-0000-0000000000a1');
+update public.content_pictograms set image_feminine_sha256 = null where code = 'CAA-CR-ACT-002';
+update public.content_pictograms set image_masculine_sha256 = repeat('d', 64) where code = 'CAA-CR-ACT-002';
+update public.content_pictograms set image_feminine_sha256 = null, image_masculine_sha256 = null where code = 'CAA-CR-ACT-001';
+select pg_temp.assert_eq(public.admin_publish_content(), 12, 'variante déplacée sur un mot payant');
+select pg_temp.as_service();
+set local role service_role;
+select pg_temp.assert_eq(public.content_free_image(repeat('d', 64)), null::text, 'variante d''un mot payant : pas servie sans abonnement');
+select pg_temp.assert_eq(public.content_published_image(repeat('d', 64)), 'image/png', 'mais servie aux abonnés');
+select pg_temp.assert_eq(public.content_published_image(repeat('e', 64)), null::text, 'variante retirée : plus servie');
 reset role;
 
 -- Les fonctions du paquet gratuit ne s'appellent pas directement.

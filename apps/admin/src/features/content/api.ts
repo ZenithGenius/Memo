@@ -28,6 +28,9 @@ export interface PictogramRow {
   labels: PictogramLabels;
   image_asset: string | null;
   image_sha256: string | null;
+  /** Variantes selon le genre du profil (#19). */
+  image_feminine_sha256: string | null;
+  image_masculine_sha256: string | null;
   label_in_image: boolean;
   tier: Tier;
   active: boolean;
@@ -61,7 +64,7 @@ export function usePictograms() {
     queryFn: async (): Promise<PictogramRow[]> => {
       const { data, error } = await db
         .from("content_pictograms")
-        .select("code, category_code, level, audience, sort_order, labels, image_asset, image_sha256, label_in_image, tier, active")
+        .select("code, category_code, level, audience, sort_order, labels, image_asset, image_sha256, image_feminine_sha256, image_masculine_sha256, label_in_image, tier, active")
         .order("category_code")
         .order("sort_order");
       if (error) throw error;

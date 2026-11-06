@@ -256,4 +256,32 @@ void main() {
     expect((await db.select(db.routines).getSingle()).id, id);
     expect(await db.select(db.routineSteps).get(), isEmpty);
   });
+
+  test('migration v8 vers v9 : colonnes des variantes téléchargées', () async {
+    final db = AppDatabase(
+      NativeDatabase.memory(
+        setup: (raw) {
+          raw.execute(_pictogramsV3);
+          for (final c in [
+            'image_feminine',
+            'image_masculine',
+            'image_sha256',
+          ]) {
+            raw.execute('ALTER TABLE pictograms ADD COLUMN $c TEXT NULL');
+          }
+          raw.execute(
+            "INSERT INTO pictograms (code, category_id, image_sha256, min_level, audience, sort_order) "
+            "VALUES ('P1', 1, '${'a' * 64}', 0, 'all', 1)",
+          );
+          raw.execute('PRAGMA user_version = 8');
+        },
+      ),
+    );
+    addTearDown(db.close);
+
+    final p = await db.select(db.pictograms).getSingle();
+    expect(p.imageSha256, 'a' * 64);
+    expect(p.imageFeminineSha256, isNull);
+    expect(p.imageMasculineSha256, isNull);
+  });
 }

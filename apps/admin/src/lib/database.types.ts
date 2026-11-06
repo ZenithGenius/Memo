@@ -164,6 +164,8 @@ export type Database = {
           category_code: string
           code: string
           image_asset: string | null
+          image_feminine_sha256: string | null
+          image_masculine_sha256: string | null
           image_sha256: string | null
           label_in_image: boolean
           labels: Json
@@ -178,6 +180,8 @@ export type Database = {
           category_code: string
           code: string
           image_asset?: string | null
+          image_feminine_sha256?: string | null
+          image_masculine_sha256?: string | null
           image_sha256?: string | null
           label_in_image?: boolean
           labels: Json
@@ -192,6 +196,8 @@ export type Database = {
           category_code?: string
           code?: string
           image_asset?: string | null
+          image_feminine_sha256?: string | null
+          image_masculine_sha256?: string | null
           image_sha256?: string | null
           label_in_image?: boolean
           labels?: Json
@@ -207,6 +213,20 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "content_categories"
             referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "content_pictograms_image_feminine_sha256_fkey"
+            columns: ["image_feminine_sha256"]
+            isOneToOne: false
+            referencedRelation: "content_images"
+            referencedColumns: ["sha256"]
+          },
+          {
+            foreignKeyName: "content_pictograms_image_masculine_sha256_fkey"
+            columns: ["image_masculine_sha256"]
+            isOneToOne: false
+            referencedRelation: "content_images"
+            referencedColumns: ["sha256"]
           },
           {
             foreignKeyName: "content_pictograms_image_sha256_fkey"

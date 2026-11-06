@@ -201,4 +201,92 @@ void main() {
       null,
     ]);
   });
+
+  test(
+    'variantes de genre téléchargées (#19) : prioritaires, puis image commune',
+    () async {
+      final fem = 'f' * 64;
+      final masc = 'e' * 64;
+      final importer = ContentImporter(db);
+      await importer.importIfNeeded(
+        ContentPack.fromJson({
+          'version': 1,
+          'categories': [
+            {
+              'code': 'PER',
+              'sortOrder': 3,
+              'labels': {'fr': 'Personnes'},
+            },
+          ],
+          'pictograms': [
+            {
+              ...pict('P1', 'Enfant', 0, category: 'PER', tier: 'premium'),
+              'imageObject': {'sha256': 'a' * 64},
+              'imageVariants': {
+                'feminine': 'fille.png',
+                'masculine': 'garcon.png',
+              },
+              'imageVariantObjects': {
+                'feminine': {'sha256': fem},
+                'masculine': {'sha256': masc},
+              },
+            },
+            {
+              // Une seule variante : l'autre genre garde l'image commune.
+              ...pict(
+                'P2',
+                'Bébé',
+                0,
+                category: 'PER',
+                order: 2,
+                tier: 'premium',
+              ),
+              'imageObject': {'sha256': 'b' * 64},
+              'imageVariantObjects': {
+                'feminine': {'sha256': fem},
+                'masculine': {'sha256': 'pas-une-empreinte'},
+              },
+            },
+          ],
+        }),
+        slot: ContentImporter.premiumSlot,
+      );
+      Future<List<String?>> images(DriftCatalogRepository r, Gender g) async =>
+          (await r
+                  .watchPictograms(
+                    categoryCode: 'PER',
+                    lang: 'fr',
+                    maxLevel: Level.advanced,
+                    audience: Audience.all,
+                    includePremium: true,
+                  )
+                  .first)
+              .map((p) => p.forGender(g).imageAsset)
+              .toList();
+
+      final online = DriftCatalogRepository(db, imageDir: '/img');
+      expect(await images(online, Gender.feminine), ['/img/$fem', '/img/$fem']);
+      expect(await images(online, Gender.masculine), [
+        '/img/$masc',
+        '/img/${'b' * 64}',
+      ]);
+      expect(await images(online, Gender.unspecified), [
+        '/img/${'a' * 64}',
+        '/img/${'b' * 64}',
+      ]);
+      // Sans serveur : variantes embarquées.
+      expect(await images(DriftCatalogRepository(db), Gender.feminine), [
+        'fille.png',
+        null,
+      ]);
+      // Toutes les empreintes valides sont à télécharger, une seule fois.
+      expect((await importer.imageHashes()).toSet(), {
+        'a' * 64,
+        'b' * 64,
+        fem,
+        masc,
+      });
+      expect(await importer.imageHashes(freeOnly: true), isEmpty);
+    },
+  );
 }

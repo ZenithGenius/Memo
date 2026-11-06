@@ -33,6 +33,10 @@ class Pictograms extends Table {
 
   /// Image téléchargée depuis le serveur, nommée par son empreinte (ADR-012).
   TextColumn get imageSha256 => text().nullable()();
+
+  /// Variantes téléchargées (#19), nommées par leur empreinte.
+  TextColumn get imageFeminineSha256 => text().nullable()();
+  TextColumn get imageMasculineSha256 => text().nullable()();
   IntColumn get imageVersion => integer().withDefault(const Constant(1))();
   IntColumn get minLevel => integer()();
   TextColumn get audience => text()();

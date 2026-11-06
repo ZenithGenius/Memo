@@ -76,6 +76,8 @@ class ContentImporter {
           imageFeminine: Value(p.imageFeminine),
           imageMasculine: Value(p.imageMasculine),
           imageSha256: Value(p.imageSha256),
+          imageFeminineSha256: Value(p.imageFeminineSha256),
+          imageMasculineSha256: Value(p.imageMasculineSha256),
           tier: Value(p.tier),
           labelInImage: Value(p.labelInImage),
         );
@@ -160,20 +162,22 @@ class ContentImporter {
     _db.pictograms,
   )..where((p) => p.code.equals(code))).getSingle()).id;
 
-  /// Empreintes des images envoyées depuis le back-office, à télécharger ;
-  /// celles des mots gratuits seulement si [freeOnly].
+  /// Empreintes des images envoyées depuis le back-office (image commune et
+  /// variantes), à télécharger ; celles des mots gratuits seulement si
+  /// [freeOnly].
   Future<List<String>> imageHashes({bool freeOnly = false}) async {
-    final query = _db.selectOnly(_db.pictograms, distinct: true)
-      ..addColumns([_db.pictograms.imageSha256])
-      ..where(
-        _db.pictograms.imageSha256.isNotNull() &
-            (freeOnly
-                ? _db.pictograms.tier.equals('free')
-                : const Constant(true)),
-      );
-    return [
-      for (final row in await query.get())
-        row.read(_db.pictograms.imageSha256)!,
-    ];
+    final rows =
+        await (_db.select(_db.pictograms)..where(
+              (p) => freeOnly ? p.tier.equals('free') : const Constant(true),
+            ))
+            .get();
+    return {
+      for (final p in rows)
+        ...[
+          p.imageSha256,
+          p.imageFeminineSha256,
+          p.imageMasculineSha256,
+        ].nonNulls,
+    }.toList();
   }
 }

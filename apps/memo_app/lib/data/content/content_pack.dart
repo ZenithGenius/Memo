@@ -34,6 +34,8 @@ class PackPictogram {
     this.imageFeminine,
     this.imageMasculine,
     this.imageSha256,
+    this.imageFeminineSha256,
+    this.imageMasculineSha256,
     this.tier = 'free',
     this.labelInImage = false,
   });
@@ -51,6 +53,11 @@ class PackPictogram {
   /// Image envoyée depuis le back-office (`imageObject.sha256`), téléchargée
   /// à la synchronisation : prioritaire sur l'image embarquée.
   final String? imageSha256;
+
+  /// Variantes envoyées depuis le back-office (`imageVariantObjects`, #19),
+  /// prioritaires sur les variantes embarquées.
+  final String? imageFeminineSha256;
+  final String? imageMasculineSha256;
 
   /// `free` (livré dans l'application) ou `premium` (ADR-008).
   final String tier;
@@ -115,6 +122,12 @@ class ContentPack {
             sortOrder: p['sortOrder']! as int,
             imageAsset: p['image'] as String?,
             imageSha256: _sha256Of(p['imageObject']),
+            imageFeminineSha256: _sha256Of(
+              (p['imageVariantObjects'] as Map<String, Object?>?)?['feminine'],
+            ),
+            imageMasculineSha256: _sha256Of(
+              (p['imageVariantObjects'] as Map<String, Object?>?)?['masculine'],
+            ),
             imageFeminine:
                 (p['imageVariants'] as Map<String, Object?>?)?['feminine']
                     as String?,

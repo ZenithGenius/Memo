@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ImageUp } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import { useToast } from "@/app/toast";
@@ -28,7 +28,10 @@ const schema = z.object({
   sortOrder: z.coerce.number<number>().int("Nombre entier.").min(1, "Au moins 1.").max(9999, "9999 au maximum."),
   labelInImage: z.boolean(),
   imageSha: z.string().nullable(),
+  imageFeminine: z.string().nullable(),
+  imageMasculine: z.string().nullable(),
 });
+type ImageField = "imageSha" | "imageFeminine" | "imageMasculine";
 type Form = z.infer<typeof schema>;
 
 export type PictogramDrawerState = { mode: "create" } | { mode: "edit"; pictogram: PictogramRow } | null;
@@ -46,11 +49,13 @@ export function PictogramDrawer({ state, categories, pictograms, onClose }: {
   const toast = useToast();
   const save = useSavePictogram();
   const upload = useUploadImage();
-  const fileInput = useRef<HTMLInputElement>(null);
   const editing = state?.mode === "edit" ? state.pictogram : null;
   const form = useForm<Form>({ resolver: zodResolver(schema) });
   const category = useWatch({ control: form.control, name: "category" });
   const imageSha = useWatch({ control: form.control, name: "imageSha" }) ?? null;
+  const imageFeminine = useWatch({ control: form.control, name: "imageFeminine" }) ?? null;
+  const imageMasculine = useWatch({ control: form.control, name: "imageMasculine" }) ?? null;
+  const [uploading, setUploading] = useState<ImageField | null>(null);
 
   useEffect(() => {
     if (!state) return;
@@ -67,6 +72,8 @@ export function PictogramDrawer({ state, categories, pictograms, onClose }: {
       sortOrder: p?.sort_order ?? 1,
       labelInImage: p?.label_in_image ?? false,
       imageSha: p?.image_sha256 ?? null,
+      imageFeminine: p?.image_feminine_sha256 ?? null,
+      imageMasculine: p?.image_masculine_sha256 ?? null,
     });
   }, [state, editing, categories, form]);
 
@@ -81,21 +88,21 @@ export function PictogramDrawer({ state, categories, pictograms, onClose }: {
 
   const code = editing?.code ?? (category ? nextCode(category, pictograms.map((p) => p.code)) : "");
 
-  const onFile = async (file: File | undefined) => {
-    if (!file) return;
+  const onFile = async (field: ImageField, file: File) => {
     const problem = imageFileProblem(file);
     if (problem) {
       toast(problem, "error");
       return;
     }
+    setUploading(field);
     try {
-      form.setValue("imageSha", await upload.mutateAsync(file), { shouldDirty: true });
+      form.setValue(field, await upload.mutateAsync(file), { shouldDirty: true });
       toast("Image envoyée. Enregistrez puis publiez pour la diffuser.");
     } catch (e) {
       report("image", e);
       toast(userMessage(e, "L'image n'a pas pu être envoyée."), "error");
     } finally {
-      if (fileInput.current) fileInput.current.value = "";
+      setUploading(null);
     }
   };
 
@@ -124,6 +131,8 @@ export function PictogramDrawer({ state, categories, pictograms, onClose }: {
           },
           image_asset: editing?.image_asset ?? null,
           image_sha256: v.imageSha,
+          image_feminine_sha256: v.imageFeminine,
+          image_masculine_sha256: v.imageMasculine,
           label_in_image: v.labelInImage,
           active: editing?.active ?? true,
         },
@@ -145,22 +154,21 @@ export function PictogramDrawer({ state, categories, pictograms, onClose }: {
       subtitle={code || undefined}
     >
       <Card>
-        <CardHeader title="Image" icon={<ImageUp className="size-4.5" />} />
-        <div className="flex flex-wrap items-center gap-4 p-5">
-          <PictogramImage sha256={imageSha} asset={editing?.image_asset ?? null} size="lg" />
-          <div className="grid gap-2">
-            <p className="text-sm text-fg-muted">PNG ou WebP, 512 Ko au maximum, sans texte dans l'image.</p>
-            <input
-              ref={fileInput}
-              type="file"
-              accept="image/png,image/webp"
-              className="sr-only"
-              id="pictogram-file"
-              onChange={(e) => void onFile(e.target.files?.[0])}
-            />
-            <Button variant="secondary" loading={upload.isPending} onClick={() => fileInput.current?.click()}>
-              {imageSha ? "Remplacer l'image" : "Envoyer une image"}
-            </Button>
+        <CardHeader title="Images" icon={<ImageUp className="size-4.5" />} />
+        <div className="grid gap-4 p-5">
+          <p className="text-sm text-fg-muted">
+            PNG ou WebP, 512 Ko au maximum, sans texte dans l'image. Pour un mot qui représente une personne, les variantes
+            s'affichent selon le genre du profil ; sans variante, l'image commune est utilisée.
+          </p>
+          <div className="grid gap-4 sm:grid-cols-3">
+            <ImageSlot label="Image commune" sha256={imageSha} asset={editing?.image_asset ?? null}
+              busy={uploading === "imageSha"} onPick={(f) => void onFile("imageSha", f)} />
+            <ImageSlot label="Fille ou femme" sha256={imageFeminine} asset={null}
+              busy={uploading === "imageFeminine"} onPick={(f) => void onFile("imageFeminine", f)}
+              onClear={() => { form.setValue("imageFeminine", null, { shouldDirty: true }); }} />
+            <ImageSlot label="Garçon ou homme" sha256={imageMasculine} asset={null}
+              busy={uploading === "imageMasculine"} onPick={(f) => void onFile("imageMasculine", f)}
+              onClear={() => { form.setValue("imageMasculine", null, { shouldDirty: true }); }} />
           </div>
         </div>
       </Card>
@@ -214,5 +222,41 @@ export function PictogramDrawer({ state, categories, pictograms, onClose }: {
         </form>
       </Card>
     </Drawer>
+  );
+}
+
+/** Emplacement d'image : aperçu, envoi, et retrait pour une variante. */
+function ImageSlot({ label, sha256, asset, busy, onPick, onClear }: {
+  label: string;
+  sha256: string | null;
+  asset: string | null;
+  busy: boolean;
+  onPick: (file: File) => void;
+  onClear?: () => void;
+}) {
+  const input = useRef<HTMLInputElement>(null);
+  return (
+    <div className="grid justify-items-start gap-2">
+      <span className="text-sm font-semibold text-fg-secondary">{label}</span>
+      <PictogramImage sha256={sha256} asset={asset} size="lg" />
+      <input
+        ref={input}
+        type="file"
+        accept="image/png,image/webp"
+        className="sr-only"
+        aria-label={label}
+        onChange={(e) => {
+          const file = e.target.files?.[0];
+          e.target.value = "";
+          if (file) onPick(file);
+        }}
+      />
+      <div className="flex flex-wrap gap-2">
+        <Button size="sm" variant="secondary" loading={busy} onClick={() => input.current?.click()}>
+          {sha256 ? "Remplacer" : "Envoyer"}
+        </Button>
+        {onClear && sha256 && <Button size="sm" variant="soft-danger" onClick={onClear}>Retirer</Button>}
+      </div>
+    </div>
   );
 }
