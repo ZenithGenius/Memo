@@ -16,6 +16,11 @@ export interface ContentRepository {
   /** Image référencée par la dernière publication, `null` sinon. Les octets
    * viennent du stockage objet (ADR-012). */
   publishedImage(sha256: string): Promise<{ mime: string; bytes: Uint8Array } | null>;
+  /** Dernière publication réduite aux mots gratuits (#41), `null` si elle
+   * n'en contient aucun. */
+  freePack(): Promise<PremiumPack | null>;
+  /** Image d'un mot gratuit de la dernière publication, `null` sinon. */
+  freeImage(sha256: string): Promise<{ mime: string; bytes: Uint8Array } | null>;
 }
 
 /** Accès aux données de licence. Isole Supabase du reste de la logique. */

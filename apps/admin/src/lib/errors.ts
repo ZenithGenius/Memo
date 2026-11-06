@@ -17,6 +17,7 @@ export function userMessage(error: unknown, fallback: string): string {
   if (raw.includes("image_too_large")) return "Image trop lourde : 512 Ko au maximum.";
   if (raw.includes("invalid_image")) return "Ce fichier n'est pas une image PNG ou WebP valide.";
   if (raw.includes("image_not_uploaded")) return "L'image n'a pas été reçue par le stockage. Réessayez.";
+  if (raw.includes("no_free_content")) return "Gardez au moins un mot gratuit : l'application sans abonnement n'aurait plus rien à proposer.";
   if (raw.includes("nothing_to_publish")) return "Aucune modification à publier depuis la dernière publication.";
   if (raw.includes("empty_content")) return "Rien à publier : aucun pictogramme actif.";
   if (raw.includes("level_order")) return "Dans une catégorie, un mot ne peut pas passer devant un mot de niveau inférieur : corrigez l'ordre avant de publier.";

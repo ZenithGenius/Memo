@@ -1,4 +1,4 @@
--- Tests du contenu en base (20261011000002, 20261011000003) : droits,
+-- Tests du contenu en base (20261011000002, 20261011000003, 20261107000001) : droits,
 -- validation, publication, images. Exécution :
 --   docker exec -i "$SUPABASE_DB_CONTAINER" psql -U postgres -v ON_ERROR_STOP=1 < backend/tests/contenu.sql
 -- Tout est annulé à la fin (rollback).
@@ -55,11 +55,13 @@ insert into public.admins (user_id, role) values
   ('00000000-0000-0000-0000-0000000000a2', 'support');
 
 -- ─── Import initial ────────────────────────────────────────────────────────
-select pg_temp.assert_eq((select count(*) from public.content_pictograms), 131::bigint, '131 pictogrammes importés');
+select pg_temp.assert_eq((select count(*) from public.content_pictograms where tier = 'premium'), 131::bigint, '131 pictogrammes payants importés');
+select pg_temp.assert_eq((select count(*) from public.content_pictograms where tier = 'free'), 20::bigint, '20 mots gratuits importés (#41)');
 select pg_temp.assert_eq((select max(version) from public.content_releases), 5, 'publication 5 = ancien pack.json');
 select pg_temp.assert_eq(
-  public.content_build_pack(5) = (select pack from public.content_releases where version = 5), true,
-  'le paquet reconstruit depuis la base est identique à l''ancien pack.json');
+  jsonb_path_query_array(public.content_build_pack(5), '$.pictograms[*] ? (@.tier == "premium")')
+    = (select pack -> 'pictograms' from public.content_releases where version = 5), true,
+  'les mots payants reconstruits depuis la base sont identiques à l''ancien pack.json');
 
 -- ─── Droits ────────────────────────────────────────────────────────────────
 -- Client (même avec un second facteur) : rien.
@@ -74,7 +76,7 @@ select pg_temp.assert_eq((select count(*) from storage.objects), 0::bigint, 'un 
 
 -- Support : lecture seule.
 select pg_temp.as_user('00000000-0000-0000-0000-0000000000a2');
-select pg_temp.assert_eq((select count(*) from public.content_pictograms), 131::bigint, 'le support lit le catalogue');
+select pg_temp.assert_eq((select count(*) from public.content_pictograms), 151::bigint, 'le support lit le catalogue');
 select pg_temp.expect_error(pg_temp.new_pictogram('CAA-CR-ACT-026', 26, 2), 'row-level security');
 select pg_temp.expect_error($q$select public.admin_publish_content()$q$, 'forbidden');
 select pg_temp.expect_error($q$select public.admin_register_image(repeat('a', 64), 'image/png')$q$, 'forbidden');
@@ -124,16 +126,24 @@ select pg_temp.expect_error(
   'content_categories_icon_check');
 
 -- ─── Publication ───────────────────────────────────────────────────────────
+-- Les 20 mots gratuits ajoutés par la migration attendent leur publication :
+-- d'ici là, le paquet gratuit est vide et l'application garde le sien.
+select pg_temp.as_service();
+set local role service_role;
+select pg_temp.assert_eq(public.content_free_pack(), null::jsonb, 'publication sans mot gratuit : pas de paquet gratuit');
+reset role;
+select pg_temp.as_user('00000000-0000-0000-0000-0000000000a1');
+select pg_temp.assert_eq(public.admin_publish_content('Mots gratuits'), 6, 'mots gratuits publiés');
 select pg_temp.expect_error($q$select public.admin_publish_content()$q$, 'nothing_to_publish');
 
 select pg_temp.as_service();
 select pg_temp.as_user('00000000-0000-0000-0000-0000000000a1');
 do $$ begin execute pg_temp.new_pictogram('CAA-CR-ACT-026', 26, 2); end $$;
-select pg_temp.assert_eq(public.admin_publish_content('Sauter'), 6, 'publication 6');
+select pg_temp.assert_eq(public.admin_publish_content('Sauter'), 7, 'publication 7');
 select pg_temp.assert_eq(
-  (select pictogram_count from public.content_releases where version = 6), 132, 'nouveau pictogramme publié');
+  (select pictogram_count from public.content_releases where version = 7), 152, 'nouveau pictogramme publié');
 select pg_temp.assert_eq(
-  (select published_by from public.content_releases where version = 6),
+  (select published_by from public.content_releases where version = 7),
   '00000000-0000-0000-0000-0000000000a1'::uuid, 'auteur de la publication pris dans la session');
 select pg_temp.assert_eq(
   (select count(*) from public.audit_log where entity = 'content_pictograms' and entity_id = 'CAA-CR-ACT-026'),
@@ -152,9 +162,9 @@ select pg_temp.assert_eq(
   (select count(*) from public.content_pictograms where code = 'CAA-CR-ACT-026'), 1::bigint,
   'un pictogramme publié ne se supprime pas');
 update public.content_pictograms set active = false where code = 'CAA-CR-ACT-026';
-select pg_temp.assert_eq(public.admin_publish_content(), 7, 'retrait publié');
+select pg_temp.assert_eq(public.admin_publish_content(), 8, 'retrait publié');
 select pg_temp.assert_eq(
-  jsonb_path_exists((select pack from public.content_releases where version = 7), '$.pictograms[*] ? (@.code == "CAA-CR-ACT-026")'),
+  jsonb_path_exists((select pack from public.content_releases where version = 8), '$.pictograms[*] ? (@.code == "CAA-CR-ACT-026")'),
   false, 'pictogramme retiré absent du paquet');
 
 -- Les publications sont immuables.
@@ -196,18 +206,59 @@ reset role;
 
 select pg_temp.as_user('00000000-0000-0000-0000-0000000000a1');
 update public.content_pictograms set image_sha256 = (select sha from png) where code = 'CAA-CR-ACT-001';
-select pg_temp.assert_eq(public.admin_publish_content('Nouvelle image'), 8, 'image publiée');
+select pg_temp.assert_eq(public.admin_publish_content('Nouvelle image'), 9, 'image publiée');
 select pg_temp.assert_eq(
-  (select pack #>> '{pictograms,0,imageObject,sha256}' from public.content_releases where version = 8),
+  (select jsonb_path_query_first(pack, '$.pictograms[*] ? (@.code == "CAA-CR-ACT-001").imageObject.sha256') #>> '{}'
+   from public.content_releases where version = 9),
   (select sha from png), 'empreinte de l''image dans le paquet');
 select pg_temp.assert_eq(
-  (select (pack #>> '{pictograms,0,imageObject,size}')::int from public.content_releases where version = 8),
+  (select (jsonb_path_query_first(pack, '$.pictograms[*] ? (@.code == "CAA-CR-ACT-001").imageObject.size') #>> '{}')::int
+   from public.content_releases where version = 9),
   68, 'taille de l''image dans le paquet');
 
 select pg_temp.as_service();
 set local role service_role;
 select pg_temp.assert_eq(public.content_published_image((select sha from png)), 'image/png', 'image publiée servie');
-select pg_temp.assert_eq((public.content_latest_pack() ->> 'version')::int, 8, 'dernière publication servie');
+select pg_temp.assert_eq((public.content_latest_pack() ->> 'version')::int, 9, 'dernière publication servie');
 reset role;
+
+-- ─── Paquet gratuit (#41) ──────────────────────────────────────────────────
+-- Une image payante ne sort pas par le paquet gratuit.
+select pg_temp.as_service();
+set local role service_role;
+select pg_temp.assert_eq(public.content_free_image((select sha from png)), null::text, 'image d''un mot payant : pas servie sans abonnement');
+select pg_temp.assert_eq((public.content_free_pack() ->> 'version')::int, 9, 'paquet gratuit = dernière publication');
+select pg_temp.assert_eq(jsonb_array_length(public.content_free_pack() -> 'pictograms'), 20, 'paquet gratuit : les 20 mots gratuits');
+select pg_temp.assert_eq(
+  jsonb_path_exists(public.content_free_pack(), '$.pictograms[*] ? (@.tier != "free")'), false,
+  'paquet gratuit : aucun mot payant');
+select pg_temp.assert_eq(public.content_free_pack() #>> '{categories,0,code}', 'CBE', 'paquet gratuit : ses seules catégories');
+select pg_temp.assert_eq(jsonb_array_length(public.content_free_pack() -> 'categories'), 1, 'paquet gratuit : une catégorie');
+reset role;
+
+-- Un mot payant passe en gratuit, avec son image.
+select pg_temp.as_user('00000000-0000-0000-0000-0000000000a1');
+update public.content_pictograms set tier = 'free' where code = 'CAA-CR-ACT-001';
+select pg_temp.assert_eq(public.admin_publish_content('Gratuit : ACT-001'), 10, 'changement de palier publié');
+select pg_temp.as_service();
+set local role service_role;
+select pg_temp.assert_eq(jsonb_array_length(public.content_free_pack() -> 'pictograms'), 21, 'le mot passé en gratuit est dans le paquet gratuit');
+select pg_temp.assert_eq(jsonb_array_length(public.content_free_pack() -> 'categories'), 2, 'avec sa catégorie');
+select pg_temp.assert_eq(public.content_free_image((select sha from png)), 'image/png', 'son image est servie sans abonnement');
+reset role;
+
+-- Les fonctions du paquet gratuit ne s'appellent pas directement.
+select pg_temp.as_user('00000000-0000-0000-0000-0000000000c1');
+select pg_temp.expect_error($q$select public.content_free_pack()$q$, 'permission denied');
+select pg_temp.as_service();
+set local role anon;
+select pg_temp.expect_error($q$select public.content_free_image('00')$q$, 'permission denied');
+reset role;
+
+-- Palier inconnu refusé ; publication sans aucun mot gratuit refusée.
+select pg_temp.as_user('00000000-0000-0000-0000-0000000000a1');
+select pg_temp.expect_error($q$update public.content_pictograms set tier = 'gold' where code = 'CAA-CR-ACT-002'$q$, 'content_pictograms_tier_check');
+update public.content_pictograms set tier = 'premium';
+select pg_temp.expect_error($q$select public.admin_publish_content()$q$, 'no_free_content');
 
 rollback;

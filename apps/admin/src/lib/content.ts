@@ -2,6 +2,8 @@
 
 export const LEVELS = ["Débutant", "Intermédiaire", "Avancé"] as const;
 
+export const TIERS = { free: "Gratuit", premium: "Abonnés" } as const;
+
 export const AUDIENCES = { all: "Tous", child: "Enfant", teen: "Adolescent", adult: "Adulte" } as const;
 
 /** Icônes connues de l'application pour une catégorie. */

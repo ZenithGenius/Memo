@@ -11,18 +11,25 @@ import { SearchInput, Tabs } from "@/components/ui/filters";
 import { Field, Input } from "@/components/ui/form";
 import { useConfirm } from "@/components/ui/overlay";
 import { PageHeader } from "@/components/ui/page";
-import { AUDIENCES, LEVELS, imageState, nextSortOrder, type ImageState } from "@/lib/content";
+import { AUDIENCES, LEVELS, TIERS, imageState, nextSortOrder, type ImageState } from "@/lib/content";
 import { report, userMessage } from "@/lib/errors";
 import { dateTimeFr } from "@/lib/format";
 import { canWrite } from "@/lib/roles";
 import {
-  type CategoryRow, type PictogramRow, useCategories, useDeleteDraft, usePictograms, usePublish, useReleases, useSetPictogramActive,
+  type CategoryRow, type PictogramRow, type Tier, useCategories, useDeleteDraft, usePictograms, usePublish, useReleases, useSetPictogramActive,
 } from "./api";
 import { CategoryDrawer, type CategoryDrawerState } from "./CategoryDrawer";
 import { PictogramDrawer, type PictogramDrawerState } from "./PictogramDrawer";
 import { PictogramImage } from "./PictogramImage";
 
 type ImageFilter = "all" | ImageState;
+type TierFilter = "all" | Tier;
+
+const TIER_TABS: { value: TierFilter; label: string }[] = [
+  { value: "all", label: "Toutes" },
+  { value: "free", label: TIERS.free },
+  { value: "premium", label: TIERS.premium },
+];
 
 const IMAGE_TABS: { value: ImageFilter; label: string }[] = [
   { value: "all", label: "Toutes" },
@@ -42,6 +49,7 @@ export default function ContentPage() {
   const releases = useReleases();
   const [category, setCategory] = useState("all");
   const [image, setImage] = useState<ImageFilter>("all");
+  const [tier, setTier] = useState<TierFilter>("all");
   const [query, setQuery] = useState("");
   const [pictoDrawer, setPictoDrawer] = useState<PictogramDrawerState>(null);
   const [catDrawer, setCatDrawer] = useState<CategoryDrawerState>(null);
@@ -51,8 +59,9 @@ export default function ContentPage() {
     return (pictograms.data ?? []).filter((p) =>
       (category === "all" || p.category_code === category)
       && (image === "all" || imageState(p) === image)
+      && (tier === "all" || p.tier === tier)
       && (!q || fold(`${p.labels.fr.label} ${p.labels.en.label} ${p.code}`).includes(q)));
-  }, [pictograms.data, category, image, query]);
+  }, [pictograms.data, category, image, tier, query]);
 
   const loading = categories.isPending || pictograms.isPending || releases.isPending;
   const failed = categories.isError || pictograms.isError || releases.isError;
@@ -61,7 +70,7 @@ export default function ContentPage() {
     <>
       <PageHeader
         title="Contenu"
-        description="Catégories et pictogrammes servis aux abonnés : mots en français et en anglais, images, niveaux. Une modification n'arrive dans l'application qu'après publication."
+        description="Catégories et pictogrammes, gratuits ou réservés aux abonnés : mots en français et en anglais, images, niveaux. Une modification n'arrive dans l'application qu'après publication."
         actions={writable ? (
           <Button icon={<Plus className="size-4" />} disabled={!categories.data?.length} onClick={() => { setPictoDrawer({ mode: "create" }); }}>
             Nouveau pictogramme
@@ -80,6 +89,7 @@ export default function ContentPage() {
               <div className="flex flex-wrap items-center gap-3">
                 <SearchInput value={query} onChange={setQuery} placeholder="Mot ou code" label="Rechercher un pictogramme" />
                 <Tabs label="Image" value={image} onChange={setImage} options={IMAGE_TABS} />
+                <Tabs label="Offre" value={tier} onChange={setTier} options={TIER_TABS} />
               </div>
               <Tabs
                 label="Catégorie"
@@ -133,7 +143,7 @@ function PublishCard({ writable, releases }: { writable: boolean; releases: { ve
   const onPublish = async () => {
     const ok = await confirm({
       title: "Publier le contenu ?",
-      text: "Les abonnés recevront cette version à leur prochaine synchronisation. Une publication ne peut pas être annulée, seulement remplacée par une nouvelle.",
+      text: "Les téléphones recevront cette version à leur prochaine synchronisation (mots gratuits pour tous, le reste pour les abonnés). Une publication ne peut pas être annulée, seulement remplacée par une nouvelle.",
       confirmLabel: "Publier",
     });
     if (!ok) return;
@@ -232,6 +242,7 @@ function PictogramsTable({ rows, categories, published, writable, onEdit }: {
         { key: "category", header: "Catégorie", desktopOnly: true, cell: (p) => categoryName(p.category_code) },
         { key: "level", header: "Niveau", desktopOnly: true, cell: (p) => LEVELS[p.level] },
         { key: "audience", header: "Public", desktopOnly: true, cell: (p) => AUDIENCES[p.audience] },
+        { key: "tier", header: "Offre", cell: (p) => <Badge tone={p.tier === "free" ? "success" : "neutral"}>{TIERS[p.tier]}</Badge> },
         {
           key: "status",
           header: "Statut",

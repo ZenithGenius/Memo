@@ -169,6 +169,7 @@ export type Database = {
           labels: Json
           level: number
           sort_order: number
+          tier: string
           updated_at: string
         }
         Insert: {
@@ -182,6 +183,7 @@ export type Database = {
           labels: Json
           level: number
           sort_order: number
+          tier?: string
           updated_at?: string
         }
         Update: {
@@ -195,6 +197,7 @@ export type Database = {
           labels?: Json
           level?: number
           sort_order?: number
+          tier?: string
           updated_at?: string
         }
         Relationships: [
@@ -556,6 +559,8 @@ export type Database = {
       content_build_pack: { Args: { pack_version: number }; Returns: Json }
       content_category_labels_valid: { Args: { l: Json }; Returns: boolean }
       content_contrast_on_white: { Args: { hex: string }; Returns: number }
+      content_free_image: { Args: { target_sha256: string }; Returns: string }
+      content_free_pack: { Args: never; Returns: Json }
       content_latest_pack: { Args: never; Returns: Json }
       content_pictogram_labels_valid: { Args: { l: Json }; Returns: boolean }
       content_published_image: {
