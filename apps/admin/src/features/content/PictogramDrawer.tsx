@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Field, Input, Select } from "@/components/ui/form";
 import { Drawer } from "@/components/ui/overlay";
-import { AUDIENCES, LEVELS, imageFileProblem, levelOrderProblem, nextCode, nextSortOrder } from "@/lib/content";
+import { AUDIENCES, LEVELS, TIERS, imageFileProblem, levelOrderProblem, nextCode, nextSortOrder } from "@/lib/content";
 import { report, userMessage } from "@/lib/errors";
 import { type CategoryRow, type PictogramRow, useSavePictogram, useUploadImage } from "./api";
 import { PictogramImage } from "./PictogramImage";
@@ -24,6 +24,7 @@ const schema = z.object({
   enSpoken: spoken,
   level: z.coerce.number<number>().int().min(0).max(2),
   audience: z.enum(["all", "child", "teen", "adult"]),
+  tier: z.enum(["free", "premium"]),
   sortOrder: z.coerce.number<number>().int("Nombre entier.").min(1, "Au moins 1.").max(9999, "9999 au maximum."),
   labelInImage: z.boolean(),
   imageSha: z.string().nullable(),
@@ -62,6 +63,7 @@ export function PictogramDrawer({ state, categories, pictograms, onClose }: {
       enSpoken: p?.labels.en.spoken ?? "",
       level: p?.level ?? 0,
       audience: p?.audience ?? "all",
+      tier: p?.tier ?? "premium",
       sortOrder: p?.sort_order ?? 1,
       labelInImage: p?.label_in_image ?? false,
       imageSha: p?.image_sha256 ?? null,
@@ -114,6 +116,7 @@ export function PictogramDrawer({ state, categories, pictograms, onClose }: {
           category_code: v.category,
           level: v.level,
           audience: v.audience,
+          tier: v.tier,
           sort_order: v.sortOrder,
           labels: {
             fr: { label: v.frLabel.trim(), spoken: v.frSpoken.trim() },
@@ -189,6 +192,11 @@ export function PictogramDrawer({ state, categories, pictograms, onClose }: {
           <Field label="Public" htmlFor="pi-aud">
             <Select id="pi-aud" {...form.register("audience")}>
               {Object.entries(AUDIENCES).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+            </Select>
+          </Field>
+          <Field label="Offre" htmlFor="pi-tier" hint="Gratuit : visible sans compte, après publication.">
+            <Select id="pi-tier" {...form.register("tier")}>
+              {Object.entries(TIERS).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
             </Select>
           </Field>
           <Field label="Ordre dans la catégorie" htmlFor="pi-sort" error={err.sortOrder?.message}

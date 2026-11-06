@@ -84,8 +84,58 @@ final imageBytes = Uint8List.fromList(utf8.encode('abc'));
 const imageSha =
     'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad';
 
+Map<String, Object?> _word(
+  String code, {
+  String tier = 'free',
+  bool image = false,
+}) => {
+  'code': code,
+  'category': 'CBE',
+  'level': 0,
+  'audience': 'all',
+  'sortOrder': int.parse(code.substring(code.length - 3)),
+  'tier': tier,
+  if (image)
+    'imageObject': {'sha256': imageSha, 'mime': 'image/png', 'size': 3},
+  'labels': {
+    'fr': {'label': code, 'spoken': code},
+  },
+};
+
+ContentPack _pack(int version, List<Map<String, Object?>> words) =>
+    ContentPack.fromJson({
+      'version': version,
+      'categories': [
+        {
+          'code': 'CBE',
+          'sortOrder': 1,
+          'labels': {'fr': 'Mes besoins'},
+        },
+      ],
+      'pictograms': words,
+    });
+
 class FakePacks implements PremiumPackApi {
   int version = 7;
+
+  /// Paquet gratuit du serveur ; `null` : aucun publié.
+  ContentPack? free;
+  LicenseApiError? freeFailsWith;
+  final freeImageRequests = <String>[];
+
+  @override
+  Future<ContentPack?> fetchFree({int? have}) async {
+    if (freeFailsWith != null) throw LicenseApiException(freeFailsWith!);
+    final pack = free;
+    return pack == null || (have != null && have >= pack.version) ? null : pack;
+  }
+
+  @override
+  Future<Uint8List> fetchFreeImage(String sha256) async {
+    freeImageRequests.add(sha256);
+    return imageBytes;
+  }
+
   final requestedHave = <int?>[];
 
   /// Le paquet référence une image envoyée depuis le back-office.
@@ -354,5 +404,79 @@ void main() {
     await s.signIn('a@b.org', 'x');
     await s.sync();
     expect(await store.read('auth_refresh_token'), 'refresh-2');
+  });
+
+  group('paquet gratuit sans compte (#41)', () {
+    Future<Map<String, String>> tiers() async => {
+      for (final p in await db.select(db.pictograms).get()) p.code: p.tier,
+    };
+
+    test(
+      'mot ajouté importé, mot sorti réservé aux abonnés, image reçue',
+      () async {
+        final importer = ContentImporter(db);
+        await importer.importIfNeeded(
+          _pack(5, [_word('CAA-CR-CBE-001'), _word('CAA-CR-CBE-002')]),
+        );
+        packs.free = _pack(9, [
+          _word('CAA-CR-CBE-001'),
+          _word('CAA-CR-CBE-003', image: true),
+        ]);
+
+        await (await service()).syncFreeContent();
+
+        expect(await tiers(), {
+          'CAA-CR-CBE-001': 'free',
+          'CAA-CR-CBE-002': 'premium',
+          'CAA-CR-CBE-003': 'free',
+        });
+        expect(await importer.installedVersion(ContentImporter.freeSlot), 9);
+        expect(packs.freeImageRequests, [imageSha]);
+        expect(await ImageStore(imageDir).has(imageSha), isTrue);
+
+        // Une mise à jour de l'application (paquet embarqué plus récent) fait
+        // réappliquer le paquet gratuit du serveur.
+        await importer.importIfNeeded(_pack(6, [_word('CAA-CR-CBE-002')]));
+        expect(
+          await importer.installedVersion(ContentImporter.freeSlot),
+          isNull,
+        );
+        await (await service()).syncFreeContent();
+        expect((await tiers())['CAA-CR-CBE-002'], 'premium');
+      },
+    );
+
+    test(
+      'hors ligne ou rien de publié : rien ne change, aucune erreur',
+      () async {
+        final importer = ContentImporter(db);
+        await importer.importIfNeeded(_pack(5, [_word('CAA-CR-CBE-001')]));
+        final s = await service();
+
+        packs.freeFailsWith = LicenseApiError.offline;
+        await s.syncFreeContent();
+        packs
+          ..freeFailsWith = null
+          ..free = null;
+        await s.syncFreeContent();
+
+        expect(await tiers(), {'CAA-CR-CBE-001': 'free'});
+        expect(
+          await importer.installedVersion(ContentImporter.freeSlot),
+          isNull,
+        );
+      },
+    );
+
+    test('se connecter sans abonnement met aussi à jour le gratuit', () async {
+      subscribed = false;
+      packs.free = _pack(9, [_word('CAA-CR-CBE-004')]);
+      // Sans abonnement, la connexion le signale, mais le gratuit est à jour.
+      await expectLater(
+        (await service()).signIn('a@b.org', 'x'),
+        throwsA(isA<LicenseApiException>()),
+      );
+      expect(await tiers(), {'CAA-CR-CBE-004': 'free'});
+    });
   });
 }

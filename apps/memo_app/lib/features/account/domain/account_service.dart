@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:memo/core/storage/secure_store.dart';
 import 'package:memo/data/content/content_importer.dart';
 import 'package:memo/data/content/image_store.dart';
@@ -79,9 +80,30 @@ class AccountService {
     await signOut();
   }
 
+  /// Met à jour le paquet gratuit (#41), sans compte : au démarrage et à
+  /// chaque synchronisation. Ne lève jamais : hors ligne ou en cas d'erreur,
+  /// l'application garde ce qu'elle a et réessaie la fois suivante.
+  Future<void> syncFreeContent() async {
+    try {
+      final pack = await packs.fetchFree(
+        have: await importer.installedVersion(ContentImporter.freeSlot),
+      );
+      if (pack != null && pack.pictograms.isNotEmpty) {
+        await importer.importIfNeeded(pack, slot: ContentImporter.freeSlot);
+      }
+      await _downloadImages(
+        (sha256) => packs.fetchFreeImage(sha256),
+        freeOnly: true,
+      );
+    } on Object catch (e) {
+      debugPrint('paquet gratuit : $e');
+    }
+  }
+
   Future<Entitlement> _syncWith(AuthSession session) async {
     await store.write(_refreshKey, session.refreshToken);
     await store.write(_emailKey, session.email);
+    await syncFreeContent();
     final entitlement = await entitlements.refresh(session.accessToken);
     if (entitlement.isPremium) {
       final pack = await packs.fetch(
@@ -92,7 +114,14 @@ class AccountService {
       if (pack != null) {
         await importer.importIfNeeded(pack, slot: ContentImporter.premiumSlot);
       }
-      await _downloadImages(session.accessToken);
+      final fingerprint = await device.fingerprint();
+      await _downloadImages(
+        (sha256) => packs.fetchImage(
+          accessToken: session.accessToken,
+          fingerprint: fingerprint,
+          sha256: sha256,
+        ),
+      );
     }
     return entitlement;
   }
@@ -100,19 +129,16 @@ class AccountService {
   /// Télécharge les images qui manquent, à chaque synchronisation : une image
   /// non reçue (réseau coupé, erreur ponctuelle) est retentée la fois
   /// suivante, sans faire échouer la synchronisation du reste.
-  Future<void> _downloadImages(String accessToken) async {
+  Future<void> _downloadImages(
+    Future<Uint8List> Function(String sha256) fetch, {
+    bool freeOnly = false,
+  }) async {
     final store = images;
     if (store == null) return;
-    final fingerprint = await device.fingerprint();
-    for (final sha256 in await importer.imageHashes()) {
+    for (final sha256 in await importer.imageHashes(freeOnly: freeOnly)) {
       if (await store.has(sha256)) continue;
       try {
-        final bytes = await packs.fetchImage(
-          accessToken: accessToken,
-          fingerprint: fingerprint,
-          sha256: sha256,
-        );
-        await store.save(sha256, bytes);
+        await store.save(sha256, await fetch(sha256));
       } on LicenseApiException catch (e) {
         if (e.error == LicenseApiError.offline) return;
       }

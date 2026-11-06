@@ -110,10 +110,23 @@ export class SupabaseLicenseRepository implements LicenseRepository, ContentRepo
   }
 
   async publishedImage(sha256: string) {
-    // La base dit si l'image est publiée ; les octets sont dans Storage.
-    const { data: mime, error } = await this.db.rpc("content_published_image", {
-      target_sha256: sha256,
-    });
+    return await this.imageIf("content_published_image", sha256);
+  }
+
+  async freePack() {
+    const { data, error } = await this.db.rpc("content_free_pack");
+    if (error) throw error;
+    return (data as PremiumPack | null) ?? null;
+  }
+
+  async freeImage(sha256: string) {
+    return await this.imageIf("content_free_image", sha256);
+  }
+
+  /** La base dit si l'image peut sortir (et son type) ; les octets sont dans
+   * Storage. */
+  private async imageIf(check: string, sha256: string) {
+    const { data: mime, error } = await this.db.rpc(check, { target_sha256: sha256 });
     if (error) throw error;
     if (typeof mime !== "string") return null;
     const { data: blob, error: storageError } = await this.db.storage.from("content-images")
