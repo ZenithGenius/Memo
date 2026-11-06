@@ -14,6 +14,7 @@ const AuditPage = lazy(() => import("@/features/audit/AuditPage"));
 const SubscriptionsPage = lazy(() => import("@/features/subscriptions/SubscriptionsPage"));
 const DevicesPage = lazy(() => import("@/features/devices/DevicesPage"));
 const AdminsPage = lazy(() => import("@/features/admins/AdminsPage"));
+const ContentPage = lazy(() => import("@/features/content/ContentPage"));
 
 export function App() {
   const { state } = useAuth();
@@ -31,6 +32,7 @@ export function App() {
           <Route path="/abonnements" element={<SubscriptionsPage />} />
           <Route path="/offres" element={<PlansPage />} />
           <Route path="/appareils" element={<DevicesPage />} />
+          <Route path="/contenu" element={<ContentPage />} />
           <Route path="/administrateurs" element={<AdminsPage />} />
           <Route path="/journal" element={<AuditPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />

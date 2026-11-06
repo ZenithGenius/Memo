@@ -135,25 +135,25 @@ export type Database = {
       }
       content_images: {
         Row: {
-          bytes: string
           created_at: string
           created_by: string | null
           mime: string
           sha256: string
+          size: number
         }
         Insert: {
-          bytes: string
           created_at?: string
           created_by?: string | null
           mime: string
           sha256: string
+          size: number
         }
         Update: {
-          bytes?: string
           created_at?: string
           created_by?: string | null
           mime?: string
           sha256?: string
+          size?: number
         }
         Relationships: []
       }
@@ -494,13 +494,6 @@ export type Database = {
           user_id: string
         }[]
       }
-      admin_image: {
-        Args: { target_sha256: string }
-        Returns: {
-          data_base64: string
-          mime: string
-        }[]
-      }
       admin_list: {
         Args: never
         Returns: {
@@ -535,8 +528,8 @@ export type Database = {
         }[]
       }
       admin_publish_content: { Args: { notes?: string }; Returns: number }
-      admin_put_image: {
-        Args: { data_base64: string; mime: string }
+      admin_register_image: {
+        Args: { mime: string; target_sha256: string }
         Returns: string
       }
       admin_remove: { Args: { target: string }; Returns: undefined }
@@ -567,10 +560,7 @@ export type Database = {
       content_pictogram_labels_valid: { Args: { l: Json }; Returns: boolean }
       content_published_image: {
         Args: { target_sha256: string }
-        Returns: {
-          data_base64: string
-          mime: string
-        }[]
+        Returns: string
       }
       delete_my_account: { Args: never; Returns: undefined }
       is_admin: { Args: never; Returns: boolean }

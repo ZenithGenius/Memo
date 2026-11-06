@@ -1,6 +1,5 @@
 import { createClient, type SupabaseClient } from "npm:@supabase/supabase-js@2.117.3";
 import type { Device } from "./license.ts";
-import { fromBase64 } from "./encoding.ts";
 import {
   type ContentRepository,
   DeviceLimitError,
@@ -111,14 +110,16 @@ export class SupabaseLicenseRepository implements LicenseRepository, ContentRepo
   }
 
   async publishedImage(sha256: string) {
-    const { data, error } = await this.db
-      .rpc("content_published_image", { target_sha256: sha256 })
-      .maybeSingle<{ mime: string; data_base64: string }>();
+    // La base dit si l'image est publiée ; les octets sont dans Storage.
+    const { data: mime, error } = await this.db.rpc("content_published_image", {
+      target_sha256: sha256,
+    });
     if (error) throw error;
-    // encode(…, 'base64') de PostgreSQL coupe les lignes : on retire les blancs.
-    return data
-      ? { mime: data.mime, bytes: fromBase64(data.data_base64.replace(/\s/g, "")) }
-      : null;
+    if (typeof mime !== "string") return null;
+    const { data: blob, error: storageError } = await this.db.storage.from("content-images")
+      .download(sha256);
+    if (storageError) throw storageError;
+    return { mime, bytes: new Uint8Array(await blob.arrayBuffer()) };
   }
 
   async touchDevice(deviceId: string, now: Date) {

@@ -48,6 +48,16 @@ Sur le projet hébergé (Authentication), indispensables à la sécurité :
 La configuration locale (`supabase/config.toml`) garde la confirmation
 désactivée pour les tests de bout en bout.
 
+## Stockage objet (ADR-012)
+
+Les images du contenu sont dans Supabase Storage, compartiment privé
+`content-images`, créé par les migrations. En local, Storage les garde sur
+disque. En production, il s'appuie sur SeaweedFS (passerelle S3) :
+`backend/storage/docker-compose.yml` décrit le service, les variables à donner
+au service Storage et la création du compartiment `memo-storage`. Les clés
+sont dans `backend/storage/s3.json`, à créer depuis `s3.example.json` (ignoré
+par Git). Sauvegarder le volume `seaweedfs-data` en même temps que la base.
+
 ## Tests
 
 ```bash

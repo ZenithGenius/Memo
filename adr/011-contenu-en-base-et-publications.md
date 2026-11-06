@@ -1,6 +1,6 @@
 # ADR-011 : Contenu téléchargeable en base, publié par versions
 
-Statut : accepté (2026-10-11). Précise l'ADR-008 (couche 1).
+Statut : accepté (2026-10-11). Précise l'ADR-008 (couche 1). Partie « images » remplacée par l'ADR-012 (stockage objet).
 
 ## Contexte
 

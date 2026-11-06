@@ -68,15 +68,19 @@ select pg_temp.assert_eq((select count(*) from public.content_pictograms), 0::bi
 select pg_temp.assert_eq((select count(*) from public.content_releases), 0::bigint, 'un client ne lit pas les publications');
 select pg_temp.expect_error($q$select * from public.content_images$q$, 'permission denied');
 select pg_temp.expect_error($q$select public.content_latest_pack()$q$, 'permission denied');
-select pg_temp.expect_error($q$select * from public.content_published_image('00')$q$, 'permission denied');
-select pg_temp.expect_error($q$select * from public.admin_image('00')$q$, 'forbidden');
+select pg_temp.expect_error($q$select public.content_published_image('00')$q$, 'permission denied');
+select pg_temp.expect_error($q$select public.admin_register_image(repeat('a', 64), 'image/png')$q$, 'forbidden');
+select pg_temp.assert_eq((select count(*) from storage.objects), 0::bigint, 'un client ne voit aucune image');
 
 -- Support : lecture seule.
 select pg_temp.as_user('00000000-0000-0000-0000-0000000000a2');
 select pg_temp.assert_eq((select count(*) from public.content_pictograms), 131::bigint, 'le support lit le catalogue');
 select pg_temp.expect_error(pg_temp.new_pictogram('CAA-CR-ACT-026', 26, 2), 'row-level security');
 select pg_temp.expect_error($q$select public.admin_publish_content()$q$, 'forbidden');
-select pg_temp.expect_error($q$select public.admin_put_image('aaaa', 'image/png')$q$, 'forbidden');
+select pg_temp.expect_error($q$select public.admin_register_image(repeat('a', 64), 'image/png')$q$, 'forbidden');
+select pg_temp.expect_error(
+  $q$insert into storage.objects (bucket_id, name, metadata) values ('content-images', repeat('b', 64), '{}')$q$,
+  'row-level security');
 
 -- Super-administrateur sans second facteur : refusé.
 select pg_temp.as_user('00000000-0000-0000-0000-0000000000a1', 'aal1');
@@ -157,28 +161,37 @@ select pg_temp.assert_eq(
 select pg_temp.expect_error($q$update public.content_releases set notes = 'x'$q$, 'permission denied');
 select pg_temp.expect_error($q$delete from public.content_releases$q$, 'permission denied');
 
--- ─── Images ────────────────────────────────────────────────────────────────
-select pg_temp.expect_error($q$select public.admin_put_image('PHN2Zz48L3N2Zz4=', 'image/svg+xml')$q$, 'invalid_image');
--- Octets qui ne sont pas un PNG, annoncés comme PNG.
-select pg_temp.expect_error($q$select public.admin_put_image('aGVsbG8gd29ybGQ=', 'image/png')$q$, 'invalid_image');
-select pg_temp.expect_error($q$select public.admin_put_image('***', 'image/png')$q$, 'invalid_image');
-
+-- ─── Images (Storage, ADR-012) ─────────────────────────────────────────────
+-- Envoi dans Storage : nom = empreinte SHA-256, rien d'autre n'est accepté.
 create temporary table png (sha text);
 grant select on png to public;
-insert into png select public.admin_put_image(
-  'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==', 'image/png');
-select pg_temp.assert_eq((select char_length(sha) from png), 64, 'image PNG acceptée, empreinte SHA-256');
+insert into png values ('4a5d3c0f1e2b4a5d3c0f1e2b4a5d3c0f1e2b4a5d3c0f1e2b4a5d3c0f1e2b4a5d');
+select pg_temp.expect_error(
+  $q$insert into storage.objects (bucket_id, name, metadata) values ('content-images', 'image.svg', '{}')$q$,
+  'row-level security');
+insert into storage.objects (bucket_id, name, metadata)
+select 'content-images', sha, '{"size": 68, "mimetype": "image/png"}' from png;
+select pg_temp.as_service();
 select pg_temp.assert_eq(
-  public.admin_put_image('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==', 'image/png'),
-  (select sha from png), 'même image : même empreinte, stockée une fois');
-select pg_temp.assert_eq((select mime from public.admin_image((select sha from png))), 'image/png', 'aperçu de l''image');
+  (select count(*) from storage.buckets where id = 'content-images' and not public and file_size_limit = 524288),
+  1::bigint, 'compartiment privé limité à 512 Kio');
+select pg_temp.as_user('00000000-0000-0000-0000-0000000000a1');
+
+-- Enregistrement : l'objet doit exister, avec le type annoncé.
+select pg_temp.expect_error($q$select public.admin_register_image('pas-une-empreinte', 'image/png')$q$, 'invalid_image');
+select pg_temp.expect_error($q$select public.admin_register_image(repeat('c', 64), 'image/png')$q$, 'image_not_uploaded');
+select pg_temp.expect_error($q$select public.admin_register_image((select sha from png), 'image/webp')$q$, 'invalid_image');
+select pg_temp.expect_error($q$select public.admin_register_image((select sha from png), 'image/svg+xml')$q$, 'invalid_image');
+select pg_temp.assert_eq(public.admin_register_image((select sha from png), 'image/png'), (select sha from png), 'image enregistrée');
+select pg_temp.assert_eq(public.admin_register_image((select sha from png), 'image/png'), (select sha from png), 'même image : enregistrée une fois');
+select pg_temp.as_service();
+select pg_temp.assert_eq((select size from public.content_images where sha256 = (select sha from png)), 68, 'taille relevée par Storage');
+select pg_temp.as_user('00000000-0000-0000-0000-0000000000a1');
 
 -- Envoyée mais pas publiée : la fonction serveur ne la sert pas.
 select pg_temp.as_service();
 set local role service_role;
-select pg_temp.assert_eq(
-  (select count(*) from public.content_published_image((select sha from png))), 0::bigint,
-  'image non publiée jamais servie');
+select pg_temp.assert_eq(public.content_published_image((select sha from png)), null::text, 'image non publiée jamais servie');
 reset role;
 
 select pg_temp.as_user('00000000-0000-0000-0000-0000000000a1');
@@ -187,12 +200,13 @@ select pg_temp.assert_eq(public.admin_publish_content('Nouvelle image'), 8, 'ima
 select pg_temp.assert_eq(
   (select pack #>> '{pictograms,0,imageObject,sha256}' from public.content_releases where version = 8),
   (select sha from png), 'empreinte de l''image dans le paquet');
+select pg_temp.assert_eq(
+  (select (pack #>> '{pictograms,0,imageObject,size}')::int from public.content_releases where version = 8),
+  68, 'taille de l''image dans le paquet');
 
 select pg_temp.as_service();
 set local role service_role;
-select pg_temp.assert_eq(
-  (select count(*) from public.content_published_image((select sha from png))), 1::bigint,
-  'image publiée servie');
+select pg_temp.assert_eq(public.content_published_image((select sha from png)), 'image/png', 'image publiée servie');
 select pg_temp.assert_eq((public.content_latest_pack() ->> 'version')::int, 8, 'dernière publication servie');
 reset role;
 

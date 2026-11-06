@@ -6,3 +6,6 @@ design/mocks/memo-*.html
 
 # Captures du navigateur de test
 .playwright-mcp/
+
+# Clés du stockage objet (backend/storage)
+backend/storage/s3.json
