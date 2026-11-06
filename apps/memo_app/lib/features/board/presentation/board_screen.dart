@@ -148,6 +148,8 @@ Future<({int? id})?> showPictogramPicker(
   bool allowClear = true,
 }) => showModalBottomSheet<({int? id})>(
   context: context,
+  useRootNavigator: true,
+  useSafeArea: true,
   isScrollControlled: true,
   builder: (_) => _PictogramPicker(allowClear: allowClear),
 );
@@ -166,7 +168,13 @@ class _PictogramPicker extends ConsumerWidget {
       initialChildSize: 0.8,
       builder: (context, controller) => ListView(
         controller: controller,
-        padding: const EdgeInsets.all(16),
+        // Le bas de la liste reste au-dessus de la barre de gestes du système.
+        padding: EdgeInsets.fromLTRB(
+          16,
+          16,
+          16,
+          16 + MediaQuery.paddingOf(context).bottom,
+        ),
         children: [
           if (allowClear)
             OutlinedButton.icon(

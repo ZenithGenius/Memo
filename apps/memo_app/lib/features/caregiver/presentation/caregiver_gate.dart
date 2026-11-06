@@ -14,6 +14,8 @@ Future<bool> requireCaregiver(BuildContext context, WidgetRef ref) async {
   }
   final unlocked = await showModalBottomSheet<bool>(
     context: context,
+    useRootNavigator: true,
+    useSafeArea: true,
     isScrollControlled: true,
     showDragHandle: true,
     builder: (_) => const PinSheet(),
