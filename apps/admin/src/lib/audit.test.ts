@@ -23,6 +23,14 @@ suite("journal d'activité lisible", () => {
     expect(describe({ action: "update", entity: "devices", before: { revoked_at: null }, after: { revoked_at: "2026-10-10T10:00:00Z" } })).toBe("Appareil révoqué");
     expect(describe({ action: "update", entity: "devices", before: { revoked_at: "x" }, after: { revoked_at: null } })).toBe("Appareil rétabli");
   });
+  it("catalogue de contenu", () => {
+    const picto = (active: boolean, image: string | null) => ({ code: "CAA-CR-ACT-026", active, image_sha256: image, labels: { fr: { label: "Danser", spoken: "danser" }, en: { label: "Dance", spoken: "dance" } } });
+    expect(describe({ action: "insert", entity: "content_pictograms", before: null, after: picto(true, null) })).toBe("Pictogramme créé : Danser");
+    expect(describe({ action: "update", entity: "content_pictograms", before: picto(true, null), after: picto(false, null) })).toBe("Pictogramme retiré : Danser");
+    expect(describe({ action: "update", entity: "content_pictograms", before: picto(true, null), after: picto(true, "ab") })).toBe("Image changée : Danser");
+    expect(describe({ action: "delete", entity: "content_pictograms", before: picto(true, null), after: null })).toBe("Brouillon supprimé : Danser");
+    expect(describe({ action: "update", entity: "content_categories", before: {}, after: { labels: { fr: "Santé", en: "Health" } } })).toBe("Catégorie modifiée : Santé");
+  });
   it("compte supprimé par son titulaire", () => {
     expect(describe({ action: "delete", entity: "users", before: null, after: null })).toBe("Compte supprimé par son titulaire");
     expect(describe({ action: "password_reset", entity: "users", before: null, after: null })).toBe("Lien de réinitialisation du mot de passe envoyé");

@@ -1,0 +1,43 @@
+# Stockage objet de production (ADR-012) : SeaweedFS, passerelle S3, derrière
+# Supabase Storage. Aucun port publié : seul le service Storage l'atteint, sur
+# le réseau interne de la pile Supabase.
+#
+#   cp s3.example.json s3.json   # puis remplacer les clés (fichier ignoré par Git)
+#   docker compose up -d
+#   docker compose exec seaweedfs sh -c 'echo "s3.bucket.create -name memo-storage" | weed shell'
+#
+# Côté Supabase Storage (variables du service storage) :
+#   STORAGE_BACKEND=s3
+#   GLOBAL_S3_BUCKET=memo-storage
+#   GLOBAL_S3_ENDPOINT=http://seaweedfs:8333
+#   GLOBAL_S3_FORCE_PATH_STYLE=true
+#   REGION=us-east-1
+#   AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY = l'identité « storage » de s3.json
+name: memo-storage
+
+services:
+  seaweedfs:
+    image: chrislusf/seaweedfs:4.48@sha256:4e61d15fd35994cb1e43e1e553dff106794841fd9a99ade2fc8c8bfce4d7872d
+    command: >
+      server -dir=/data -ip.bind=0.0.0.0
+      -master.volumeSizeLimitMB=1024 -volume.max=0
+      -s3 -s3.port=8333 -s3.config=/etc/seaweedfs/s3.json
+    volumes:
+      - seaweedfs-data:/data
+      - ./s3.json:/etc/seaweedfs/s3.json:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:9333/cluster/status"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    networks: [supabase]
+
+volumes:
+  seaweedfs-data:
+
+networks:
+  supabase:
+    external: true
+    # Nom du réseau de la pile Supabase auto-hébergée.
+    name: ${SUPABASE_NETWORK:-supabase_default}
