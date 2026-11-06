@@ -84,9 +84,21 @@
   "favoritesTitle": "Mes favoris",
   "favoritesEmpty": "Appuyez longuement sur un pictogramme pour l'ajouter à vos favoris",
   "favoriteAdded": "Ajouté aux favoris : {label}",
-  "@favoriteAdded": {"placeholders": {"label": {"type": "String"}}},
+  "@favoriteAdded": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
   "favoriteRemoved": "Retiré des favoris : {label}",
-  "@favoriteRemoved": {"placeholders": {"label": {"type": "String"}}},
+  "@favoriteRemoved": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
   "favoritesRemoveHint": "Appuyez longuement sur un pictogramme pour le retirer de vos favoris",
   "boardTitle": "Mon tableau",
   "boardEdit": "Modifier le tableau",
@@ -213,7 +225,13 @@
   "accountDelete": "Supprimer mon compte",
   "accountDeleteTitle": "Supprimer le compte ?",
   "accountDeleteWarning": "Le compte {email} sera supprimé définitivement : l'abonnement en cours est perdu et les appareils associés sont déconnectés. Les profils, favoris et tableaux restent sur ce téléphone.",
-  "@accountDeleteWarning": {"placeholders": {"email": {"type": "String"}}},
+  "@accountDeleteWarning": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
   "accountDeleteAction": "Supprimer définitivement",
   "accountDeleted": "Compte supprimé",
   "phraseAdded": "Phrase ajoutée",
@@ -293,6 +311,78 @@
   "@accountPremiumUntil": {
     "placeholders": {
       "date": {
+        "type": "String"
+      }
+    }
+  },
+  "boardTabGrid": "Tableau",
+  "boardTabRoutines": "Routines",
+  "routineNew": "Nouvelle routine",
+  "routineEmpty": "Aucune routine pour l'instant. Une routine montre, en une ligne, les étapes d'un moment de la journée.",
+  "routineName": "Nom de la routine",
+  "routineNameHint": "Par exemple : Le matin",
+  "routineSave": "Enregistrer",
+  "routineRename": "Renommer",
+  "routineEditSteps": "Modifier les étapes",
+  "routineDelete": "Supprimer",
+  "routineDeleteConfirm": "Supprimer la routine « {name} » ?",
+  "@routineDeleteConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "routineRestart": "Recommencer",
+  "routineProgress": "{done} sur {total}",
+  "@routineProgress": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "routineFinished": "Routine terminée, bravo !",
+  "routineNoSteps": "Aucune étape pour l'instant.",
+  "routineAddStep": "Ajouter une étape",
+  "routineStepDone": "Fait",
+  "routineStep": "Étape {index} sur {total} : {label}",
+  "@routineStep": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      },
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "routineRemoveStep": "Retirer {label}",
+  "@routineRemoveStep": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "routineStepsTitle": "Étapes de « {name} »",
+  "@routineStepsTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "routineOptions": "Options de {name}",
+  "@routineOptions": {
+    "placeholders": {
+      "name": {
         "type": "String"
       }
     }

@@ -564,4 +564,80 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get licenseDeviceRevoked =>
       'This device was removed from the account.';
+
+  @override
+  String get boardTabGrid => 'Board';
+
+  @override
+  String get boardTabRoutines => 'Routines';
+
+  @override
+  String get routineNew => 'New routine';
+
+  @override
+  String get routineEmpty =>
+      'No routines yet. A routine shows, in one row, the steps of a moment of the day.';
+
+  @override
+  String get routineName => 'Routine name';
+
+  @override
+  String get routineNameHint => 'For example: Morning';
+
+  @override
+  String get routineSave => 'Save';
+
+  @override
+  String get routineRename => 'Rename';
+
+  @override
+  String get routineEditSteps => 'Edit steps';
+
+  @override
+  String get routineDelete => 'Delete';
+
+  @override
+  String routineDeleteConfirm(String name) {
+    return 'Delete the routine \"$name\"?';
+  }
+
+  @override
+  String get routineRestart => 'Start over';
+
+  @override
+  String routineProgress(int done, int total) {
+    return '$done of $total';
+  }
+
+  @override
+  String get routineFinished => 'Routine done, well done!';
+
+  @override
+  String get routineNoSteps => 'No steps yet.';
+
+  @override
+  String get routineAddStep => 'Add a step';
+
+  @override
+  String get routineStepDone => 'Done';
+
+  @override
+  String routineStep(int index, int total, String label) {
+    return 'Step $index of $total: $label';
+  }
+
+  @override
+  String routineRemoveStep(String label) {
+    return 'Remove $label';
+  }
+
+  @override
+  String routineStepsTitle(String name) {
+    return 'Steps of \"$name\"';
+  }
+
+  @override
+  String routineOptions(String name) {
+    return 'Options for $name';
+  }
 }
