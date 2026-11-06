@@ -1,5 +1,11 @@
 # Journal
 
+## 06/11/2026 (fin) : paquet gratuit (#41) et variantes serveur (#19)
+
+- #41 : palier free ou premium par pictogramme, 20 mots gratuits dans le catalogue serveur, fonction `free-pack` sans compte, mise à jour du gratuit au démarrage de l'application. ADR-013. Vérifié de bout en bout (Pharmacie passé en gratuit puis repassé en abonnés, visible puis masqué sur l'émulateur sans compte). PR #55.
+- #19 : variantes fille ou garçon envoyées depuis le back-office, servies comme l'image commune, base locale v9. Vérifié sur émulateur avec profils Femme, Homme et sans genre. PR #56.
+- Données locales de test : publications 9 à 12 dans la base Supabase locale (Pharmacie et « Je veux » remis dans leur état d'origine).
+
 ## 06/11/2026 (suite) : routines (#37)
 
 - Onglet « Routines » dans « Mon tableau » : une ligne d'étapes par routine, toucher prononce, « Fait » coche, remise à zéro par le jour enregistré sur chaque étape (base locale v8).
