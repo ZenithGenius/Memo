@@ -151,4 +151,54 @@ void main() {
     final found = await repo.watchByIds([all[1].id, all[0].id], 'fr').first;
     expect(found.map((p) => p.code).toSet(), {'A1', 'A2'});
   });
+
+  test('image téléchargée prioritaire, empreinte mal formée ignorée', () async {
+    const sha =
+        'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad';
+    await ContentImporter(db).importIfNeeded(
+      ContentPack.fromJson({
+        'version': 1,
+        'categories': [
+          {
+            'code': 'SAN',
+            'sortOrder': 3,
+            'labels': {'fr': 'Santé'},
+          },
+        ],
+        'pictograms': [
+          {
+            ...pict('S1', 'Pharmacie', 0, category: 'SAN'),
+            'image': 'assets/content/images/demo/x.png',
+            'imageObject': {'sha256': sha, 'mime': 'image/png', 'size': 3},
+          },
+          {
+            ...pict('S2', 'Docteur', 0, category: 'SAN', order: 2),
+            'imageObject': {'sha256': '../../etc/passwd'},
+          },
+        ],
+      }),
+      slot: ContentImporter.premiumSlot,
+    );
+    Future<List<String?>> images(DriftCatalogRepository r) async =>
+        (await r
+                .watchPictograms(
+                  categoryCode: 'SAN',
+                  lang: 'fr',
+                  maxLevel: Level.advanced,
+                  audience: Audience.all,
+                )
+                .first)
+            .map((p) => p.imageAsset)
+            .toList();
+
+    expect(await images(DriftCatalogRepository(db, imageDir: '/data/img')), [
+      '/data/img/$sha',
+      null,
+    ]);
+    // Sans serveur (pas de dossier d'images) : image embarquée.
+    expect(await images(DriftCatalogRepository(db)), [
+      'assets/content/images/demo/x.png',
+      null,
+    ]);
+  });
 }

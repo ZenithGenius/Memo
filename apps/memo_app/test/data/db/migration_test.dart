@@ -199,7 +199,7 @@ void main() {
     expect(await db.select(db.spokenSentences).get(), hasLength(1));
   });
 
-  test('migration v5 vers v6 : genre du profil et variantes d\'images', () async {
+  test('migration v5 vers v7 : genre, variantes et images téléchargées', () async {
     final db = AppDatabase(
       NativeDatabase.memory(
         setup: (raw) {
@@ -225,5 +225,6 @@ void main() {
     expect(p.imageAsset, 'commun.png');
     expect(p.imageFeminine, isNull);
     expect(p.imageMasculine, isNull);
+    expect(p.imageSha256, isNull, reason: 'colonne de la version 7');
   });
 }

@@ -71,6 +71,7 @@ class ContentImporter {
           imageAsset: Value(p.imageAsset),
           imageFeminine: Value(p.imageFeminine),
           imageMasculine: Value(p.imageMasculine),
+          imageSha256: Value(p.imageSha256),
           tier: Value(p.tier),
           labelInImage: Value(p.labelInImage),
         );
@@ -137,4 +138,15 @@ class ContentImporter {
   Future<int> _pictogramId(String code) async => (await (_db.select(
     _db.pictograms,
   )..where((p) => p.code.equals(code))).getSingle()).id;
+
+  /// Empreintes des images envoyées depuis le back-office, à télécharger.
+  Future<List<String>> imageHashes() async {
+    final query = _db.selectOnly(_db.pictograms, distinct: true)
+      ..addColumns([_db.pictograms.imageSha256])
+      ..where(_db.pictograms.imageSha256.isNotNull());
+    return [
+      for (final row in await query.get())
+        row.read(_db.pictograms.imageSha256)!,
+    ];
+  }
 }
