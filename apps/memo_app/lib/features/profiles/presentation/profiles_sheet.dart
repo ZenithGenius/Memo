@@ -73,6 +73,8 @@ class ProfilesSheet extends ConsumerWidget {
     if (!context.mounted) return;
     final created = await showModalBottomSheet<bool>(
       context: context,
+      useRootNavigator: true,
+      useSafeArea: true,
       isScrollControlled: true,
       showDragHandle: true,
       builder: (_) => const NewProfileSheet(),

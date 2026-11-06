@@ -24,6 +24,8 @@ class ProfileButton extends ConsumerWidget {
         borderRadius: BorderRadius.circular(12),
         onTap: () => showModalBottomSheet<void>(
           context: context,
+          useRootNavigator: true,
+          useSafeArea: true,
           isScrollControlled: true,
           showDragHandle: true,
           builder: (_) => const ProfilesSheet(),
