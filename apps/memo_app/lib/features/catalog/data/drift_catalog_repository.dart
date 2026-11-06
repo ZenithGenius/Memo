@@ -117,9 +117,23 @@ class DriftCatalogRepository implements CatalogRepository {
   /// Tant que le téléchargement n'a pas eu lieu, la tuile affiche l'icône.
   String? _imageOf(TypedResult r) {
     final p = r.readTable(_db.pictograms);
+    return _downloaded(p.imageSha256) ?? p.imageAsset;
+  }
+
+  /// Variantes de genre (#19) : téléchargée en priorité, sinon embarquée.
+  String? _feminineOf(TypedResult r) {
+    final p = r.readTable(_db.pictograms);
+    return _downloaded(p.imageFeminineSha256) ?? p.imageFeminine;
+  }
+
+  String? _masculineOf(TypedResult r) {
+    final p = r.readTable(_db.pictograms);
+    return _downloaded(p.imageMasculineSha256) ?? p.imageMasculine;
+  }
+
+  String? _downloaded(String? sha256) {
     final dir = imageDir;
-    if (p.imageSha256 != null && dir != null) return '$dir/${p.imageSha256}';
-    return p.imageAsset;
+    return sha256 == null || dir == null ? null : '$dir/$sha256';
   }
 
   List<Pictogram> _mapRows(List<TypedResult> rows, String lang) => [
@@ -129,8 +143,10 @@ class DriftCatalogRepository implements CatalogRepository {
         code: r.readTable(_db.pictograms).code,
         categoryId: r.readTable(_db.pictograms).categoryId,
         imageAsset: _showImage(r, lang) ? _imageOf(r) : null,
-        imageFeminine: r.readTable(_db.pictograms).imageFeminine,
-        imageMasculine: r.readTable(_db.pictograms).imageMasculine,
+        // Comme l'image commune : masquées dans une autre langue si le mot
+        // y est écrit.
+        imageFeminine: _showImage(r, lang) ? _feminineOf(r) : null,
+        imageMasculine: _showImage(r, lang) ? _masculineOf(r) : null,
         minLevel: Level.values[r.readTable(_db.pictograms).minLevel],
         audience: Audience.values.byName(r.readTable(_db.pictograms).audience),
         sortOrder: r.readTable(_db.pictograms).sortOrder,
