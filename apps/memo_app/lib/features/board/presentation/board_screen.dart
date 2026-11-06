@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memo/core/theme/app_colors.dart';
 import 'package:memo/core/ui/action_feedback.dart';
 import 'package:memo/core/ui/adaptive_grid.dart';
+import 'package:memo/features/board/presentation/routines_view.dart';
 import 'package:memo/features/caregiver/presentation/caregiver_gate.dart';
 import 'package:memo/features/catalog/domain/catalog.dart';
 import 'package:memo/features/catalog/presentation/catalog_providers.dart';
@@ -17,20 +18,29 @@ class BoardScreen extends ConsumerStatefulWidget {
   ConsumerState<BoardScreen> createState() => _BoardScreenState();
 }
 
-class _BoardScreenState extends ConsumerState<BoardScreen> {
+class _BoardScreenState extends ConsumerState<BoardScreen>
+    with SingleTickerProviderStateMixin {
   bool _editing = false;
+  late final TabController _tabs = TabController(length: 2, vsync: this)
+    ..addListener(() {
+      // Le bouton « Modifier » ne concerne que la grille.
+      if (_tabs.index != 0 && _editing) _editing = false;
+      setState(() {});
+    });
+
+  @override
+  void dispose() {
+    _tabs.dispose();
+    super.dispose();
+  }
 
   Future<void> _pickForCell(int position) async {
     final profile = ref.read(activeProfileProvider).value;
     if (profile == null) return;
     final repo = ref.read(boardRepositoryProvider);
-    final picked = await showModalBottomSheet<_PickResult>(
-      context: context,
-      isScrollControlled: true,
-      builder: (_) => const _PictogramPicker(),
-    );
+    final picked = await showPictogramPicker(context);
     if (picked == null) return;
-    await repo.setCell(profile.id, profile.level, position, picked.pictogramId);
+    await repo.setCell(profile.id, profile.level, position, picked.id);
   }
 
   @override
@@ -41,24 +51,36 @@ class _BoardScreenState extends ConsumerState<BoardScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.boardTitle),
+        bottom: TabBar(
+          controller: _tabs,
+          tabs: [
+            Tab(text: l10n.boardTabGrid),
+            Tab(text: l10n.boardTabRoutines),
+          ],
+        ),
         actions: [
-          IconButton(
-            tooltip: _editing ? l10n.boardDone : l10n.boardEdit,
-            icon: Icon(_editing ? Icons.check : Icons.edit_outlined),
-            onPressed: () async {
-              // Modifier le tableau, c'est modifier le vocabulaire : réservé à
-              // l'accompagnant. Terminer la modification reste libre.
-              if (!_editing && !await requireCaregiver(context, ref)) return;
-              if (!mounted) return;
-              if (_editing) confirmAction(this.context, ref, l10n.boardSaved);
-              setState(() => _editing = !_editing);
-            },
-          ),
+          if (_tabs.index == 0)
+            IconButton(
+              tooltip: _editing ? l10n.boardDone : l10n.boardEdit,
+              icon: Icon(_editing ? Icons.check : Icons.edit_outlined),
+              onPressed: () async {
+                // Modifier le tableau, c'est modifier le vocabulaire : réservé à
+                // l'accompagnant. Terminer la modification reste libre.
+                if (!_editing && !await requireCaregiver(context, ref)) return;
+                if (!mounted) return;
+                if (_editing) confirmAction(this.context, ref, l10n.boardSaved);
+                setState(() => _editing = !_editing);
+              },
+            ),
         ],
       ),
-      body: board == null
-          ? const Center(child: CircularProgressIndicator())
-          : GridView.count(
+      body: TabBarView(
+        controller: _tabs,
+        children: [
+          if (board == null)
+            const Center(child: CircularProgressIndicator())
+          else
+            GridView.count(
               crossAxisCount: board.columns,
               mainAxisSpacing: 12,
               crossAxisSpacing: 12,
@@ -68,6 +90,9 @@ class _BoardScreenState extends ConsumerState<BoardScreen> {
                   _cell(board.cells[i], pictograms, i, l10n),
               ],
             ),
+          const RoutinesView(),
+        ],
+      ),
     );
   }
 
@@ -116,13 +141,20 @@ class _BoardScreenState extends ConsumerState<BoardScreen> {
   }
 }
 
-class _PickResult {
-  const _PickResult(this.pictogramId);
-  final int? pictogramId;
-}
+/// Choix d'un pictogramme du vocabulaire du profil. `id` nul : vider la case
+/// (proposé seulement si [allowClear]). Résultat nul : choix abandonné.
+Future<({int? id})?> showPictogramPicker(
+  BuildContext context, {
+  bool allowClear = true,
+}) => showModalBottomSheet<({int? id})>(
+  context: context,
+  isScrollControlled: true,
+  builder: (_) => _PictogramPicker(allowClear: allowClear),
+);
 
 class _PictogramPicker extends ConsumerWidget {
-  const _PictogramPicker();
+  const _PictogramPicker({required this.allowClear});
+  final bool allowClear;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -136,11 +168,12 @@ class _PictogramPicker extends ConsumerWidget {
         controller: controller,
         padding: const EdgeInsets.all(16),
         children: [
-          OutlinedButton.icon(
-            onPressed: () => Navigator.of(context).pop(const _PickResult(null)),
-            icon: const Icon(Icons.delete_outline),
-            label: Text(l10n.boardClearCell),
-          ),
+          if (allowClear)
+            OutlinedButton.icon(
+              onPressed: () => Navigator.of(context).pop((id: null)),
+              icon: const Icon(Icons.delete_outline),
+              label: Text(l10n.boardClearCell),
+            ),
           for (final c in categories) ...[
             Padding(
               padding: const EdgeInsets.only(top: 16, bottom: 8),
@@ -159,8 +192,7 @@ class _PictogramPicker extends ConsumerWidget {
                   ActionChip(
                     label: Text(p.label),
                     materialTapTargetSize: MaterialTapTargetSize.padded,
-                    onPressed: () =>
-                        Navigator.of(context).pop(_PickResult(p.id)),
+                    onPressed: () => Navigator.of(context).pop((id: p.id)),
                   ),
               ],
             ),
