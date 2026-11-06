@@ -217,6 +217,8 @@ class _RoutineCard extends ConsumerWidget {
         if (!await requireCaregiver(context, ref) || !context.mounted) return;
         final action = await showModalBottomSheet<String>(
           context: context,
+          useRootNavigator: true,
+          useSafeArea: true,
           builder: (context) => SafeArea(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -325,8 +327,11 @@ class _NameDialogState extends State<_NameDialog> {
   }
 }
 
+/// Plein écran : la barre du message et les onglets ne concernent pas
+/// l'accompagnant qui modifie la routine.
 Future<void> _editSteps(BuildContext context, Routine routine) => Navigator.of(
   context,
+  rootNavigator: true,
 ).push(MaterialPageRoute<void>(builder: (_) => _StepsEditor(routine: routine)));
 
 /// Étapes d'une routine : ajouter, retirer, réordonner. Chaque changement
