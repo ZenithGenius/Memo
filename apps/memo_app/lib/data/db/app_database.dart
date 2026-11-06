@@ -30,7 +30,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.production() : super(driftDatabase(name: 'memo'));
 
   @override
-  int get schemaVersion => 6;
+  int get schemaVersion => 7;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -53,6 +53,9 @@ class AppDatabase extends _$AppDatabase {
         await m.addColumn(profiles, profiles.gender);
         await m.addColumn(pictograms, pictograms.imageFeminine);
         await m.addColumn(pictograms, pictograms.imageMasculine);
+      }
+      if (from < 7) {
+        await m.addColumn(pictograms, pictograms.imageSha256);
       }
     },
     beforeOpen: (details) async {

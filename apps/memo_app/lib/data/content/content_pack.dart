@@ -33,6 +33,7 @@ class PackPictogram {
     this.imageAsset,
     this.imageFeminine,
     this.imageMasculine,
+    this.imageSha256,
     this.tier = 'free',
     this.labelInImage = false,
   });
@@ -46,6 +47,10 @@ class PackPictogram {
   /// Variantes au féminin et au masculin (`imageVariants` dans le paquet).
   final String? imageFeminine;
   final String? imageMasculine;
+
+  /// Image envoyée depuis le back-office (`imageObject.sha256`), téléchargée
+  /// à la synchronisation : prioritaire sur l'image embarquée.
+  final String? imageSha256;
 
   /// `free` (livré dans l'application) ou `premium` (ADR-008).
   final String tier;
@@ -109,6 +114,7 @@ class ContentPack {
             audience: p['audience']! as String,
             sortOrder: p['sortOrder']! as int,
             imageAsset: p['image'] as String?,
+            imageSha256: _sha256Of(p['imageObject']),
             imageFeminine:
                 (p['imageVariants'] as Map<String, Object?>?)?['feminine']
                     as String?,
@@ -162,4 +168,14 @@ class ContentPack {
   final List<PackCategory> categories;
   final List<PackPictogram> pictograms;
   final List<PackPhrase> phrases;
+}
+
+final _sha256 = RegExp(r'^[0-9a-f]{64}$');
+
+/// Empreinte d'une image envoyée, `null` si absente ou mal formée (elle sert
+/// de nom de fichier : rien d'autre n'est accepté).
+String? _sha256Of(Object? imageObject) {
+  if (imageObject is! Map<String, Object?>) return null;
+  final sha = imageObject['sha256'];
+  return sha is String && _sha256.hasMatch(sha) ? sha : null;
 }

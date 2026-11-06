@@ -1,7 +1,9 @@
 import 'package:memo/core/storage/secure_store.dart';
 import 'package:memo/data/content/content_importer.dart';
+import 'package:memo/data/content/image_store.dart';
 import 'package:memo/features/account/data/auth_api.dart';
 import 'package:memo/features/account/data/premium_pack_api.dart';
+import 'package:memo/features/license/data/license_api.dart';
 import 'package:memo/features/license/domain/device_identity.dart';
 import 'package:memo/features/license/domain/entitlement_service.dart';
 
@@ -16,6 +18,7 @@ class AccountService {
     required this.packs,
     required this.importer,
     required this.device,
+    this.images,
   });
 
   final AuthApi auth;
@@ -24,6 +27,9 @@ class AccountService {
   final PremiumPackApi packs;
   final ContentImporter importer;
   final DeviceIdentity device;
+
+  /// Images envoyées depuis le back-office ; `null` sans stockage local.
+  final ImageStore? images;
 
   static const _refreshKey = 'auth_refresh_token';
   static const _emailKey = 'auth_email';
@@ -86,7 +92,30 @@ class AccountService {
       if (pack != null) {
         await importer.importIfNeeded(pack, slot: ContentImporter.premiumSlot);
       }
+      await _downloadImages(session.accessToken);
     }
     return entitlement;
+  }
+
+  /// Télécharge les images qui manquent, à chaque synchronisation : une image
+  /// non reçue (réseau coupé, erreur ponctuelle) est retentée la fois
+  /// suivante, sans faire échouer la synchronisation du reste.
+  Future<void> _downloadImages(String accessToken) async {
+    final store = images;
+    if (store == null) return;
+    final fingerprint = await device.fingerprint();
+    for (final sha256 in await importer.imageHashes()) {
+      if (await store.has(sha256)) continue;
+      try {
+        final bytes = await packs.fetchImage(
+          accessToken: accessToken,
+          fingerprint: fingerprint,
+          sha256: sha256,
+        );
+        await store.save(sha256, bytes);
+      } on LicenseApiException catch (e) {
+        if (e.error == LicenseApiError.offline) return;
+      }
+    }
   }
 }
