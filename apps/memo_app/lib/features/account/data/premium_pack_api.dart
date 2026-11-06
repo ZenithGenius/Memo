@@ -22,6 +22,13 @@ abstract interface class PremiumPackApi {
     required String fingerprint,
     required String sha256,
   });
+
+  /// Paquet des mots gratuits (#41), sans compte ; `null` si la version
+  /// [have] est déjà la dernière ou si le serveur n'en publie aucun.
+  Future<ContentPack?> fetchFree({int? have});
+
+  /// Image d'un mot gratuit, sans compte.
+  Future<Uint8List> fetchFreeImage(String sha256);
 }
 
 class HttpPremiumPackApi implements PremiumPackApi {
@@ -41,11 +48,27 @@ class HttpPremiumPackApi implements PremiumPackApi {
     required String fingerprint,
     int? have,
   }) async {
-    final response = await _get('premium-pack', accessToken, {
+    final response = await _get('premium-pack', {
       'fingerprint': fingerprint,
       if (have != null) 'have': '$have',
-    });
-    if (response.statusCode == 204) return null;
+    }, accessToken: accessToken);
+    return _pack(response);
+  }
+
+  @override
+  Future<ContentPack?> fetchFree({int? have}) async {
+    final response = await _get('free-pack', {
+      if (have != null) 'have': '$have',
+    }, notFoundIsEmpty: true);
+    return _pack(response);
+  }
+
+  @override
+  Future<Uint8List> fetchFreeImage(String sha256) async =>
+      (await _get('free-pack', {'sha256': sha256})).bodyBytes;
+
+  ContentPack? _pack(http.Response response) {
+    if (response.statusCode == 204 || response.statusCode == 404) return null;
     try {
       return ContentPack.fromJson(
         jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, Object?>,
@@ -61,20 +84,22 @@ class HttpPremiumPackApi implements PremiumPackApi {
     required String fingerprint,
     required String sha256,
   }) async {
-    final response = await _get('premium-image', accessToken, {
+    final response = await _get('premium-image', {
       'fingerprint': fingerprint,
       'sha256': sha256,
-    });
+    }, accessToken: accessToken);
     return response.bodyBytes;
   }
 
-  /// Appel d'une fonction de contenu ; seules les réponses 200 et 204
-  /// reviennent, les refus deviennent des erreurs typées.
+  /// Appel d'une fonction de contenu ; seules les réponses 200 et 204 (et
+  /// 404 si [notFoundIsEmpty]) reviennent, les refus deviennent des erreurs
+  /// typées. Sans [accessToken], l'appel est anonyme (contenu gratuit).
   Future<http.Response> _get(
     String function,
-    String accessToken,
-    Map<String, String> query,
-  ) async {
+    Map<String, String> query, {
+    String? accessToken,
+    bool notFoundIsEmpty = false,
+  }) async {
     final http.Response response;
     try {
       response = await _client
@@ -83,7 +108,8 @@ class HttpPremiumPackApi implements PremiumPackApi {
                 .resolve('/functions/v1/$function')
                 .replace(queryParameters: query),
             headers: {
-              'Authorization': 'Bearer $accessToken',
+              'Authorization':
+                  'Bearer ${accessToken ?? config.supabaseAnonKey}',
               'apikey': config.supabaseAnonKey,
             },
           )
@@ -97,6 +123,7 @@ class HttpPremiumPackApi implements PremiumPackApi {
     }
     return switch (response.statusCode) {
       200 || 204 => response,
+      404 when notFoundIsEmpty => response,
       401 => throw const LicenseApiException(LicenseApiError.unauthorized),
       402 => throw const LicenseApiException(
         LicenseApiError.noActiveSubscription,

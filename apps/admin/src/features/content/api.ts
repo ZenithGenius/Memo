@@ -8,6 +8,8 @@ const BUCKET = "content-images";
 export type Lang = "fr" | "en";
 export interface PictogramLabels { fr: { label: string; spoken: string }; en: { label: string; spoken: string } }
 export type Audience = "child" | "teen" | "adult" | "all";
+/** Palier d'offre (#41) : « free » se voit sans compte. */
+export type Tier = "free" | "premium";
 
 export interface CategoryRow {
   code: string;
@@ -27,6 +29,7 @@ export interface PictogramRow {
   image_asset: string | null;
   image_sha256: string | null;
   label_in_image: boolean;
+  tier: Tier;
   active: boolean;
 }
 
@@ -58,7 +61,7 @@ export function usePictograms() {
     queryFn: async (): Promise<PictogramRow[]> => {
       const { data, error } = await db
         .from("content_pictograms")
-        .select("code, category_code, level, audience, sort_order, labels, image_asset, image_sha256, label_in_image, active")
+        .select("code, category_code, level, audience, sort_order, labels, image_asset, image_sha256, label_in_image, tier, active")
         .order("category_code")
         .order("sort_order");
       if (error) throw error;

@@ -16,6 +16,10 @@ class ContentImporter {
   /// Emplacement du paquet payant téléchargé (ADR-008).
   static const premiumSlot = 2;
 
+  /// Emplacement du paquet gratuit téléchargé sans compte (#41) : il fait
+  /// foi pour la liste des mots gratuits.
+  static const freeSlot = 3;
+
   /// Version installée d'un emplacement, `null` si rien n'est installé.
   Future<int?> installedVersion(int slot) async => (await (_db.select(
     _db.contentMeta,
@@ -118,6 +122,23 @@ class ContentImporter {
               );
         }
       }
+      if (slot == freeSlot) {
+        // Un mot sorti de l'offre gratuite redevient réservé aux abonnés
+        // (un abonné le retrouve par son paquet payant).
+        await (_db.update(_db.pictograms)..where(
+              (p) =>
+                  p.tier.equals('free') &
+                  p.code.isNotIn([for (final p in pack.pictograms) p.code]),
+            ))
+            .write(const PictogramsCompanion(tier: Value('premium')));
+      }
+      if (slot == baseSlot) {
+        // Nouveau paquet embarqué (mise à jour de l'application) : le paquet
+        // gratuit du serveur sera réappliqué par-dessus.
+        await (_db.delete(
+          _db.contentMeta,
+        )..where((m) => m.id.equals(freeSlot))).go();
+      }
       await _db
           .into(_db.contentMeta)
           .insertOnConflictUpdate(
@@ -139,11 +160,17 @@ class ContentImporter {
     _db.pictograms,
   )..where((p) => p.code.equals(code))).getSingle()).id;
 
-  /// Empreintes des images envoyées depuis le back-office, à télécharger.
-  Future<List<String>> imageHashes() async {
+  /// Empreintes des images envoyées depuis le back-office, à télécharger ;
+  /// celles des mots gratuits seulement si [freeOnly].
+  Future<List<String>> imageHashes({bool freeOnly = false}) async {
     final query = _db.selectOnly(_db.pictograms, distinct: true)
       ..addColumns([_db.pictograms.imageSha256])
-      ..where(_db.pictograms.imageSha256.isNotNull());
+      ..where(
+        _db.pictograms.imageSha256.isNotNull() &
+            (freeOnly
+                ? _db.pictograms.tier.equals('free')
+                : const Constant(true)),
+      );
     return [
       for (final row in await query.get())
         row.read(_db.pictograms.imageSha256)!,

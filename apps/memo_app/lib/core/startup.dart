@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -5,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memo/app.dart';
 import 'package:memo/core/bootstrap.dart';
 import 'package:memo/core/theme/app_theme.dart';
+import 'package:memo/features/account/presentation/account_providers.dart';
 import 'package:memo/l10n/app_localizations.dart';
 
 /// Construit le widget racine. Si l'ouverture de la base ou l'import du
@@ -16,6 +19,8 @@ Future<Widget> buildRootWidget({
 }) async {
   try {
     final container = await (create ?? createContainer)();
+    // Paquet gratuit du serveur (#41) : en arrière-plan, sans compte.
+    unawaited(container.read(accountServiceProvider)?.syncFreeContent());
     return UncontrolledProviderScope(
       container: container,
       child: const MemoApp(),
