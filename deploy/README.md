@@ -39,6 +39,7 @@ Chemin d'une requête : Internet, nginx du serveur (TLS), passerelle Envoy de l'
 | `supabase/deploy.sh` | Déploiement d'un environnement |
 | `supabase/migrate.sh` | Migrations de la base |
 | `supabase/bundle.sh` | Paquet de déploiement (fichiers versionnés seulement) |
+| `kiwi/` | Kiwi TCMS, gestion des tests (compose, réglages, secrets) |
 | `supabase/envoy/`, `supabase/db/`, `supabase/functions-main/` | Fichiers repris de Supabase auto-hébergé |
 
 ## Accès
@@ -240,7 +241,7 @@ Le script refuse d'écraser un `.env` existant. Il génère : mot de passe de la
 
 Ne jamais copier un `.env` hors du serveur ni le commiter. Sauvegarder les deux `.env` dans un coffre (gestionnaire de mots de passe) : sans eux, les données chiffrées et les licences émises ne sont plus vérifiables.
 
-E-mails (Brevo) : renseigner `SMTP_ADMIN_EMAIL`, `SMTP_HOST` (`smtp-relay.brevo.com`), `SMTP_PORT` (587), `SMTP_USER` et `SMTP_PASS` dans le `.env`, puis :
+E-mails (Brevo) : renseigner `SMTP_ADMIN_EMAIL`, `SMTP_HOST` (`smtp-relay.brevo.com`), `SMTP_PORT` (587), `SMTP_USER` et `SMTP_PASS` dans le `.env`. `SMTP_ADMIN_EMAIL` est l'expéditeur (champ From) : Brevo refuse tout message dont l'expéditeur n'est pas validé dans le compte (Expéditeurs) ou sur un domaine authentifié. `SMTP_USER` (`…@smtp-brevo.com`) sert seulement à la connexion. Les destinataires n'ont rien à faire. Puis :
 
 ```bash
 docker compose up -d auth
@@ -288,6 +289,38 @@ docker compose exec db psql -U postgres -c 'select version, name from supabase_m
 ```
 
 Une migration ne se modifie jamais après son application : on en ajoute une nouvelle.
+
+## Gestion des tests (Kiwi TCMS)
+
+Kiwi TCMS (édition communautaire) tient le cahier de recette : plans par parcours puis par scénario, un cas par point à valider, campagnes (Test Runs) avec verdict, commentaire et captures annotées.
+
+| Élément | Valeur |
+| --- | --- |
+| Adresse | https://tests.<domaine> |
+| Dossier | /srv/kiwi (`docker-compose.yml`, `memo_settings.py`, `.env` des secrets) |
+| Port local | 8443 (HTTPS auto-signé de Kiwi, derrière nginx, site `memo-tests`) |
+| Comptes | créés par l'administrateur ; inscription libre désactivée ; aucune page sans connexion |
+| E-mails | Brevo, mêmes accès que Memo (`KIWI_SMTP_*` dans `.env`) |
+| Compte administrateur | super-utilisateur Kiwi |
+
+Installation (une fois) :
+
+```bash
+sudo install -d -m 750 -o deploy -g deploy /srv/kiwi
+# copier deploy/kiwi/* dans /srv/kiwi, puis, en deploy :
+cd /srv/kiwi && bash init-env.sh tests.<domaine>
+docker compose up -d
+docker compose exec web /Kiwi/manage.py migrate
+docker compose exec web /Kiwi/manage.py set_domain tests.<domaine>
+docker compose exec web /Kiwi/manage.py refresh_permissions
+docker compose exec web /Kiwi/manage.py createsuperuser
+```
+
+Mise à jour : changer les empreintes des images dans `docker-compose.yml`, puis `docker compose up -d` et `docker compose exec web /Kiwi/manage.py upgrade`. Sauvegarde : volumes `kiwi_db_data` (MariaDB) et `kiwi_uploads` (pièces jointes).
+
+Vérifications : `docker compose ps`, `docker compose exec web /Kiwi/manage.py sendtestemail <adresse>`, `curl -sI https://tests.<domaine>/` (302 vers la connexion).
+
+Accès des agents : serveur MCP communautaire `kiwi-tcms-mcp-server` (danish54), relu et épinglé au commit 11620af ; deux modifications locales (vérification TLS réactivée, dotenv retiré). L'outil `tools/recette/capture.py` produit les captures annotées (cadres et pastilles rouges numérotées) depuis l'émulateur et peut les joindre à une exécution.
 
 ## Sauvegardes
 
