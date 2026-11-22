@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:memo/core/theme/app_colors.dart';
 
 /// Tuile de grille : image (ou icône provisoire) et mot séparé sous l'image.

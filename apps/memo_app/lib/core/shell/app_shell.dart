@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:memo/features/message/presentation/message_bar.dart';
 import 'package:memo/l10n/app_localizations.dart';
 

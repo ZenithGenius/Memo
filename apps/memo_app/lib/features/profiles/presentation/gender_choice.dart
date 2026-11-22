@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:memo/core/theme/app_colors.dart';
 import 'package:memo/features/catalog/domain/catalog.dart';
 import 'package:memo/features/profiles/domain/profile.dart';

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 IconData categoryIcon(String? name) => switch (name) {
   'bubble' => Icons.chat_bubble_outline,

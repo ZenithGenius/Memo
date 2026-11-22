@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:memo/features/catalog/domain/catalog.dart';
 import 'package:memo/features/catalog/presentation/catalog_providers.dart';
 import 'package:memo/features/message/presentation/message_notifier.dart';
@@ -11,6 +11,7 @@ import 'package:memo/features/phrases/presentation/phrases_screen.dart';
 import 'package:memo/features/profiles/domain/profile.dart';
 import 'package:memo/features/stats/presentation/usage_providers.dart';
 import 'package:memo/l10n/app_localizations.dart';
+import 'package:memo/l10n/localization_delegates.dart';
 
 import '../../support/fake_usage.dart';
 import '../../support/fakes.dart';
@@ -58,7 +59,7 @@ Future<void> pump(WidgetTester tester, List<QuickPhrase> phrases) async {
         activeProfileProvider.overrideWith((ref) => Stream.value(_profile)),
       ],
       child: const MaterialApp(
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        localizationsDelegates: appLocalizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         home: PhrasesScreen(),
       ),

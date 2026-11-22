@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:memo/core/storage/secure_store.dart';
 import 'package:memo/data/db/app_database.dart';
 import 'package:memo/features/board/data/drift_board_repository.dart';
@@ -15,6 +15,7 @@ import 'package:memo/features/catalog/presentation/catalog_providers.dart';
 import 'package:memo/features/message/presentation/message_notifier.dart';
 import 'package:memo/features/profiles/data/drift_profile_repository.dart';
 import 'package:memo/l10n/app_localizations.dart';
+import 'package:memo/l10n/localization_delegates.dart';
 
 import '../../support/fakes.dart';
 import '../../support/seed.dart';
@@ -56,7 +57,7 @@ void main() {
   Widget host() => UncontrolledProviderScope(
     container: container,
     child: const MaterialApp(
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      localizationsDelegates: appLocalizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       home: BoardScreen(),
     ),
