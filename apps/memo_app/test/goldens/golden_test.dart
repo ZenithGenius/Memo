@@ -61,9 +61,9 @@ void main() {
     final app = await AppHarness.start(tester);
     await tester.tap(find.text('Mes besoins'));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Je veux').first);
+    await tester.tap(find.bySemanticsLabel('Encore').first);
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Fini').first);
+    await tester.tap(find.bySemanticsLabel('Oui').first);
     await tester.pumpAndSettle();
     await loadImages(tester);
     await shot('category_with_message.png');
@@ -84,7 +84,7 @@ void main() {
     final app = await AppHarness.start(tester);
     await tester.tap(find.text('Mes besoins'));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Je veux').first);
+    await tester.tap(find.bySemanticsLabel('Encore').first);
     await tester.pumpAndSettle();
     await tester.tap(find.text('Lire le message'));
     await tester.pumpAndSettle();

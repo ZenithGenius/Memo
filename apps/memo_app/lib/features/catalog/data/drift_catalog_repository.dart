@@ -65,8 +65,18 @@ class DriftCatalogRepository implements CatalogRepository {
             _tierFilter(_db.pictograms.tier, includePremium),
       )
       ..orderBy([OrderingTerm.asc(_db.pictograms.sortOrder)]);
-    return query.watch().map((rows) => _mapRows(rows, lang));
+    // Niveau débutant : uniquement des mots illustrés, jamais de case sans
+    // pictogramme (une image masquée dans une autre langue compte).
+    return query.watch().map(
+      (rows) => _mapRows(
+        maxLevel != Level.beginner ? rows : rows.where(_hasImage).toList(),
+        lang,
+      ),
+    );
   }
+
+  bool _hasImage(TypedResult r) =>
+      _imageOf(r) != null || _feminineOf(r) != null || _masculineOf(r) != null;
 
   @override
   Stream<List<Pictogram>> watchByIds(

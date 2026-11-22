@@ -49,7 +49,7 @@ void main() {
             'level': 0,
             'audience': 'all',
             'sortOrder': 1,
-            'image': null,
+            'image': 'assets/content/images/demo/a.png',
             'labels': {
               'fr': {'label': 'Je veux', 'spoken': 'je veux'},
             },
@@ -60,7 +60,7 @@ void main() {
             'level': 0,
             'audience': 'all',
             'sortOrder': 1,
-            'image': null,
+            'image': 'assets/content/images/demo/b.png',
             'labels': {
               'fr': {'label': 'Eau', 'spoken': 'eau'},
             },

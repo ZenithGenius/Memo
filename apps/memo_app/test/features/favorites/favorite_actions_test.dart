@@ -12,16 +12,16 @@ void main() {
 
     await tester.tap(find.text('Mes besoins'));
     await tester.pumpAndSettle();
-    await tester.longPress(find.text('Fini').first);
+    await tester.longPress(find.bySemanticsLabel('Oui').first);
     await settleDatabase(tester);
-    expect(find.text('Ajouté aux favoris : Fini'), findsOneWidget);
+    expect(find.text('Ajouté aux favoris : Oui'), findsOneWidget);
     expect(await ids(), hasLength(1));
 
     app.container.read(appRouterProvider).go('/favorites');
     await settleDatabase(tester);
-    await tester.longPress(find.text('Fini').first);
+    await tester.longPress(find.bySemanticsLabel('Oui').first);
     await settleDatabase(tester);
-    expect(find.text('Retiré des favoris : Fini'), findsOneWidget);
+    expect(find.text('Retiré des favoris : Oui'), findsOneWidget);
     expect(await ids(), isEmpty);
 
     await tester.tap(find.text('Annuler'));

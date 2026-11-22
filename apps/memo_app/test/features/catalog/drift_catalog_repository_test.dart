@@ -13,6 +13,7 @@ Map<String, Object?> pict(
   int order = 1,
   String category = 'CBE',
   String tier = 'free',
+  String? image,
 }) => {
   'code': code,
   'category': category,
@@ -20,7 +21,7 @@ Map<String, Object?> pict(
   'level': level,
   'audience': audience,
   'sortOrder': order,
-  'image': null,
+  'image': image,
   'labels': {
     'fr': {'label': label, 'spoken': label.toLowerCase()},
   },
@@ -60,11 +61,19 @@ void main() {
           },
         ],
         'pictograms': [
-          pict('A1', 'Je veux', 0),
+          pict('A1', 'Je veux', 0, image: 'a1.png'),
           pict('A2', 'Merci', 1, order: 2),
           pict('A3', 'Avancé', 2, order: 3),
-          pict('A4', 'Enfant seul', 0, audience: 'child', order: 4),
+          pict(
+            'A4',
+            'Enfant seul',
+            0,
+            audience: 'child',
+            order: 4,
+            image: 'a4.png',
+          ),
           pict('B1', 'Manger', 0, category: 'ACT', tier: 'premium'),
+          pict('A5', 'Sans image', 0, order: 5),
         ],
       }),
     );
@@ -134,9 +143,16 @@ void main() {
     expect(list.map((p) => p.code), ['A1', 'A4']);
   });
 
+  test('niveau débutant : pas de case sans pictogramme', () async {
+    final beginner = await watch(Level.beginner, Audience.all).first;
+    expect(beginner.map((p) => p.code), isNot(contains('A5')));
+    final inter = await watch(Level.intermediate, Audience.all).first;
+    expect(inter.map((p) => p.code), contains('A5'));
+  });
+
   test("un profil adulte ne voit pas le contenu réservé aux enfants", () async {
     final list = await watch(Level.advanced, Audience.adult).first;
-    expect(list.map((p) => p.code), ['A1', 'A2', 'A3']);
+    expect(list.map((p) => p.code), ['A1', 'A2', 'A3', 'A5']);
   });
 
   test('le libellé et le texte parlé viennent de la traduction', () async {

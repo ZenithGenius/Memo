@@ -47,12 +47,12 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('My needs'));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('I want').first);
+    await tester.tap(find.bySemanticsLabel('More').first);
     await tester.pumpAndSettle();
     await tester.tap(find.text('Say the message'));
     await tester.pump();
 
-    expect(app.speech.spoken, ['I want', 'I want.']);
+    expect(app.speech.spoken, ['more', 'More.']);
     expect(app.speech.languages.toSet(), {'en'});
     await app.dispose(tester);
   });
@@ -61,7 +61,7 @@ void main() {
     final app = await AppHarness.start(tester);
     await tester.tap(find.text('Mes besoins'));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Je veux').first);
+    await tester.tap(find.bySemanticsLabel('Encore').first);
     await tester.pumpAndSettle();
     expect(app.container.read(messageProvider), hasLength(1));
 
@@ -121,7 +121,7 @@ void main() {
       final app = await AppHarness.start(tester);
       await tester.tap(find.text('Mes besoins'));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Je veux').first);
+      await tester.tap(find.bySemanticsLabel('Encore').first);
       await tester.pumpAndSettle();
       expect(app.container.read(messageProvider), hasLength(1));
 
