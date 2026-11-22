@@ -12,7 +12,7 @@ type AuthState =
   | { status: "signed-out"; reason?: string; notice?: string }
   // Ouvert depuis le lien reçu par e-mail : choix d'un nouveau mot de passe,
   // pour un administrateur comme pour une famille (aucun rôle exigé).
-  | { status: "recovery" }
+  | { status: "recovery"; invite?: boolean }
   // Mot de passe accepté, second facteur encore à saisir ou à configurer : la
   // base refuse toute action d'administration tant que la session n'est pas aal2.
   | { status: "mfa"; step: "verify" | "enroll"; role: AdminRole }
@@ -27,7 +27,7 @@ interface AuthApi {
   /** Envoie le lien par e-mail. Même réponse que l'adresse existe ou non. */
   requestReset: (email: string) => Promise<string | null>;
   /** Mot de passe changé : toutes les sessions du compte sont fermées. */
-  finishRecovery: () => Promise<void>;
+  finishRecovery: (invite?: boolean) => Promise<void>;
 }
 
 const EXPIRED_LINK = "Ce lien a expiré ou a déjà servi. Demandez-en un nouveau.";
@@ -64,8 +64,8 @@ export function AuthProvider({ children, link = null }: { children: ReactNode; l
     let cancelled = false;
     void db.auth.getSession().then(async ({ data }) => {
       const next: AuthState =
-        link === "recovery" && data.session
-          ? { status: "recovery" }
+        (link === "recovery" || link === "invite") && data.session
+          ? { status: "recovery", invite: link === "invite" }
           : link === "expired"
             ? { status: "signed-out", reason: EXPIRED_LINK }
             : await stateFor(db, data.session);
@@ -112,12 +112,14 @@ export function AuthProvider({ children, link = null }: { children: ReactNode; l
         ? "Trop de demandes. Réessayez dans une heure."
         : "Envoi impossible pour le moment. Réessayez.";
     },
-    finishRecovery: async () => {
+    finishRecovery: async (invite) => {
       const { error } = await db.auth.signOut({ scope: "global" });
       if (error) report("fermeture des sessions", error);
       setState({
         status: "signed-out",
-        notice: "Mot de passe modifié. Connectez-vous avec le nouveau mot de passe.",
+        notice: invite
+          ? "Mot de passe enregistré. Connectez-vous : la double authentification vous sera demandée."
+          : "Mot de passe modifié. Connectez-vous avec le nouveau mot de passe.",
       });
     },
   };

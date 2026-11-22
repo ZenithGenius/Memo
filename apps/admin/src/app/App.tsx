@@ -20,7 +20,7 @@ export function App() {
   const { state } = useAuth();
   if (state.status === "loading") return null;
   if (state.status === "signed-out") return <LoginPage reason={state.reason} notice={state.notice} />;
-  if (state.status === "recovery") return <RecoveryPage />;
+  if (state.status === "recovery") return <RecoveryPage invite={state.invite} />;
   if (state.status === "mfa") return <MfaPage step={state.step} />;
 
   return (

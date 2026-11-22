@@ -90,6 +90,8 @@ services:
       GOTRUE_MAILER_URLPATHS_RECOVERY: /auth/v1/verify
       GOTRUE_MAILER_URLPATHS_EMAIL_CHANGE: /auth/v1/verify
       # Modèles en français, servis au service d'authentification par le back-office (réseau interne).
+      GOTRUE_MAILER_SUBJECTS_INVITE: "Memo : invitation au back-office"
+      GOTRUE_MAILER_TEMPLATES_INVITE: http://admin:8080/email-templates/invite.html
       GOTRUE_MAILER_SUBJECTS_RECOVERY: "Memo : choisir un nouveau mot de passe"
       GOTRUE_MAILER_TEMPLATES_RECOVERY: http://admin:8080/email-templates/recovery.html
       GOTRUE_MAILER_NOTIFICATIONS_PASSWORD_CHANGED_ENABLED: "true"
@@ -185,6 +187,8 @@ services:
       SUPABASE_ANON_KEY: ${ANON_KEY}
       SUPABASE_SERVICE_ROLE_KEY: ${SERVICE_ROLE_KEY}
       VERIFY_JWT: "true"
+      # Invitation des administrateurs : origine autorisée et page d'arrivée du lien.
+      SITE_URL: ${SITE_URL}
       LICENSE_KEY_ID: ${LICENSE_KEY_ID}
       LICENSE_PRIVATE_KEY_PKCS8: ${LICENSE_PRIVATE_KEY_PKCS8}
     command: ["start", "--user-worker-request-idle-timeout", "150000", "--main-service", "/home/deno/functions/main"]

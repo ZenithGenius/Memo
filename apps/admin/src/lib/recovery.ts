@@ -1,12 +1,14 @@
 /**
- * Lien de réinitialisation reçu par e-mail. Le fragment d'URL est lu au
- * chargement, avant que le client Supabase ne l'efface en ouvrant la session.
+ * Lien reçu par e-mail : réinitialisation du mot de passe ou invitation d'un
+ * administrateur. Le fragment d'URL est lu au chargement, avant que le client
+ * Supabase ne l'efface en ouvrant la session.
  */
-export type AuthLink = "recovery" | "expired" | null;
+export type AuthLink = "recovery" | "invite" | "expired" | null;
 
 export function readAuthLink(hash: string): AuthLink {
   const params = new URLSearchParams(hash.replace(/^#/, ""));
   if (params.get("type") === "recovery" && params.get("access_token")) return "recovery";
+  if (params.get("type") === "invite" && params.get("access_token")) return "invite";
   if (params.get("error_code") || params.get("error")) return "expired";
   return null;
 }

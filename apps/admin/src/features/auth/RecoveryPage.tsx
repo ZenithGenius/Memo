@@ -9,11 +9,12 @@ import { isTotpCode } from "@/lib/mfa";
 import { passwordProblem } from "@/lib/recovery";
 
 /**
- * Nouveau mot de passe, depuis le lien reçu par e-mail. Un compte protégé par
+ * Nouveau mot de passe, depuis le lien reçu par e-mail (réinitialisation ou
+ * invitation d'un administrateur). Un compte protégé par
  * la double authentification doit d'abord saisir son code : le serveur refuse
  * le changement sans lui.
  */
-export function RecoveryPage() {
+export function RecoveryPage({ invite = false }: { invite?: boolean }) {
   const db = useDb();
   const { finishRecovery } = useAuth();
   const [password, setPassword] = useState("");
@@ -67,7 +68,7 @@ export function RecoveryPage() {
         setError(e.code === "weak_password" ? "Mot de passe trop simple." : "Le mot de passe n'a pas pu être changé. Réessayez.");
         return;
       }
-      await finishRecovery();
+      await finishRecovery(invite);
     } catch (e) {
       report("nouveau mot de passe", e);
       setError("Le mot de passe n'a pas pu être changé. Réessayez.");
@@ -83,7 +84,7 @@ export function RecoveryPage() {
           <div className="grid size-8.5 place-items-center rounded-[0.6rem] bg-brand text-white">
             <KeyRound className="size-4.5" />
           </div>
-          <h1 className="text-xl">Nouveau mot de passe</h1>
+          <h1 className="text-xl">{invite ? "Choisissez votre mot de passe" : "Nouveau mot de passe"}</h1>
         </div>
         <p className="mb-6 text-sm text-fg-muted">
           Au moins 10 caractères, avec une minuscule, une majuscule et un chiffre. Toutes les sessions ouvertes seront

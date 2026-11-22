@@ -11,7 +11,8 @@ export function report(context: string, error: unknown): void {
 export function userMessage(error: unknown, fallback: string): string {
   const raw = typeof error === "object" && error && "message" in error ? String(error.message) : "";
   if (raw.includes("last_super_admin")) return "Il doit rester au moins un super-administrateur.";
-  if (raw.includes("unknown_account")) return "Aucun compte avec cet e-mail : la personne doit d'abord s'inscrire.";
+  if (raw.includes("invalid_email")) return "Adresse e-mail invalide.";
+  if (raw.includes("not_invited")) return "Ce compte n'attend aucune invitation. Réessayez.";
   if (raw.includes("unconfirmed_email")) return "Adresse pas encore confirmée : la personne doit d'abord valider l'e-mail reçu à l'inscription.";
   if (raw.includes("invalid_until")) return "La date de fin doit être dans le futur.";
   if (raw.includes("image_too_large")) return "Image trop lourde : 512 Ko au maximum.";

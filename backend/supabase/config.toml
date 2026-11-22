@@ -249,6 +249,10 @@ otp_expiry = 3600
 subject = "Memo : choisir un nouveau mot de passe"
 content_path = "./supabase/templates/recovery.html"
 
+[auth.email.template.invite]
+subject = "Memo : invitation au back-office"
+content_path = "./supabase/templates/invite.html"
+
 [auth.email.notification.password_changed]
 enabled = true
 subject = "Memo : votre mot de passe a été changé"

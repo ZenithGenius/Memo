@@ -5,6 +5,10 @@ describe("lien de réinitialisation", () => {
   it("lien valide", () => {
     expect(readAuthLink("#access_token=a&refresh_token=r&type=recovery")).toBe("recovery");
   });
+  it("invitation d'un administrateur", () => {
+    expect(readAuthLink("#access_token=a&refresh_token=r&type=invite")).toBe("invite");
+    expect(readAuthLink("#type=invite")).toBeNull();
+  });
   it("lien expiré ou déjà utilisé", () => {
     expect(readAuthLink("#error=access_denied&error_code=otp_expired&error_description=x")).toBe("expired");
   });

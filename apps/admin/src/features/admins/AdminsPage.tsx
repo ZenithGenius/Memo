@@ -16,7 +16,7 @@ import { report, userMessage } from "@/lib/errors";
 import { dateFr } from "@/lib/format";
 import { ROLE_LABEL, canWrite, type AdminRole } from "@/lib/roles";
 import type { AdminRow } from "@/lib/rpc-types";
-import { useAdmins, useRemoveAdmin, useSetAdminRole } from "./api";
+import { useAdmins, useInviteAdmin, useRemoveAdmin, useSetAdminRole } from "./api";
 
 const adminRoles = ["super_admin", "support"] as const;
 
@@ -55,7 +55,7 @@ export default function AdminsPage() {
 
 function AddAdminCard() {
   const toast = useToast();
-  const setRole = useSetAdminRole();
+  const invite = useInviteAdmin();
   const form = useForm({
     resolver: zodResolver(addAdminSchema),
     defaultValues: { email: "", role: "support" as AdminRole },
@@ -63,8 +63,9 @@ function AddAdminCard() {
 
   const onSubmit = form.handleSubmit(async (v) => {
     try {
-      await setRole.mutateAsync({ targetEmail: v.email.trim(), newRole: v.role });
-      toast("Administrateur ajouté.");
+      const email = v.email.trim();
+      const status = await invite.mutateAsync({ email, role: v.role });
+      toast(status === "invited" ? `Invitation envoyée à ${email}.` : `Rôle attribué à ${email}.`);
       form.reset({ email: "", role: "support" });
     } catch (e) {
       report("administrateur", e);
@@ -86,10 +87,11 @@ function AddAdminCard() {
             ))}
           </Select>
         </Field>
-        <Button type="submit" loading={setRole.isPending}>Ajouter</Button>
+        <Button type="submit" loading={invite.isPending}>Ajouter</Button>
       </form>
       <p className="border-t border-line-subtle px-5 py-3 text-xs text-fg-muted">
-        La personne doit d'abord avoir créé un compte dans l'application.
+        Une nouvelle adresse reçoit une invitation par e-mail pour choisir son mot de passe ; la double authentification
+        lui est demandée à la première connexion.
       </p>
     </Card>
   );
