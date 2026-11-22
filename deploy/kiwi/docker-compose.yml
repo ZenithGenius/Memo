@@ -1,0 +1,60 @@
+# Kiwi TCMS (gestion des tests), édition communautaire, sur le serveur.
+# Images épinglées par empreinte (l'image communautaire est « rolling ») ;
+# mise à jour : changer l'empreinte, puis `docker compose up -d` et
+# `docker compose exec web /Kiwi/manage.py upgrade`.
+# Kiwi ne sert qu'en HTTPS (certificat auto-signé) : il n'écoute que sur
+# 127.0.0.1, derrière le nginx du serveur qui présente le certificat Let's Encrypt.
+name: kiwi
+
+services:
+  db:
+    image: mariadb:11.8@sha256:e1d5495f445654134f226f55a41ce0da227116f6f27f283101f405c794d841fc
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    restart: unless-stopped
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MARIADB_ROOT_PASSWORD: ${KIWI_DB_ROOT_PASSWORD}
+      MARIADB_DATABASE: kiwi
+      MARIADB_USER: kiwi
+      MARIADB_PASSWORD: ${KIWI_DB_PASSWORD}
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  web:
+    image: pub.kiwitcms.eu/kiwitcms/kiwitcms@sha256:23ba6f75df1168dfa258687900860df4b3b5ea727326790b791fb5ab82f443fb
+    restart: unless-stopped
+    depends_on:
+      db: { condition: service_healthy }
+    ports:
+      - 127.0.0.1:8443:8443/tcp
+    volumes:
+      - uploads:/Kiwi/uploads
+      - ./memo_settings.py:/venv/lib64/python3.14/site-packages/tcms_settings_dir/memo_settings.py:ro
+    environment:
+      KIWI_DB_ENGINE: django.db.backends.mysql
+      KIWI_DB_HOST: db
+      KIWI_DB_PORT: 3306
+      KIWI_DB_NAME: kiwi
+      KIWI_DB_USER: kiwi
+      KIWI_DB_PASSWORD: ${KIWI_DB_PASSWORD}
+      KIWI_SECRET_KEY: ${KIWI_SECRET_KEY}
+      # Pas d'inscription libre : les comptes sont créés par l'administrateur.
+      KIWI_REGISTRATION_ENABLED: "False"
+      KIWI_TIME_ZONE: Africa/Douala
+      KIWI_USE_TZ: "True"
+      KIWI_DOMAIN: ${KIWI_DOMAIN}
+      KIWI_EMAIL_FROM: ${KIWI_EMAIL_FROM}
+      KIWI_SMTP_HOST: ${KIWI_SMTP_HOST}
+      KIWI_SMTP_PORT: ${KIWI_SMTP_PORT}
+      KIWI_SMTP_USER: ${KIWI_SMTP_USER}
+      KIWI_SMTP_PASS: ${KIWI_SMTP_PASS}
+    cap_drop:
+      - ALL
+
+volumes:
+  db_data:
+  uploads:

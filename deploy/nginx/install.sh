@@ -8,15 +8,20 @@ set -euo pipefail
 cd "$(dirname "$0")"
 D=${DOMAIN:?DOMAIN manquant (ex. : DOMAIN=exemple.com)}
 [[ $D =~ ^[a-z0-9.-]+$ ]] || { echo "DOMAIN invalide : $D" >&2; exit 1; }
-NAMES=(api.$D admin.$D staging-api.$D staging-admin.$D)
-SITES=(default-deny memo-api memo-admin memo-staging-api memo-staging-admin)
+NAMES=(api.$D admin.$D staging-api.$D staging-admin.$D tests.$D)
+SITES=(default-deny memo-api memo-admin memo-staging-api memo-staging-admin memo-tests)
 
 install -m 644 snippets/*.conf /etc/nginx/snippets/
 install -d -m 755 /var/www/certbot
 
 # Premier passage : un site provisoire sur le port 80 répond au défi
 # Let's Encrypt, le temps d'obtenir le certificat que les sites HTTPS citent.
-if [ ! -f /etc/letsencrypt/live/memo/fullchain.pem ]; then
+# Certificat absent, ou nom ajouté depuis : (ré)émission avec tous les noms.
+missing=0
+for n in "${NAMES[@]}"; do
+  openssl x509 -in /etc/letsencrypt/live/memo/fullchain.pem -noout -ext subjectAltName 2>/dev/null | grep -q "DNS:$n" || missing=1
+done
+if [ "$missing" = 1 ]; then
   cat > /etc/nginx/sites-enabled/memo-acme <<CONF
 server {
     listen 80;
@@ -26,7 +31,7 @@ server {
 CONF
   nginx -t && systemctl reload nginx
   args=(); for n in "${NAMES[@]}"; do args+=(-d "$n"); done
-  certbot certonly --webroot -w /var/www/certbot --cert-name memo \
+  certbot certonly --webroot -w /var/www/certbot --cert-name memo --expand \
     --non-interactive --agree-tos --register-unsafely-without-email "${args[@]}"
   rm -f /etc/nginx/sites-enabled/memo-acme
 fi
