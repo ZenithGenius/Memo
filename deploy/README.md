@@ -241,7 +241,7 @@ Le script refuse d'écraser un `.env` existant. Il génère : mot de passe de la
 
 Ne jamais copier un `.env` hors du serveur ni le commiter. Sauvegarder les deux `.env` dans un coffre (gestionnaire de mots de passe) : sans eux, les données chiffrées et les licences émises ne sont plus vérifiables.
 
-E-mails (Brevo) : renseigner `SMTP_ADMIN_EMAIL`, `SMTP_HOST` (`smtp-relay.brevo.com`), `SMTP_PORT` (587), `SMTP_USER` et `SMTP_PASS` dans le `.env`, puis :
+E-mails (Brevo) : renseigner `SMTP_ADMIN_EMAIL`, `SMTP_HOST` (`smtp-relay.brevo.com`), `SMTP_PORT` (587), `SMTP_USER` et `SMTP_PASS` dans le `.env`. `SMTP_ADMIN_EMAIL` est l'expéditeur (champ From) : Brevo refuse tout message dont l'expéditeur n'est pas validé dans le compte (Expéditeurs) ou sur un domaine authentifié. `SMTP_USER` (`…@smtp-brevo.com`) sert seulement à la connexion. Les destinataires n'ont rien à faire. Puis :
 
 ```bash
 docker compose up -d auth

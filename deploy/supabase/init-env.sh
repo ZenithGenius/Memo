@@ -68,9 +68,11 @@ LICENSE_PUBLIC_KEY=$LICENSE_PUBLIC_KEY
 
 # E-mails (Brevo) : à renseigner, puis « docker compose up -d auth ».
 MAILER_AUTOCONFIRM=false
+# Expéditeur des e-mails (champ From) : adresse validée dans Brevo (Expéditeurs).
 SMTP_ADMIN_EMAIL=
 SMTP_HOST=
 SMTP_PORT=587
+# Identifiant SMTP Brevo (…@smtp-brevo.com) : connexion seulement, jamais expéditeur.
 SMTP_USER=
 SMTP_PASS=
 SMTP_SENDER_NAME=Memo
