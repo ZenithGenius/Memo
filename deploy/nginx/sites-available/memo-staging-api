@@ -1,0 +1,23 @@
+# staging-api.__DOMAIN__ : HTTP redirigé vers HTTPS, puis la passerelle Supabase (staging) sur 127.0.0.1:8200.
+server {
+    listen 80;
+    listen [::]:80;
+    server_name staging-api.__DOMAIN__;
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    http2 on;
+    server_name staging-api.__DOMAIN__;
+    include snippets/memo-tls.conf;
+    set $memo_upstream 127.0.0.1:8200;
+    include snippets/memo-api.conf;
+}

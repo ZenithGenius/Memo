@@ -1,0 +1,28 @@
+{
+  "logo": {
+    "type": "builtin",
+    "source": "Kali",
+    "color": { "1": "38;2;111;227;232", "2": "38;2;176;124;255" },
+    "padding": { "top": 1, "left": 1, "right": 2 }
+  },
+  "display": {
+    "separator": "  ",
+    "color": { "keys": "38;2;111;227;232", "title": "38;2;176;124;255" }
+  },
+  "modules": [
+    "title",
+    "separator",
+    { "type": "os", "key": "OS", "format": "{name} {version-id}" },
+    { "type": "kernel", "key": "Kernel", "format": "{release}" },
+    { "type": "uptime", "key": "Uptime" },
+    { "type": "packages", "key": "Pkgs", "format": "{all}" },
+    { "type": "shell", "key": "Shell", "format": "{pretty-name}" },
+    { "type": "terminal", "key": "Term", "format": "{pretty-name}" },
+    { "type": "cpu", "key": "CPU", "format": "{cores-logical} threads" },
+    { "type": "memory", "key": "RAM", "format": "{used} / {total}" },
+    { "type": "disk", "key": "Disk {mountpoint}", "folders": "/", "format": "{size-used} / {size-total}" },
+    { "type": "localip", "key": "IP", "format": "{ipv4}", "showIpv4": true },
+    "break",
+    { "type": "custom", "format": "\u001b[1;38;2;176;124;255mExpect us.\u001b[0m" }
+  ]
+}

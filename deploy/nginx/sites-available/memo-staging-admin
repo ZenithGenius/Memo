@@ -1,0 +1,23 @@
+# staging-admin.__DOMAIN__ : HTTP redirigé vers HTTPS, puis le back-office (staging) sur 127.0.0.1:8280.
+server {
+    listen 80;
+    listen [::]:80;
+    server_name staging-admin.__DOMAIN__;
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    http2 on;
+    server_name staging-admin.__DOMAIN__;
+    include snippets/memo-tls.conf;
+    set $memo_upstream 127.0.0.1:8280;
+    include snippets/memo-admin.conf;
+}

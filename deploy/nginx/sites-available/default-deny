@@ -1,0 +1,15 @@
+# Toute requête vers un nom inconnu (ou l'adresse IP seule) est fermée sans réponse.
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    server_name _;
+    return 444;
+}
+
+server {
+    listen 443 ssl default_server;
+    listen [::]:443 ssl default_server;
+    server_name _;
+    include snippets/memo-tls.conf;
+    return 444;
+}
