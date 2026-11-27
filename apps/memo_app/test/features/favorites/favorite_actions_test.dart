@@ -29,4 +29,19 @@ void main() {
     expect(await ids(), hasLength(1));
     await app.dispose(tester);
   });
+
+  testWidgets('le message « Ajouté aux favoris » se ferme de lui-même', (
+    tester,
+  ) async {
+    final app = await AppHarness.start(tester);
+    await tester.tap(find.text('Mes besoins'));
+    await tester.pumpAndSettle();
+    await tester.longPress(find.bySemanticsLabel('Oui').first);
+    await settleDatabase(tester);
+    expect(find.text('Ajouté aux favoris : Oui'), findsOneWidget);
+    await tester.pump(const Duration(seconds: 10));
+    await tester.pumpAndSettle();
+    expect(find.text('Ajouté aux favoris : Oui'), findsNothing);
+    await app.dispose(tester);
+  });
 }

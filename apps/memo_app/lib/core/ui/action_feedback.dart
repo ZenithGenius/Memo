@@ -17,5 +17,9 @@ void confirmAction(
   if (settings.hapticsEnabled) HapticFeedback.lightImpact();
   ScaffoldMessenger.maybeOf(context)
     ?..hideCurrentSnackBar()
-    ..showSnackBar(SnackBar(content: Text(message), action: action));
+    // Avec un bouton (Annuler), le message ne disparaissait plus de lui-même
+    // et suivait d'écran en écran : il se ferme désormais après sa durée.
+    ..showSnackBar(
+      SnackBar(content: Text(message), action: action, persist: false),
+    );
 }
