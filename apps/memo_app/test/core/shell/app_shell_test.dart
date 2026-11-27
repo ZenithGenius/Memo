@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../support/pump_app.dart';
 
@@ -50,7 +50,7 @@ void main() {
     final app = await AppHarness.start(tester);
     await tester.tap(find.text('Mes besoins'));
     await tester.pumpAndSettle();
-    expect(find.text('Je veux'), findsWidgets);
+    expect(find.bySemanticsLabel('Encore'), findsWidgets);
 
     await tester.tap(find.text('Phrases'));
     await tester.pumpAndSettle();
@@ -83,7 +83,7 @@ void main() {
     final app = await AppHarness.start(tester);
     await tester.tap(find.text('Mes besoins'));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Je veux').first);
+    await tester.tap(find.bySemanticsLabel('Encore').first);
     await tester.pumpAndSettle();
     expect(find.byType(InputChip), findsOneWidget);
 
@@ -101,11 +101,11 @@ void main() {
     final app = await AppHarness.start(tester);
     await tester.tap(find.text('Mes besoins'));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Je veux').first);
+    await tester.tap(find.bySemanticsLabel('Encore').first);
     await tester.pumpAndSettle();
     await tester.tap(find.text('Lire le message'));
     await tester.pump();
-    expect(app.speech.spoken, contains('Je veux.'));
+    expect(app.speech.spoken, contains('Encore.'));
     await app.dispose(tester);
   });
 }

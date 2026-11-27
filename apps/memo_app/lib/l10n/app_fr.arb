@@ -83,6 +83,23 @@
   "settingsTooltip": "Réglages",
   "favoritesTitle": "Mes favoris",
   "favoritesEmpty": "Appuyez longuement sur un pictogramme pour l'ajouter à vos favoris",
+  "favoriteAdded": "Ajouté aux favoris : {label}",
+  "@favoriteAdded": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "favoriteRemoved": "Retiré des favoris : {label}",
+  "@favoriteRemoved": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "favoritesRemoveHint": "Appuyez longuement sur un pictogramme pour le retirer de vos favoris",
   "boardTitle": "Mon tableau",
   "boardEdit": "Modifier le tableau",
   "boardDone": "Terminer",
@@ -195,6 +212,31 @@
   "phraseDeleteConfirm": "Supprimer « {text} » ?",
   "phraseDeleteAction": "Supprimer",
   "cancel": "Annuler",
+  "genderLabel": "Genre",
+  "genderGirl": "Fille",
+  "genderBoy": "Garçon",
+  "genderWoman": "Femme",
+  "genderMan": "Homme",
+  "genderUnspecified": "Ne pas préciser",
+  "genderHint": "Facultatif. Les pictogrammes qui représentent une personne s'affichent au féminin ou au masculin.",
+  "accountForgotPassword": "Mot de passe oublié ?",
+  "accountResetSent": "Si un compte existe pour cette adresse, un lien vient d'être envoyé par e-mail. Il est valable une heure : choisissez un nouveau mot de passe, puis reconnectez-vous ici.",
+  "authRateLimited": "Trop de demandes. Réessayez dans une heure.",
+  "accountDelete": "Supprimer mon compte",
+  "accountDeleteTitle": "Supprimer le compte ?",
+  "accountDeleteWarning": "Le compte {email} sera supprimé définitivement : l'abonnement en cours est perdu et les appareils associés sont déconnectés. Les profils, favoris et tableaux restent sur ce téléphone.",
+  "@accountDeleteWarning": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "accountDeleteAction": "Supprimer définitivement",
+  "accountDeleted": "Compte supprimé",
+  "phraseAdded": "Phrase ajoutée",
+  "phraseDeleted": "Phrase supprimée",
+  "boardSaved": "Tableau enregistré",
   "@phraseDeleteConfirm": {
     "placeholders": {
       "text": {
@@ -272,5 +314,93 @@
         "type": "String"
       }
     }
+  },
+  "boardTabGrid": "Tableau",
+  "boardTabRoutines": "Routines",
+  "routineNew": "Nouvelle routine",
+  "routineEmpty": "Aucune routine pour l'instant. Une routine montre, en une ligne, les étapes d'un moment de la journée.",
+  "routineName": "Nom de la routine",
+  "routineNameHint": "Par exemple : Le matin",
+  "routineSave": "Enregistrer",
+  "routineRename": "Renommer",
+  "routineEditSteps": "Modifier les étapes",
+  "routineDelete": "Supprimer",
+  "routineDeleteConfirm": "Supprimer la routine « {name} » ?",
+  "@routineDeleteConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "routineRestart": "Recommencer",
+  "routineProgress": "{done} sur {total}",
+  "@routineProgress": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "routineFinished": "Routine terminée, bravo !",
+  "routineNoSteps": "Aucune étape pour l'instant.",
+  "routineAddStep": "Ajouter une étape",
+  "routineStepDone": "Fait",
+  "routineStep": "Étape {index} sur {total} : {label}",
+  "@routineStep": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      },
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "routineRemoveStep": "Retirer {label}",
+  "@routineRemoveStep": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "routineStepsTitle": "Étapes de « {name} »",
+  "@routineStepsTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "routineOptions": "Options de {name}",
+  "@routineOptions": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "loadingContent": "Chargement…",
+  "@loadingContent": {
+    "description": "Annonce lecteur d'écran pendant le chargement d'un écran"
+  },
+  "errorTitle": "Cet écran n'a pas pu s'afficher",
+  "@errorTitle": {
+    "description": "Titre de l'état d'erreur générique d'un écran"
+  },
+  "errorHint": "Rien n'est perdu. Réessayez dans un instant.",
+  "@errorHint": {
+    "description": "Explication rassurante sous le titre d'erreur"
+  },
+  "errorRetry": "Réessayer",
+  "@errorRetry": {
+    "description": "Bouton pour relancer le chargement"
   }
 }

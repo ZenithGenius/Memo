@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:memo/core/theme/app_colors.dart';
 import 'package:memo/features/caregiver/presentation/caregiver_gate.dart';
 import 'package:memo/features/caregiver/presentation/caregiver_providers.dart';
@@ -73,6 +73,8 @@ class ProfilesSheet extends ConsumerWidget {
     if (!context.mounted) return;
     final created = await showModalBottomSheet<bool>(
       context: context,
+      useRootNavigator: true,
+      useSafeArea: true,
       isScrollControlled: true,
       showDragHandle: true,
       builder: (_) => const NewProfileSheet(),

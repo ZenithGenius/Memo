@@ -13,6 +13,7 @@ Map<String, Object?> pict(
   int order = 1,
   String category = 'CBE',
   String tier = 'free',
+  String? image,
 }) => {
   'code': code,
   'category': category,
@@ -20,7 +21,7 @@ Map<String, Object?> pict(
   'level': level,
   'audience': audience,
   'sortOrder': order,
-  'image': null,
+  'image': image,
   'labels': {
     'fr': {'label': label, 'spoken': label.toLowerCase()},
   },
@@ -60,11 +61,19 @@ void main() {
           },
         ],
         'pictograms': [
-          pict('A1', 'Je veux', 0),
+          pict('A1', 'Je veux', 0, image: 'a1.png'),
           pict('A2', 'Merci', 1, order: 2),
           pict('A3', 'Avancé', 2, order: 3),
-          pict('A4', 'Enfant seul', 0, audience: 'child', order: 4),
+          pict(
+            'A4',
+            'Enfant seul',
+            0,
+            audience: 'child',
+            order: 4,
+            image: 'a4.png',
+          ),
           pict('B1', 'Manger', 0, category: 'ACT', tier: 'premium'),
+          pict('A5', 'Sans image', 0, order: 5),
         ],
       }),
     );
@@ -134,9 +143,16 @@ void main() {
     expect(list.map((p) => p.code), ['A1', 'A4']);
   });
 
+  test('niveau débutant : pas de case sans pictogramme', () async {
+    final beginner = await watch(Level.beginner, Audience.all).first;
+    expect(beginner.map((p) => p.code), isNot(contains('A5')));
+    final inter = await watch(Level.intermediate, Audience.all).first;
+    expect(inter.map((p) => p.code), contains('A5'));
+  });
+
   test("un profil adulte ne voit pas le contenu réservé aux enfants", () async {
     final list = await watch(Level.advanced, Audience.adult).first;
-    expect(list.map((p) => p.code), ['A1', 'A2', 'A3']);
+    expect(list.map((p) => p.code), ['A1', 'A2', 'A3', 'A5']);
   });
 
   test('le libellé et le texte parlé viennent de la traduction', () async {
@@ -151,4 +167,142 @@ void main() {
     final found = await repo.watchByIds([all[1].id, all[0].id], 'fr').first;
     expect(found.map((p) => p.code).toSet(), {'A1', 'A2'});
   });
+
+  test('image téléchargée prioritaire, empreinte mal formée ignorée', () async {
+    const sha =
+        'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad';
+    await ContentImporter(db).importIfNeeded(
+      ContentPack.fromJson({
+        'version': 1,
+        'categories': [
+          {
+            'code': 'SAN',
+            'sortOrder': 3,
+            'labels': {'fr': 'Santé'},
+          },
+        ],
+        'pictograms': [
+          {
+            ...pict('S1', 'Pharmacie', 0, category: 'SAN'),
+            'image': 'assets/content/images/demo/x.png',
+            'imageObject': {'sha256': sha, 'mime': 'image/png', 'size': 3},
+          },
+          {
+            ...pict('S2', 'Docteur', 0, category: 'SAN', order: 2),
+            'imageObject': {'sha256': '../../etc/passwd'},
+          },
+        ],
+      }),
+      slot: ContentImporter.premiumSlot,
+    );
+    Future<List<String?>> images(DriftCatalogRepository r) async =>
+        (await r
+                .watchPictograms(
+                  categoryCode: 'SAN',
+                  lang: 'fr',
+                  maxLevel: Level.advanced,
+                  audience: Audience.all,
+                )
+                .first)
+            .map((p) => p.imageAsset)
+            .toList();
+
+    expect(await images(DriftCatalogRepository(db, imageDir: '/data/img')), [
+      '/data/img/$sha',
+      null,
+    ]);
+    // Sans serveur (pas de dossier d'images) : image embarquée.
+    expect(await images(DriftCatalogRepository(db)), [
+      'assets/content/images/demo/x.png',
+      null,
+    ]);
+  });
+
+  test(
+    'variantes de genre téléchargées (#19) : prioritaires, puis image commune',
+    () async {
+      final fem = 'f' * 64;
+      final masc = 'e' * 64;
+      final importer = ContentImporter(db);
+      await importer.importIfNeeded(
+        ContentPack.fromJson({
+          'version': 1,
+          'categories': [
+            {
+              'code': 'PER',
+              'sortOrder': 3,
+              'labels': {'fr': 'Personnes'},
+            },
+          ],
+          'pictograms': [
+            {
+              ...pict('P1', 'Enfant', 0, category: 'PER', tier: 'premium'),
+              'imageObject': {'sha256': 'a' * 64},
+              'imageVariants': {
+                'feminine': 'fille.png',
+                'masculine': 'garcon.png',
+              },
+              'imageVariantObjects': {
+                'feminine': {'sha256': fem},
+                'masculine': {'sha256': masc},
+              },
+            },
+            {
+              // Une seule variante : l'autre genre garde l'image commune.
+              ...pict(
+                'P2',
+                'Bébé',
+                0,
+                category: 'PER',
+                order: 2,
+                tier: 'premium',
+              ),
+              'imageObject': {'sha256': 'b' * 64},
+              'imageVariantObjects': {
+                'feminine': {'sha256': fem},
+                'masculine': {'sha256': 'pas-une-empreinte'},
+              },
+            },
+          ],
+        }),
+        slot: ContentImporter.premiumSlot,
+      );
+      Future<List<String?>> images(DriftCatalogRepository r, Gender g) async =>
+          (await r
+                  .watchPictograms(
+                    categoryCode: 'PER',
+                    lang: 'fr',
+                    maxLevel: Level.advanced,
+                    audience: Audience.all,
+                    includePremium: true,
+                  )
+                  .first)
+              .map((p) => p.forGender(g).imageAsset)
+              .toList();
+
+      final online = DriftCatalogRepository(db, imageDir: '/img');
+      expect(await images(online, Gender.feminine), ['/img/$fem', '/img/$fem']);
+      expect(await images(online, Gender.masculine), [
+        '/img/$masc',
+        '/img/${'b' * 64}',
+      ]);
+      expect(await images(online, Gender.unspecified), [
+        '/img/${'a' * 64}',
+        '/img/${'b' * 64}',
+      ]);
+      // Sans serveur : variantes embarquées.
+      expect(await images(DriftCatalogRepository(db), Gender.feminine), [
+        'fille.png',
+        null,
+      ]);
+      // Toutes les empreintes valides sont à télécharger, une seule fois.
+      expect((await importer.imageHashes()).toSet(), {
+        'a' * 64,
+        'b' * 64,
+        fem,
+        masc,
+      });
+      expect(await importer.imageHashes(freeOnly: true), isEmpty);
+    },
+  );
 }

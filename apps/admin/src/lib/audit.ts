@@ -55,7 +55,22 @@ export const ENTITY_LABEL: Record<string, string> = {
   admins: "Administrateur",
   devices: "Appareil",
   accounts: "Fiche compte",
+  users: "Compte",
+  content_categories: "Catégorie",
+  content_pictograms: "Pictogramme",
 };
+
+function labelFr(row: Record<string, Json | undefined>): string {
+  const labels = row.labels;
+  return labels && typeof labels === "object" && !Array.isArray(labels) ? str(labels.fr) : "";
+}
+
+function pictoFr(row: Record<string, Json | undefined>): string {
+  const labels = row.labels;
+  if (!labels || typeof labels !== "object" || Array.isArray(labels)) return str(row.code);
+  const fr = labels.fr;
+  return fr && typeof fr === "object" && !Array.isArray(fr) ? str(fr.label) : str(row.code);
+}
 
 /** Phrase lisible pour une ligne du journal d'activité. */
 export function describe(e: AuditEntry): string {
@@ -85,6 +100,21 @@ export function describe(e: AuditEntry): string {
       return after.revoked_at ? "Appareil révoqué" : "Appareil rétabli";
     case "accounts":
       return "Fiche compte modifiée";
+    case "content_categories":
+      if (e.action === "insert") return `Catégorie créée : ${labelFr(after)}`;
+      return `Catégorie modifiée : ${labelFr(after)}`;
+    case "content_pictograms": {
+      const word = pictoFr(e.action === "delete" ? before : after);
+      if (e.action === "insert") return `Pictogramme créé : ${word}`;
+      if (e.action === "delete") return `Brouillon supprimé : ${word}`;
+      if (before.active === true && after.active === false) return `Pictogramme retiré : ${word}`;
+      if (before.active === false && after.active === true) return `Pictogramme remis : ${word}`;
+      if (before.image_sha256 !== after.image_sha256) return `Image changée : ${word}`;
+      return `Pictogramme modifié : ${word}`;
+    }
+    case "users":
+      if (e.action === "password_reset") return "Lien de réinitialisation du mot de passe envoyé";
+      return e.action === "delete" ? "Compte supprimé par son titulaire" : "Compte modifié";
     default:
       return `${ENTITY_LABEL[e.entity] ?? e.entity} : ${e.action}`;
   }

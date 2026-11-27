@@ -26,6 +26,17 @@ class Pictograms extends Table {
   IntColumn get categoryId =>
       integer().references(Categories, #id, onDelete: KeyAction.cascade)();
   TextColumn get imageAsset => text().nullable()();
+
+  /// Variantes d'un pictogramme qui représente une personne (#19).
+  TextColumn get imageFeminine => text().nullable()();
+  TextColumn get imageMasculine => text().nullable()();
+
+  /// Image téléchargée depuis le serveur, nommée par son empreinte (ADR-012).
+  TextColumn get imageSha256 => text().nullable()();
+
+  /// Variantes téléchargées (#19), nommées par leur empreinte.
+  TextColumn get imageFeminineSha256 => text().nullable()();
+  TextColumn get imageMasculineSha256 => text().nullable()();
   IntColumn get imageVersion => integer().withDefault(const Constant(1))();
   IntColumn get minLevel => integer()();
   TextColumn get audience => text()();
@@ -52,6 +63,7 @@ class Profiles extends Table {
   TextColumn get type => text()();
   IntColumn get level => integer()();
   TextColumn get language => text().withDefault(const Constant('fr'))();
+  TextColumn get gender => text().withDefault(const Constant('unspecified'))();
   DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
 }
 
@@ -143,4 +155,29 @@ class WordEvents extends Table {
   IntColumn get pictogramId =>
       integer().references(Pictograms, #id, onDelete: KeyAction.cascade)();
   DateTimeColumn get usedAt => dateTime()();
+}
+
+/// Routine d'un profil (« Le matin ») : une suite d'étapes en pictogrammes.
+@DataClassName('RoutineRow')
+class Routines extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get profileId =>
+      integer().references(Profiles, #id, onDelete: KeyAction.cascade)();
+  TextColumn get name => text()();
+}
+
+/// Étape d'une routine. `doneOn` est le jour (AAAA-MM-JJ) où elle a été
+/// faite : une étape cochée un autre jour ne l'est plus, d'où la remise à
+/// zéro quotidienne sans tâche planifiée.
+@DataClassName('RoutineStepRow')
+class RoutineSteps extends Table {
+  IntColumn get routineId =>
+      integer().references(Routines, #id, onDelete: KeyAction.cascade)();
+  IntColumn get position => integer()();
+  IntColumn get pictogramId =>
+      integer().references(Pictograms, #id, onDelete: KeyAction.cascade)();
+  TextColumn get doneOn => text().nullable()();
+
+  @override
+  Set<Column<Object>> get primaryKey => {routineId, position};
 }

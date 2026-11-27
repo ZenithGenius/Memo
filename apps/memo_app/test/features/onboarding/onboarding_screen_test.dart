@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:memo/data/db/app_database.dart';
 import 'package:memo/features/catalog/domain/catalog.dart';
 import 'package:memo/features/catalog/presentation/catalog_providers.dart';
@@ -8,6 +8,7 @@ import 'package:memo/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:memo/features/profiles/data/drift_profile_repository.dart';
 import 'package:memo/features/profiles/domain/profile.dart';
 import 'package:memo/l10n/app_localizations.dart';
+import 'package:memo/l10n/localization_delegates.dart';
 
 import '../../support/seed.dart';
 
@@ -24,7 +25,7 @@ void main() {
       UncontrolledProviderScope(
         container: container,
         child: MaterialApp(
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          localizationsDelegates: appLocalizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
           home: OnboardingScreen(onDone: () => done = true),
         ),
@@ -45,12 +46,17 @@ void main() {
     await tester.pump();
     await tester.tap(find.text('Suivant'));
     await tester.pump();
+    // Enfant : fille ou garçon, facultatif.
+    expect(find.text('Femme'), findsNothing);
+    await tester.tap(find.text('Fille'));
+    await tester.pump();
     await tester.tap(find.text('Commencer'));
     await tester.pump();
 
     final profile = await tester.runAsync(() => repo.watchActive().first);
     expect(profile?.type, ProfileType.child);
     expect(profile?.level, Level.beginner);
+    expect(profile?.gender, Gender.feminine);
     expect(done, isTrue);
 
     await disposeWidgetTestDb(tester, container, db);
@@ -66,7 +72,7 @@ void main() {
       UncontrolledProviderScope(
         container: container,
         child: MaterialApp(
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          localizationsDelegates: appLocalizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
           home: const OnboardingScreen(),
         ),

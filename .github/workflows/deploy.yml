@@ -1,0 +1,140 @@
+name: Déploiement
+
+# Un push sur main déploie le staging. La production ne part qu'à la main :
+#   gh workflow run deploy.yml --ref main -f deploy_prod=true
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/admin/**'
+      - 'backend/supabase/**'
+      - 'deploy/supabase/**'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch:
+    inputs:
+      deploy_prod:
+        description: 'Déployer en PRODUCTION (décoché = staging)'
+        type: boolean
+        default: false
+
+# Deux déploiements du même environnement ne se chevauchent jamais.
+concurrency:
+  group: deploy-${{ inputs.deploy_prod && 'production' || 'staging' }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  IMAGE: ghcr.io/zenithgenius/memo-admin
+  TARGET: ${{ inputs.deploy_prod && 'production' || 'staging' }}
+
+jobs:
+  # Image du back-office : construite et scannée dans un job sans droit
+  # d'écriture (les actions tierces n'y voient aucun jeton utile), puis publiée
+  # par un job qui n'exécute que docker. Aucune faille tolérée, quelle que soit
+  # sa gravité, corrigée ou non.
+  scan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+      - uses: aquasecurity/setup-trivy@81e514348e19b6112ce2a7e3ecbafe19c1e1f567 # v0.3.1
+      - name: Trivy, dépôt (dépendances, secrets, configurations)
+        run: >-
+          trivy fs --no-progress --exit-code 1
+          --scanners vuln,secret,misconfig
+          --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL .
+      - name: Construction
+        run: docker build -t "$IMAGE:${{ github.sha }}" apps/admin
+      - name: Trivy, image
+        run: >-
+          trivy image --no-progress --exit-code 1
+          --scanners vuln,secret
+          --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
+          "$IMAGE:${{ github.sha }}"
+      - name: Image scannée, transmise au job de publication
+        run: docker save "$IMAGE:${{ github.sha }}" | gzip > "$RUNNER_TEMP/admin.tar.gz"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: admin-image
+          path: ${{ runner.temp }}/admin.tar.gz
+          retention-days: 1
+
+  publish:
+    runs-on: ubuntu-24.04
+    needs: [scan]
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/download-artifact@v7
+        with:
+          name: admin-image
+          path: ${{ runner.temp }}
+      - name: Publication sur GHCR (l'image exacte qui a été scannée)
+        env:
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GHCR_USER: ${{ github.actor }}
+        run: |
+          gunzip -c "$RUNNER_TEMP/admin.tar.gz" | docker load
+          printf '%s' "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
+          docker tag "$IMAGE:${{ github.sha }}" "$IMAGE:$TARGET"
+          docker push "$IMAGE:${{ github.sha }}"
+          docker push "$IMAGE:$TARGET"
+          docker logout ghcr.io
+
+  deploy:
+    runs-on: ubuntu-24.04
+    needs: [publish]
+    timeout-minutes: 20
+    # Secrets et variables propres à chaque environnement (Settings > Environments).
+    environment: ${{ inputs.deploy_prod && 'production' || 'staging' }}
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - uses: actions/checkout@v7
+      - name: Paquet de déploiement (fichiers versionnés seulement)
+        run: bash deploy/supabase/bundle.sh "$RUNNER_TEMP/bundle.tar.gz"
+      - name: Accès SSH (clé dédiée, empreinte du serveur épinglée)
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ vars.DEPLOY_KNOWN_HOSTS }}
+          DEPLOY_HOST: ${{ vars.DEPLOY_HOST }}
+        run: |
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/deploy
+          chmod 600 ~/.ssh/deploy
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          cat > ~/.ssh/config <<EOF
+          Host memo
+            HostName $DEPLOY_HOST
+            User deploy
+            IdentityFile ~/.ssh/deploy
+            IdentitiesOnly yes
+            StrictHostKeyChecking yes
+            BatchMode yes
+          EOF
+      - name: Envoi
+        run: |
+          scp "$RUNNER_TEMP/bundle.tar.gz" memo:/tmp/memo-bundle-$TARGET.tar.gz
+          ssh memo "set -e; cd /srv/memo/$TARGET; tar -xzf /tmp/memo-bundle-$TARGET.tar.gz; rm /tmp/memo-bundle-$TARGET.tar.gz; chmod +x *.sh"
+      - name: Déploiement
+        env:
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GHCR_USER: ${{ github.actor }}
+          ADMIN_TAG: ${{ github.sha }}
+        run: |
+          # Le jeton passe par l'entrée standard : jamais dans une ligne de commande du serveur.
+          printf '%s' "$GHCR_TOKEN" | ssh memo "docker login ghcr.io -u '$GHCR_USER' --password-stdin >/dev/null"
+          ssh memo "cd /srv/memo/$TARGET && ADMIN_TAG='$ADMIN_TAG' bash deploy.sh" </dev/null
+      - name: Déconnexion du registre sur le serveur
+        if: always()
+        run: ssh memo 'docker logout ghcr.io >/dev/null 2>&1 || true'
+      - name: Nettoyage de la clé
+        if: always()
+        run: rm -f ~/.ssh/deploy

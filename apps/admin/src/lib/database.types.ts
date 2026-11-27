@@ -106,6 +106,164 @@ export type Database = {
         }
         Relationships: []
       }
+      content_categories: {
+        Row: {
+          code: string
+          color: string
+          icon: string
+          labels: Json
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          code: string
+          color: string
+          icon: string
+          labels: Json
+          sort_order: number
+          updated_at?: string
+        }
+        Update: {
+          code?: string
+          color?: string
+          icon?: string
+          labels?: Json
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      content_images: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          mime: string
+          sha256: string
+          size: number
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          mime: string
+          sha256: string
+          size: number
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          mime?: string
+          sha256?: string
+          size?: number
+        }
+        Relationships: []
+      }
+      content_pictograms: {
+        Row: {
+          active: boolean
+          audience: string
+          category_code: string
+          code: string
+          image_asset: string | null
+          image_feminine_sha256: string | null
+          image_masculine_sha256: string | null
+          image_sha256: string | null
+          label_in_image: boolean
+          labels: Json
+          level: number
+          sort_order: number
+          tier: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          audience: string
+          category_code: string
+          code: string
+          image_asset?: string | null
+          image_feminine_sha256?: string | null
+          image_masculine_sha256?: string | null
+          image_sha256?: string | null
+          label_in_image?: boolean
+          labels: Json
+          level: number
+          sort_order: number
+          tier?: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          audience?: string
+          category_code?: string
+          code?: string
+          image_asset?: string | null
+          image_feminine_sha256?: string | null
+          image_masculine_sha256?: string | null
+          image_sha256?: string | null
+          label_in_image?: boolean
+          labels?: Json
+          level?: number
+          sort_order?: number
+          tier?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "content_pictograms_category_code_fkey"
+            columns: ["category_code"]
+            isOneToOne: false
+            referencedRelation: "content_categories"
+            referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "content_pictograms_image_feminine_sha256_fkey"
+            columns: ["image_feminine_sha256"]
+            isOneToOne: false
+            referencedRelation: "content_images"
+            referencedColumns: ["sha256"]
+          },
+          {
+            foreignKeyName: "content_pictograms_image_masculine_sha256_fkey"
+            columns: ["image_masculine_sha256"]
+            isOneToOne: false
+            referencedRelation: "content_images"
+            referencedColumns: ["sha256"]
+          },
+          {
+            foreignKeyName: "content_pictograms_image_sha256_fkey"
+            columns: ["image_sha256"]
+            isOneToOne: false
+            referencedRelation: "content_images"
+            referencedColumns: ["sha256"]
+          },
+        ]
+      }
+      content_releases: {
+        Row: {
+          notes: string | null
+          pack: Json
+          pictogram_count: number
+          published_at: string
+          published_by: string | null
+          version: number
+        }
+        Insert: {
+          notes?: string | null
+          pack: Json
+          pictogram_count: number
+          published_at?: string
+          published_by?: string | null
+          version: number
+        }
+        Update: {
+          notes?: string | null
+          pack?: Json
+          pictogram_count?: number
+          published_at?: string
+          published_by?: string | null
+          version?: number
+        }
+        Relationships: []
+      }
       devices: {
         Row: {
           fingerprint: string
@@ -196,7 +354,7 @@ export type Database = {
           recorded_by: string | null
           reference: string | null
           subscription_id: string | null
-          user_id: string
+          user_id: string | null
         }
         Insert: {
           amount_fcfa: number
@@ -207,7 +365,7 @@ export type Database = {
           recorded_by?: string | null
           reference?: string | null
           subscription_id?: string | null
-          user_id: string
+          user_id?: string | null
         }
         Update: {
           amount_fcfa?: number
@@ -218,7 +376,7 @@ export type Database = {
           recorded_by?: string | null
           reference?: string | null
           subscription_id?: string | null
-          user_id?: string
+          user_id?: string | null
         }
         Relationships: [
           {
@@ -368,6 +526,7 @@ export type Database = {
           user_id: string
         }[]
       }
+      admin_log_password_reset: { Args: { target: string }; Returns: string }
       admin_me: { Args: never; Returns: string }
       admin_payments: {
         Args: {
@@ -391,6 +550,11 @@ export type Database = {
           user_id: string
         }[]
       }
+      admin_publish_content: { Args: { notes?: string }; Returns: number }
+      admin_register_image: {
+        Args: { mime: string; target_sha256: string }
+        Returns: string
+      }
       admin_remove: { Args: { target: string }; Returns: undefined }
       admin_set_role: {
         Args: { new_role: string; target_email: string }
@@ -412,6 +576,18 @@ export type Database = {
           valid_until: string
         }[]
       }
+      content_build_pack: { Args: { pack_version: number }; Returns: Json }
+      content_category_labels_valid: { Args: { l: Json }; Returns: boolean }
+      content_contrast_on_white: { Args: { hex: string }; Returns: number }
+      content_free_image: { Args: { target_sha256: string }; Returns: string }
+      content_free_pack: { Args: never; Returns: Json }
+      content_latest_pack: { Args: never; Returns: Json }
+      content_pictogram_labels_valid: { Args: { l: Json }; Returns: boolean }
+      content_published_image: {
+        Args: { target_sha256: string }
+        Returns: string
+      }
+      delete_my_account: { Args: never; Returns: undefined }
       is_admin: { Args: never; Returns: boolean }
       is_super_admin: { Args: never; Returns: boolean }
       session_aal2: { Args: never; Returns: boolean }

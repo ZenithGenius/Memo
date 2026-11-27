@@ -1,13 +1,14 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:memo/features/catalog/domain/catalog.dart';
 import 'package:memo/features/message/presentation/message_actions.dart';
 import 'package:memo/features/message/presentation/message_notifier.dart';
 import 'package:memo/features/settings/domain/app_settings.dart';
 import 'package:memo/features/settings/presentation/settings_providers.dart';
 import 'package:memo/l10n/app_localizations.dart';
+import 'package:memo/l10n/localization_delegates.dart';
 
 import '../../support/fake_settings.dart';
 import '../../support/fakes.dart';
@@ -48,14 +49,16 @@ void main() {
       UncontrolledProviderScope(
         container: container,
         child: MaterialApp(
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          localizationsDelegates: appLocalizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
-          home: Consumer(
-            builder: (context, ref, _) {
-              ctx = context;
-              widgetRef = ref;
-              return const SizedBox();
-            },
+          home: Scaffold(
+            body: Consumer(
+              builder: (context, ref, _) {
+                ctx = context;
+                widgetRef = ref;
+                return const SizedBox();
+              },
+            ),
           ),
         ),
       ),
@@ -71,6 +74,8 @@ void main() {
     expect(container.read(messageProvider), hasLength(1));
     expect(haptics, ['HapticFeedbackType.selectionClick']);
     expect(speech.spoken, ['eau']);
+    await tester.pump();
+    expect(find.byType(SnackBar), findsNothing);
   });
 
   testWidgets("c'est le texte parlé qui est prononcé, pas le libellé", (
@@ -113,5 +118,7 @@ void main() {
     );
     expect(haptics, ['HapticFeedbackType.heavyImpact']);
     expect(speech.spoken, isEmpty);
+    await tester.pump();
+    expect(find.text('Le message est plein'), findsOneWidget);
   });
 }

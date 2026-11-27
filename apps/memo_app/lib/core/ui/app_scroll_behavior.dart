@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Défilement sans effet élastique : ni étirement (Material 3 sur Android),
 /// ni halo, ni rebond. Pour une grille de symboles, les tuiles déformées au

@@ -30,7 +30,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v7
-      - uses: aquasecurity/setup-trivy@v0.3.1
+      - uses: aquasecurity/setup-trivy@81e514348e19b6112ce2a7e3ecbafe19c1e1f567 # v0.3.1
       - uses: denoland/setup-deno@v2
         with:
           # Même version que les tests des fonctions (backend/tests/run_deno.sh).
@@ -43,11 +43,13 @@ jobs:
           python3 -I tools/security/sbom_deno.py "$(command -v deno)" sbom/memo-functions.cdx.json \
             backend/supabase/functions/issue-license/index.ts \
             backend/supabase/functions/premium-pack/index.ts \
-            backend/supabase/functions/premium-image/index.ts
+            backend/supabase/functions/premium-image/index.ts \
+            backend/supabase/functions/free-pack/index.ts \
+            backend/supabase/functions/admin-invite/index.ts
       - name: Failles connues dans les nomenclatures
         run: |
           for f in sbom/*.cdx.json; do
-            trivy sbom --quiet --exit-code 1 --severity HIGH,CRITICAL --ignore-unfixed "$f"
+            trivy sbom --quiet --exit-code 1 --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL "$f"
           done
       - uses: actions/upload-artifact@v7
         with:

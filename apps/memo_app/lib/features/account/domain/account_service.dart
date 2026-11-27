@@ -1,7 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:memo/core/storage/secure_store.dart';
 import 'package:memo/data/content/content_importer.dart';
+import 'package:memo/data/content/image_store.dart';
 import 'package:memo/features/account/data/auth_api.dart';
 import 'package:memo/features/account/data/premium_pack_api.dart';
+import 'package:memo/features/license/data/license_api.dart';
 import 'package:memo/features/license/domain/device_identity.dart';
 import 'package:memo/features/license/domain/entitlement_service.dart';
 
@@ -16,6 +19,7 @@ class AccountService {
     required this.packs,
     required this.importer,
     required this.device,
+    this.images,
   });
 
   final AuthApi auth;
@@ -24,6 +28,9 @@ class AccountService {
   final PremiumPackApi packs;
   final ContentImporter importer;
   final DeviceIdentity device;
+
+  /// Images envoyées depuis le back-office ; `null` sans stockage local.
+  final ImageStore? images;
 
   static const _refreshKey = 'auth_refresh_token';
   static const _emailKey = 'auth_email';
@@ -56,9 +63,47 @@ class AccountService {
     await store.delete(_emailKey);
   }
 
+  /// Lien de réinitialisation envoyé par e-mail ; le nouveau mot de passe se
+  /// choisit sur la page du lien, puis on se reconnecte ici.
+  Future<void> requestPasswordReset(String email) =>
+      auth.requestPasswordReset(email.trim());
+
+  /// Supprime le compte sur le serveur (réseau requis), puis oublie la session
+  /// et le jeton de licence : l'appareil repasse en gratuit. Les profils, les
+  /// favoris et les tableaux restent sur l'appareil.
+  Future<void> deleteAccount() async {
+    final refresh = await store.read(_refreshKey);
+    if (refresh == null) throw const AuthException(AuthError.sessionExpired);
+    final session = await auth.refresh(refresh);
+    await auth.deleteAccount(session.accessToken);
+    await entitlements.forget();
+    await signOut();
+  }
+
+  /// Met à jour le paquet gratuit (#41), sans compte : au démarrage et à
+  /// chaque synchronisation. Ne lève jamais : hors ligne ou en cas d'erreur,
+  /// l'application garde ce qu'elle a et réessaie la fois suivante.
+  Future<void> syncFreeContent() async {
+    try {
+      final pack = await packs.fetchFree(
+        have: await importer.installedVersion(ContentImporter.freeSlot),
+      );
+      if (pack != null && pack.pictograms.isNotEmpty) {
+        await importer.importIfNeeded(pack, slot: ContentImporter.freeSlot);
+      }
+      await _downloadImages(
+        (sha256) => packs.fetchFreeImage(sha256),
+        freeOnly: true,
+      );
+    } on Object catch (e) {
+      debugPrint('paquet gratuit : $e');
+    }
+  }
+
   Future<Entitlement> _syncWith(AuthSession session) async {
     await store.write(_refreshKey, session.refreshToken);
     await store.write(_emailKey, session.email);
+    await syncFreeContent();
     final entitlement = await entitlements.refresh(session.accessToken);
     if (entitlement.isPremium) {
       final pack = await packs.fetch(
@@ -69,7 +114,34 @@ class AccountService {
       if (pack != null) {
         await importer.importIfNeeded(pack, slot: ContentImporter.premiumSlot);
       }
+      final fingerprint = await device.fingerprint();
+      await _downloadImages(
+        (sha256) => packs.fetchImage(
+          accessToken: session.accessToken,
+          fingerprint: fingerprint,
+          sha256: sha256,
+        ),
+      );
     }
     return entitlement;
+  }
+
+  /// Télécharge les images qui manquent, à chaque synchronisation : une image
+  /// non reçue (réseau coupé, erreur ponctuelle) est retentée la fois
+  /// suivante, sans faire échouer la synchronisation du reste.
+  Future<void> _downloadImages(
+    Future<Uint8List> Function(String sha256) fetch, {
+    bool freeOnly = false,
+  }) async {
+    final store = images;
+    if (store == null) return;
+    for (final sha256 in await importer.imageHashes(freeOnly: freeOnly)) {
+      if (await store.has(sha256)) continue;
+      try {
+        await store.save(sha256, await fetch(sha256));
+      } on LicenseApiException catch (e) {
+        if (e.error == LicenseApiError.offline) return;
+      }
+    }
   }
 }

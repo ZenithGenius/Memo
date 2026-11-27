@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memo/core/config/flavor.dart';
 import 'package:memo/features/account/presentation/account_providers.dart';
 import 'package:memo/features/board/domain/board_repository.dart';
+import 'package:memo/features/board/domain/routine.dart';
 import 'package:memo/features/catalog/domain/catalog.dart';
 import 'package:memo/features/catalog/domain/catalog_repository.dart';
 import 'package:memo/features/favorites/domain/favorites_repository.dart';
@@ -44,7 +45,8 @@ final pictogramsProvider = StreamProvider.family<List<Pictogram>, String>((
         maxLevel: profile?.level ?? Level.beginner,
         audience: profile?.type.audience ?? Audience.all,
         includePremium: ref.watch(premiumUnlockedProvider),
-      );
+      )
+      .forGender(profile?.gender);
 });
 
 final favoritesRepositoryProvider = Provider<FavoritesRepository>(
@@ -71,7 +73,8 @@ final favoritePictogramsProvider = StreamProvider<List<Pictogram>>((ref) {
         ids.toList(),
         profile.language,
         includePremium: ref.watch(premiumUnlockedProvider),
-      );
+      )
+      .forGender(profile.gender);
 });
 
 final boardProvider = StreamProvider<BoardLayout?>((ref) {
@@ -93,6 +96,38 @@ final boardPictogramsProvider = StreamProvider<Map<int, Pictogram>>((ref) {
         profile.language,
         includePremium: ref.watch(premiumUnlockedProvider),
       )
+      .forGender(profile.gender)
+      .map((list) => {for (final p in list) p.id: p});
+});
+
+final routineRepositoryProvider = Provider<RoutineRepository>(
+  (ref) => throw UnimplementedError('à surcharger au démarrage'),
+);
+
+final routinesProvider = StreamProvider<List<Routine>>((ref) {
+  final profile = ref.watch(activeProfileProvider).value;
+  if (profile == null) return Stream.value(const <Routine>[]);
+  return ref.watch(routineRepositoryProvider).watch(profile.id);
+});
+
+/// Pictogrammes des étapes de toutes les routines du profil actif.
+final routinePictogramsProvider = StreamProvider<Map<int, Pictogram>>((ref) {
+  final profile = ref.watch(activeProfileProvider).value;
+  final ids = {
+    for (final r in ref.watch(routinesProvider).value ?? const <Routine>[])
+      for (final s in r.steps) s.pictogramId,
+  };
+  if (profile == null || ids.isEmpty) {
+    return Stream.value(const <int, Pictogram>{});
+  }
+  return ref
+      .watch(catalogRepositoryProvider)
+      .watchByIds(
+        ids.toList(),
+        profile.language,
+        includePremium: ref.watch(premiumUnlockedProvider),
+      )
+      .forGender(profile.gender)
       .map((list) => {for (final p in list) p.id: p});
 });
 
@@ -117,3 +152,11 @@ final premiumUnlockedProvider = Provider<bool>(
       const bool.fromEnvironment('UNLOCK_PREMIUM') ||
       (ref.watch(entitlementProvider).asData?.value?.isPremium ?? false),
 );
+
+extension on Stream<List<Pictogram>> {
+  /// Images au genre du profil actif (variantes féminine ou masculine).
+  Stream<List<Pictogram>> forGender(Gender? gender) =>
+      gender == null || gender == Gender.unspecified
+      ? this
+      : map((list) => [for (final p in list) p.forGender(gender)]);
+}

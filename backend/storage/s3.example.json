@@ -1,0 +1,11 @@
+{
+  "identities": [
+    {
+      "name": "storage",
+      "credentials": [
+        { "accessKey": "REMPLACER_CLE_ACCES", "secretKey": "REMPLACER_CLE_SECRETE_LONGUE_ET_ALEATOIRE" }
+      ],
+      "actions": ["Read:memo-storage", "Write:memo-storage", "List:memo-storage", "Tagging:memo-storage"]
+    }
+  ]
+}

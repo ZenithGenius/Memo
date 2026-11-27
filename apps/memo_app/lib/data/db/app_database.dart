@@ -20,6 +20,8 @@ part 'app_database.g.dart';
     QuickPhrases,
     SpokenSentences,
     WordEvents,
+    Routines,
+    RoutineSteps,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -30,7 +32,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.production() : super(driftDatabase(name: 'memo'));
 
   @override
-  int get schemaVersion => 5;
+  int get schemaVersion => 9;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -48,6 +50,22 @@ class AppDatabase extends _$AppDatabase {
       if (from < 5) {
         await m.createTable(spokenSentences);
         await m.createTable(wordEvents);
+      }
+      if (from < 6) {
+        await m.addColumn(profiles, profiles.gender);
+        await m.addColumn(pictograms, pictograms.imageFeminine);
+        await m.addColumn(pictograms, pictograms.imageMasculine);
+      }
+      if (from < 7) {
+        await m.addColumn(pictograms, pictograms.imageSha256);
+      }
+      if (from < 8) {
+        await m.createTable(routines);
+        await m.createTable(routineSteps);
+      }
+      if (from < 9) {
+        await m.addColumn(pictograms, pictograms.imageFeminineSha256);
+        await m.addColumn(pictograms, pictograms.imageMasculineSha256);
       }
     },
     beforeOpen: (details) async {

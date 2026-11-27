@@ -32,12 +32,12 @@ jobs:
           channel: stable
           # Lu par tools/security/check_eol.py : garder la même version dans
           # le job apk.
-          flutter-version: 3.47.5
+          flutter-version: 3.50.1
           cache: true
       - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
-      - uses: aquasecurity/setup-trivy@v0.3.1
+      - uses: aquasecurity/setup-trivy@81e514348e19b6112ce2a7e3ecbafe19c1e1f567 # v0.3.1
       - run: pip install pre-commit
       - run: flutter pub get
       - run: dart run build_runner build --delete-conflicting-outputs
@@ -78,7 +78,7 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
-          flutter-version: 3.47.5
+          flutter-version: 3.50.1
           cache: true
       - run: flutter pub get
       - run: dart run build_runner build --delete-conflicting-outputs

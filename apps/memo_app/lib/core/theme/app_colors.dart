@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Palette Sahel Warmth (cahier des charges, section 4.1.3).
 abstract final class AppColors {

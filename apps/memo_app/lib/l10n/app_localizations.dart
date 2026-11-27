@@ -326,6 +326,24 @@ abstract class AppLocalizations {
   /// **'Appuyez longuement sur un pictogramme pour l\'ajouter à vos favoris'**
   String get favoritesEmpty;
 
+  /// No description provided for @favoriteAdded.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajouté aux favoris : {label}'**
+  String favoriteAdded(String label);
+
+  /// No description provided for @favoriteRemoved.
+  ///
+  /// In fr, this message translates to:
+  /// **'Retiré des favoris : {label}'**
+  String favoriteRemoved(String label);
+
+  /// No description provided for @favoritesRemoveHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Appuyez longuement sur un pictogramme pour le retirer de vos favoris'**
+  String get favoritesRemoveHint;
+
   /// No description provided for @boardTitle.
   ///
   /// In fr, this message translates to:
@@ -620,6 +638,114 @@ abstract class AppLocalizations {
   /// **'Annuler'**
   String get cancel;
 
+  /// No description provided for @genderLabel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Genre'**
+  String get genderLabel;
+
+  /// No description provided for @genderGirl.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fille'**
+  String get genderGirl;
+
+  /// No description provided for @genderBoy.
+  ///
+  /// In fr, this message translates to:
+  /// **'Garçon'**
+  String get genderBoy;
+
+  /// No description provided for @genderWoman.
+  ///
+  /// In fr, this message translates to:
+  /// **'Femme'**
+  String get genderWoman;
+
+  /// No description provided for @genderMan.
+  ///
+  /// In fr, this message translates to:
+  /// **'Homme'**
+  String get genderMan;
+
+  /// No description provided for @genderUnspecified.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ne pas préciser'**
+  String get genderUnspecified;
+
+  /// No description provided for @genderHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Facultatif. Les pictogrammes qui représentent une personne s\'affichent au féminin ou au masculin.'**
+  String get genderHint;
+
+  /// No description provided for @accountForgotPassword.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mot de passe oublié ?'**
+  String get accountForgotPassword;
+
+  /// No description provided for @accountResetSent.
+  ///
+  /// In fr, this message translates to:
+  /// **'Si un compte existe pour cette adresse, un lien vient d\'être envoyé par e-mail. Il est valable une heure : choisissez un nouveau mot de passe, puis reconnectez-vous ici.'**
+  String get accountResetSent;
+
+  /// No description provided for @authRateLimited.
+  ///
+  /// In fr, this message translates to:
+  /// **'Trop de demandes. Réessayez dans une heure.'**
+  String get authRateLimited;
+
+  /// No description provided for @accountDelete.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer mon compte'**
+  String get accountDelete;
+
+  /// No description provided for @accountDeleteTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer le compte ?'**
+  String get accountDeleteTitle;
+
+  /// No description provided for @accountDeleteWarning.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le compte {email} sera supprimé définitivement : l\'abonnement en cours est perdu et les appareils associés sont déconnectés. Les profils, favoris et tableaux restent sur ce téléphone.'**
+  String accountDeleteWarning(String email);
+
+  /// No description provided for @accountDeleteAction.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer définitivement'**
+  String get accountDeleteAction;
+
+  /// No description provided for @accountDeleted.
+  ///
+  /// In fr, this message translates to:
+  /// **'Compte supprimé'**
+  String get accountDeleted;
+
+  /// No description provided for @phraseAdded.
+  ///
+  /// In fr, this message translates to:
+  /// **'Phrase ajoutée'**
+  String get phraseAdded;
+
+  /// No description provided for @phraseDeleted.
+  ///
+  /// In fr, this message translates to:
+  /// **'Phrase supprimée'**
+  String get phraseDeleted;
+
+  /// No description provided for @boardSaved.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tableau enregistré'**
+  String get boardSaved;
+
   /// No description provided for @profileSwitchTitle.
   ///
   /// In fr, this message translates to:
@@ -877,6 +1003,156 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Cet appareil a été retiré du compte.'**
   String get licenseDeviceRevoked;
+
+  /// No description provided for @boardTabGrid.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tableau'**
+  String get boardTabGrid;
+
+  /// No description provided for @boardTabRoutines.
+  ///
+  /// In fr, this message translates to:
+  /// **'Routines'**
+  String get boardTabRoutines;
+
+  /// No description provided for @routineNew.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nouvelle routine'**
+  String get routineNew;
+
+  /// No description provided for @routineEmpty.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune routine pour l\'instant. Une routine montre, en une ligne, les étapes d\'un moment de la journée.'**
+  String get routineEmpty;
+
+  /// No description provided for @routineName.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nom de la routine'**
+  String get routineName;
+
+  /// No description provided for @routineNameHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Par exemple : Le matin'**
+  String get routineNameHint;
+
+  /// No description provided for @routineSave.
+  ///
+  /// In fr, this message translates to:
+  /// **'Enregistrer'**
+  String get routineSave;
+
+  /// No description provided for @routineRename.
+  ///
+  /// In fr, this message translates to:
+  /// **'Renommer'**
+  String get routineRename;
+
+  /// No description provided for @routineEditSteps.
+  ///
+  /// In fr, this message translates to:
+  /// **'Modifier les étapes'**
+  String get routineEditSteps;
+
+  /// No description provided for @routineDelete.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer'**
+  String get routineDelete;
+
+  /// No description provided for @routineDeleteConfirm.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer la routine « {name} » ?'**
+  String routineDeleteConfirm(String name);
+
+  /// No description provided for @routineRestart.
+  ///
+  /// In fr, this message translates to:
+  /// **'Recommencer'**
+  String get routineRestart;
+
+  /// No description provided for @routineProgress.
+  ///
+  /// In fr, this message translates to:
+  /// **'{done} sur {total}'**
+  String routineProgress(int done, int total);
+
+  /// No description provided for @routineFinished.
+  ///
+  /// In fr, this message translates to:
+  /// **'Routine terminée, bravo !'**
+  String get routineFinished;
+
+  /// No description provided for @routineNoSteps.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune étape pour l\'instant.'**
+  String get routineNoSteps;
+
+  /// No description provided for @routineAddStep.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajouter une étape'**
+  String get routineAddStep;
+
+  /// No description provided for @routineStepDone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fait'**
+  String get routineStepDone;
+
+  /// No description provided for @routineStep.
+  ///
+  /// In fr, this message translates to:
+  /// **'Étape {index} sur {total} : {label}'**
+  String routineStep(int index, int total, String label);
+
+  /// No description provided for @routineRemoveStep.
+  ///
+  /// In fr, this message translates to:
+  /// **'Retirer {label}'**
+  String routineRemoveStep(String label);
+
+  /// No description provided for @routineStepsTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Étapes de « {name} »'**
+  String routineStepsTitle(String name);
+
+  /// No description provided for @routineOptions.
+  ///
+  /// In fr, this message translates to:
+  /// **'Options de {name}'**
+  String routineOptions(String name);
+
+  /// Annonce lecteur d'écran pendant le chargement d'un écran
+  ///
+  /// In fr, this message translates to:
+  /// **'Chargement…'**
+  String get loadingContent;
+
+  /// Titre de l'état d'erreur générique d'un écran
+  ///
+  /// In fr, this message translates to:
+  /// **'Cet écran n\'a pas pu s\'afficher'**
+  String get errorTitle;
+
+  /// Explication rassurante sous le titre d'erreur
+  ///
+  /// In fr, this message translates to:
+  /// **'Rien n\'est perdu. Réessayez dans un instant.'**
+  String get errorHint;
+
+  /// Bouton pour relancer le chargement
+  ///
+  /// In fr, this message translates to:
+  /// **'Réessayer'**
+  String get errorRetry;
 }
 
 class _AppLocalizationsDelegate

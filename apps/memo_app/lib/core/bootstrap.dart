@@ -6,12 +6,14 @@ import 'package:memo/core/config/flavor.dart';
 import 'package:memo/core/storage/secure_store.dart';
 import 'package:memo/data/content/content_importer.dart';
 import 'package:memo/data/content/content_pack_source.dart';
+import 'package:memo/data/content/image_store.dart';
 import 'package:memo/data/db/app_database.dart';
 import 'package:memo/features/account/data/auth_api.dart';
 import 'package:memo/features/account/data/premium_pack_api.dart';
 import 'package:memo/features/account/domain/account_service.dart';
 import 'package:memo/features/account/presentation/account_providers.dart';
 import 'package:memo/features/board/data/drift_board_repository.dart';
+import 'package:memo/features/board/data/drift_routine_repository.dart';
 import 'package:memo/features/caregiver/domain/caregiver_pin_service.dart';
 import 'package:memo/features/caregiver/presentation/caregiver_providers.dart';
 import 'package:memo/features/catalog/data/drift_catalog_repository.dart';
@@ -33,6 +35,7 @@ import 'package:memo/features/settings/data/drift_settings_repository.dart';
 import 'package:memo/features/settings/presentation/settings_providers.dart';
 import 'package:memo/features/stats/data/drift_usage_repository.dart';
 import 'package:memo/features/stats/presentation/usage_providers.dart';
+import 'package:path_provider/path_provider.dart';
 
 /// Ouvre la base, importe le contenu embarqué et câble les dépôts.
 /// Attend le premier état du profil actif et des réglages : le routeur décide
@@ -66,10 +69,19 @@ Future<ProviderContainer> createContainer({
       slot: ContentImporter.premiumSlot,
     );
   }
+  // Images téléchargées depuis le serveur (ADR-012) : seulement avec un
+  // serveur configuré, sinon l'application n'en reçoit jamais.
+  final images = serverConfig == null
+      ? null
+      : ImageStore(
+          Directory(
+            '${(await getApplicationSupportDirectory()).path}/content-images',
+          ),
+        );
   final container = ProviderContainer(
     overrides: [
       catalogRepositoryProvider.overrideWithValue(
-        DriftCatalogRepository(database),
+        DriftCatalogRepository(database, imageDir: images?.directory.path),
       ),
       profileRepositoryProvider.overrideWithValue(
         DriftProfileRepository(database),
@@ -78,6 +90,9 @@ Future<ProviderContainer> createContainer({
         DriftFavoritesRepository(database),
       ),
       boardRepositoryProvider.overrideWithValue(DriftBoardRepository(database)),
+      routineRepositoryProvider.overrideWithValue(
+        DriftRoutineRepository(database, now: clock),
+      ),
       phraseRepositoryProvider.overrideWithValue(
         DriftPhraseRepository(database),
       ),
@@ -91,7 +106,7 @@ Future<ProviderContainer> createContainer({
       if (speech != null) speechServiceProvider.overrideWithValue(speech),
       if (serverConfig != null)
         accountServiceProvider.overrideWithValue(
-          _accountService(serverConfig, store, importer, clock),
+          _accountService(serverConfig, store, importer, clock, images),
         ),
       ...overrides,
     ],
@@ -124,6 +139,7 @@ AccountService _accountService(
   SecureStore store,
   ContentImporter importer,
   DateTime Function() now,
+  ImageStore? images,
 ) {
   final device = SecureStoreDeviceIdentity(store);
   return AccountService(
@@ -132,6 +148,7 @@ AccountService _accountService(
     packs: HttpPremiumPackApi(config: config),
     importer: importer,
     device: device,
+    images: images,
     entitlements: EntitlementService(
       verifier: LicenseVerifier(publicKeys: config.licensePublicKeys),
       clock: TrustedClock(

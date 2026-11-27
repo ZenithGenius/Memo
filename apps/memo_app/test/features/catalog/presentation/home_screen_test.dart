@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:memo/data/content/content_importer.dart';
 import 'package:memo/data/content/content_pack.dart';
 import 'package:memo/data/db/app_database.dart';
@@ -13,6 +13,7 @@ import 'package:memo/features/message/presentation/message_notifier.dart';
 import 'package:memo/features/profiles/data/drift_profile_repository.dart';
 import 'package:memo/features/profiles/domain/profile.dart';
 import 'package:memo/l10n/app_localizations.dart';
+import 'package:memo/l10n/localization_delegates.dart';
 
 import '../../../support/fakes.dart';
 
@@ -48,7 +49,7 @@ void main() {
             'level': 0,
             'audience': 'all',
             'sortOrder': 1,
-            'image': null,
+            'image': 'assets/content/images/demo/a.png',
             'labels': {
               'fr': {'label': 'Je veux', 'spoken': 'je veux'},
             },
@@ -59,7 +60,7 @@ void main() {
             'level': 0,
             'audience': 'all',
             'sortOrder': 1,
-            'image': null,
+            'image': 'assets/content/images/demo/b.png',
             'labels': {
               'fr': {'label': 'Eau', 'spoken': 'eau'},
             },
@@ -90,7 +91,7 @@ void main() {
   Widget host(Widget child) => UncontrolledProviderScope(
     container: container,
     child: MaterialApp(
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      localizationsDelegates: appLocalizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       home: child,
     ),

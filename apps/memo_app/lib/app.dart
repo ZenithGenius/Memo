@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:memo/core/router/app_router.dart';
 import 'package:memo/core/theme/app_theme.dart';
 import 'package:memo/core/ui/app_scroll_behavior.dart';
 import 'package:memo/features/catalog/presentation/catalog_providers.dart';
 import 'package:memo/l10n/app_localizations.dart';
+import 'package:memo/l10n/localization_delegates.dart';
 
 class MemoApp extends ConsumerWidget {
   const MemoApp({super.key});
@@ -21,12 +21,7 @@ class MemoApp extends ConsumerWidget {
       ),
       scrollBehavior: const AppScrollBehavior(),
       routerConfig: ref.watch(appRouterProvider),
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
+      localizationsDelegates: appLocalizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
     );
   }

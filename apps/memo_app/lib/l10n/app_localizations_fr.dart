@@ -159,6 +159,20 @@ class AppLocalizationsFr extends AppLocalizations {
       'Appuyez longuement sur un pictogramme pour l\'ajouter à vos favoris';
 
   @override
+  String favoriteAdded(String label) {
+    return 'Ajouté aux favoris : $label';
+  }
+
+  @override
+  String favoriteRemoved(String label) {
+    return 'Retiré des favoris : $label';
+  }
+
+  @override
+  String get favoritesRemoveHint =>
+      'Appuyez longuement sur un pictogramme pour le retirer de vos favoris';
+
+  @override
   String get boardTitle => 'Mon tableau';
 
   @override
@@ -351,6 +365,64 @@ class AppLocalizationsFr extends AppLocalizations {
   String get cancel => 'Annuler';
 
   @override
+  String get genderLabel => 'Genre';
+
+  @override
+  String get genderGirl => 'Fille';
+
+  @override
+  String get genderBoy => 'Garçon';
+
+  @override
+  String get genderWoman => 'Femme';
+
+  @override
+  String get genderMan => 'Homme';
+
+  @override
+  String get genderUnspecified => 'Ne pas préciser';
+
+  @override
+  String get genderHint =>
+      'Facultatif. Les pictogrammes qui représentent une personne s\'affichent au féminin ou au masculin.';
+
+  @override
+  String get accountForgotPassword => 'Mot de passe oublié ?';
+
+  @override
+  String get accountResetSent =>
+      'Si un compte existe pour cette adresse, un lien vient d\'être envoyé par e-mail. Il est valable une heure : choisissez un nouveau mot de passe, puis reconnectez-vous ici.';
+
+  @override
+  String get authRateLimited => 'Trop de demandes. Réessayez dans une heure.';
+
+  @override
+  String get accountDelete => 'Supprimer mon compte';
+
+  @override
+  String get accountDeleteTitle => 'Supprimer le compte ?';
+
+  @override
+  String accountDeleteWarning(String email) {
+    return 'Le compte $email sera supprimé définitivement : l\'abonnement en cours est perdu et les appareils associés sont déconnectés. Les profils, favoris et tableaux restent sur ce téléphone.';
+  }
+
+  @override
+  String get accountDeleteAction => 'Supprimer définitivement';
+
+  @override
+  String get accountDeleted => 'Compte supprimé';
+
+  @override
+  String get phraseAdded => 'Phrase ajoutée';
+
+  @override
+  String get phraseDeleted => 'Phrase supprimée';
+
+  @override
+  String get boardSaved => 'Tableau enregistré';
+
+  @override
   String get profileSwitchTitle => 'Qui parle ?';
 
   @override
@@ -495,4 +567,92 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get licenseDeviceRevoked => 'Cet appareil a été retiré du compte.';
+
+  @override
+  String get boardTabGrid => 'Tableau';
+
+  @override
+  String get boardTabRoutines => 'Routines';
+
+  @override
+  String get routineNew => 'Nouvelle routine';
+
+  @override
+  String get routineEmpty =>
+      'Aucune routine pour l\'instant. Une routine montre, en une ligne, les étapes d\'un moment de la journée.';
+
+  @override
+  String get routineName => 'Nom de la routine';
+
+  @override
+  String get routineNameHint => 'Par exemple : Le matin';
+
+  @override
+  String get routineSave => 'Enregistrer';
+
+  @override
+  String get routineRename => 'Renommer';
+
+  @override
+  String get routineEditSteps => 'Modifier les étapes';
+
+  @override
+  String get routineDelete => 'Supprimer';
+
+  @override
+  String routineDeleteConfirm(String name) {
+    return 'Supprimer la routine « $name » ?';
+  }
+
+  @override
+  String get routineRestart => 'Recommencer';
+
+  @override
+  String routineProgress(int done, int total) {
+    return '$done sur $total';
+  }
+
+  @override
+  String get routineFinished => 'Routine terminée, bravo !';
+
+  @override
+  String get routineNoSteps => 'Aucune étape pour l\'instant.';
+
+  @override
+  String get routineAddStep => 'Ajouter une étape';
+
+  @override
+  String get routineStepDone => 'Fait';
+
+  @override
+  String routineStep(int index, int total, String label) {
+    return 'Étape $index sur $total : $label';
+  }
+
+  @override
+  String routineRemoveStep(String label) {
+    return 'Retirer $label';
+  }
+
+  @override
+  String routineStepsTitle(String name) {
+    return 'Étapes de « $name »';
+  }
+
+  @override
+  String routineOptions(String name) {
+    return 'Options de $name';
+  }
+
+  @override
+  String get loadingContent => 'Chargement…';
+
+  @override
+  String get errorTitle => 'Cet écran n\'a pas pu s\'afficher';
+
+  @override
+  String get errorHint => 'Rien n\'est perdu. Réessayez dans un instant.';
+
+  @override
+  String get errorRetry => 'Réessayer';
 }

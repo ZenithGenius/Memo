@@ -1,8 +1,13 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:cryptography/cryptography.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memo/core/storage/secure_store.dart';
 import 'package:memo/data/content/content_importer.dart';
 import 'package:memo/data/content/content_pack.dart';
+import 'package:memo/data/content/image_store.dart';
 import 'package:memo/data/db/app_database.dart';
 import 'package:memo/features/account/data/auth_api.dart';
 import 'package:memo/features/account/data/premium_pack_api.dart';
@@ -42,6 +47,23 @@ class FakeAuth implements AuthApi {
     if (failWith != null) throw AuthException(failWith!);
     return _session('amina@example.org');
   }
+
+  final deleted = <String>[];
+  AuthError? deleteFailsWith;
+
+  final resetRequests = <String>[];
+
+  @override
+  Future<void> requestPasswordReset(String email) async {
+    if (failWith != null) throw AuthException(failWith!);
+    resetRequests.add(email);
+  }
+
+  @override
+  Future<void> deleteAccount(String accessToken) async {
+    if (deleteFailsWith != null) throw AuthException(deleteFailsWith!);
+    deleted.add(accessToken);
+  }
 }
 
 class FakeLicenseApi implements LicenseApi {
@@ -57,9 +79,81 @@ class FakeLicenseApi implements LicenseApi {
   }) => issue_(fingerprint);
 }
 
+/// Image servie par la fausse fonction, et son empreinte (SHA-256 de « abc »).
+final imageBytes = Uint8List.fromList(utf8.encode('abc'));
+const imageSha =
+    'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad';
+
+Map<String, Object?> _word(
+  String code, {
+  String tier = 'free',
+  bool image = false,
+}) => {
+  'code': code,
+  'category': 'CBE',
+  'level': 0,
+  'audience': 'all',
+  'sortOrder': int.parse(code.substring(code.length - 3)),
+  'tier': tier,
+  if (image)
+    'imageObject': {'sha256': imageSha, 'mime': 'image/png', 'size': 3},
+  'labels': {
+    'fr': {'label': code, 'spoken': code},
+  },
+};
+
+ContentPack _pack(int version, List<Map<String, Object?>> words) =>
+    ContentPack.fromJson({
+      'version': version,
+      'categories': [
+        {
+          'code': 'CBE',
+          'sortOrder': 1,
+          'labels': {'fr': 'Mes besoins'},
+        },
+      ],
+      'pictograms': words,
+    });
+
 class FakePacks implements PremiumPackApi {
   int version = 7;
+
+  /// Paquet gratuit du serveur ; `null` : aucun publié.
+  ContentPack? free;
+  LicenseApiError? freeFailsWith;
+  final freeImageRequests = <String>[];
+
+  @override
+  Future<ContentPack?> fetchFree({int? have}) async {
+    if (freeFailsWith != null) throw LicenseApiException(freeFailsWith!);
+    final pack = free;
+    return pack == null || (have != null && have >= pack.version) ? null : pack;
+  }
+
+  @override
+  Future<Uint8List> fetchFreeImage(String sha256) async {
+    freeImageRequests.add(sha256);
+    return imageBytes;
+  }
+
   final requestedHave = <int?>[];
+
+  /// Le paquet référence une image envoyée depuis le back-office.
+  bool withImage = false;
+  final imageRequests = <String>[];
+  LicenseApiError? imageFailsWith;
+  Uint8List Function()? imageOverride;
+
+  @override
+  Future<Uint8List> fetchImage({
+    required String accessToken,
+    required String fingerprint,
+    required String sha256,
+  }) async {
+    imageRequests.add(sha256);
+    if (imageFailsWith != null) throw LicenseApiException(imageFailsWith!);
+    return imageOverride?.call() ?? imageBytes;
+  }
 
   @override
   Future<ContentPack?> fetch({
@@ -86,6 +180,8 @@ class FakePacks implements PremiumPackApi {
           'audience': 'all',
           'sortOrder': 1,
           'tier': 'premium',
+          if (withImage)
+            'imageObject': {'sha256': imageSha, 'mime': 'image/png', 'size': 3},
           'labels': {
             'fr': {'label': 'Eau', 'spoken': 'eau'},
           },
@@ -103,6 +199,7 @@ void main() {
   late FakeAuth auth;
   late FakePacks packs;
   late bool subscribed;
+  late Directory imageDir;
 
   Future<AccountService> service() async {
     final device = SecureStoreDeviceIdentity(store);
@@ -110,6 +207,7 @@ void main() {
       auth: auth,
       store: store,
       packs: packs,
+      images: ImageStore(imageDir),
       importer: ContentImporter(db),
       device: device,
       entitlements: EntitlementService(
@@ -155,8 +253,12 @@ void main() {
     auth = FakeAuth();
     packs = FakePacks();
     subscribed = true;
+    imageDir = await Directory.systemTemp.createTemp('memo-images');
   });
-  tearDown(() => db.close());
+  tearDown(() async {
+    await db.close();
+    await imageDir.delete(recursive: true);
+  });
 
   Future<int> premiumCount() async =>
       (await db.select(db.pictograms).get()).length;
@@ -172,6 +274,54 @@ void main() {
       7,
     );
   });
+
+  test('suppression du compte : serveur appelé, session et droits '
+      'oubliés', () async {
+    final s = await service();
+    await s.signIn('amina@example.org', 'x');
+    await s.deleteAccount();
+    expect(auth.deleted, ['jwt']);
+    expect(await s.email, isNull);
+    expect((await s.entitlements.current()).isPremium, isFalse);
+  });
+
+  test('suppression refusée hors ligne : rien n\'est oublié', () async {
+    final s = await service();
+    await s.signIn('amina@example.org', 'x');
+    auth.deleteFailsWith = AuthError.offline;
+    await expectLater(s.deleteAccount(), throwsA(isA<AuthException>()));
+    expect(await s.email, 'amina@example.org');
+    expect((await s.entitlements.current()).isPremium, isTrue);
+  });
+
+  test(
+    'images envoyées : téléchargées une fois, vérifiées, retentées',
+    () async {
+      packs.withImage = true;
+      packs.imageFailsWith = LicenseApiError.offline;
+      final s = await service();
+      await s.signIn('a@b.org', 'x');
+      final store = ImageStore(imageDir);
+      expect(await store.has(imageSha), isFalse, reason: 'réseau coupé');
+
+      // Contenu altéré en route : jamais enregistré.
+      packs
+        ..imageFailsWith = null
+        ..imageOverride = () => Uint8List.fromList(utf8.encode('abd'));
+      await s.sync();
+      expect(await store.has(imageSha), isFalse);
+
+      // Synchronisation suivante : l'image arrive, même sans nouveau paquet.
+      packs.imageOverride = null;
+      await s.sync();
+      expect(await store.has(imageSha), isTrue);
+      expect(await store.fileFor(imageSha).readAsBytes(), imageBytes);
+
+      packs.imageRequests.clear();
+      await s.sync();
+      expect(packs.imageRequests, isEmpty, reason: 'déjà présente');
+    },
+  );
 
   test('déjà à jour : le paquet n\'est pas retéléchargé', () async {
     final s = await service();
@@ -254,5 +404,79 @@ void main() {
     await s.signIn('a@b.org', 'x');
     await s.sync();
     expect(await store.read('auth_refresh_token'), 'refresh-2');
+  });
+
+  group('paquet gratuit sans compte (#41)', () {
+    Future<Map<String, String>> tiers() async => {
+      for (final p in await db.select(db.pictograms).get()) p.code: p.tier,
+    };
+
+    test(
+      'mot ajouté importé, mot sorti réservé aux abonnés, image reçue',
+      () async {
+        final importer = ContentImporter(db);
+        await importer.importIfNeeded(
+          _pack(5, [_word('CAA-CR-CBE-001'), _word('CAA-CR-CBE-002')]),
+        );
+        packs.free = _pack(9, [
+          _word('CAA-CR-CBE-001'),
+          _word('CAA-CR-CBE-003', image: true),
+        ]);
+
+        await (await service()).syncFreeContent();
+
+        expect(await tiers(), {
+          'CAA-CR-CBE-001': 'free',
+          'CAA-CR-CBE-002': 'premium',
+          'CAA-CR-CBE-003': 'free',
+        });
+        expect(await importer.installedVersion(ContentImporter.freeSlot), 9);
+        expect(packs.freeImageRequests, [imageSha]);
+        expect(await ImageStore(imageDir).has(imageSha), isTrue);
+
+        // Une mise à jour de l'application (paquet embarqué plus récent) fait
+        // réappliquer le paquet gratuit du serveur.
+        await importer.importIfNeeded(_pack(6, [_word('CAA-CR-CBE-002')]));
+        expect(
+          await importer.installedVersion(ContentImporter.freeSlot),
+          isNull,
+        );
+        await (await service()).syncFreeContent();
+        expect((await tiers())['CAA-CR-CBE-002'], 'premium');
+      },
+    );
+
+    test(
+      'hors ligne ou rien de publié : rien ne change, aucune erreur',
+      () async {
+        final importer = ContentImporter(db);
+        await importer.importIfNeeded(_pack(5, [_word('CAA-CR-CBE-001')]));
+        final s = await service();
+
+        packs.freeFailsWith = LicenseApiError.offline;
+        await s.syncFreeContent();
+        packs
+          ..freeFailsWith = null
+          ..free = null;
+        await s.syncFreeContent();
+
+        expect(await tiers(), {'CAA-CR-CBE-001': 'free'});
+        expect(
+          await importer.installedVersion(ContentImporter.freeSlot),
+          isNull,
+        );
+      },
+    );
+
+    test('se connecter sans abonnement met aussi à jour le gratuit', () async {
+      subscribed = false;
+      packs.free = _pack(9, [_word('CAA-CR-CBE-004')]);
+      // Sans abonnement, la connexion le signale, mais le gratuit est à jour.
+      await expectLater(
+        (await service()).signIn('a@b.org', 'x'),
+        throwsA(isA<LicenseApiException>()),
+      );
+      expect(await tiers(), {'CAA-CR-CBE-004': 'free'});
+    });
   });
 }

@@ -159,6 +159,20 @@ class AppLocalizationsEn extends AppLocalizations {
       'Long-press a picture to add it to your favourites';
 
   @override
+  String favoriteAdded(String label) {
+    return 'Added to favourites: $label';
+  }
+
+  @override
+  String favoriteRemoved(String label) {
+    return 'Removed from favourites: $label';
+  }
+
+  @override
+  String get favoritesRemoveHint =>
+      'Long-press a picture to remove it from your favourites';
+
+  @override
   String get boardTitle => 'My board';
 
   @override
@@ -348,6 +362,64 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cancel => 'Cancel';
 
   @override
+  String get genderLabel => 'Gender';
+
+  @override
+  String get genderGirl => 'Girl';
+
+  @override
+  String get genderBoy => 'Boy';
+
+  @override
+  String get genderWoman => 'Woman';
+
+  @override
+  String get genderMan => 'Man';
+
+  @override
+  String get genderUnspecified => 'Prefer not to say';
+
+  @override
+  String get genderHint =>
+      'Optional. Pictures showing a person are displayed as female or male.';
+
+  @override
+  String get accountForgotPassword => 'Forgot password?';
+
+  @override
+  String get accountResetSent =>
+      'If an account exists for this address, a link has just been emailed. It is valid for one hour: choose a new password, then sign in again here.';
+
+  @override
+  String get authRateLimited => 'Too many requests. Try again in an hour.';
+
+  @override
+  String get accountDelete => 'Delete my account';
+
+  @override
+  String get accountDeleteTitle => 'Delete the account?';
+
+  @override
+  String accountDeleteWarning(String email) {
+    return 'The account $email will be permanently deleted: the current subscription is lost and linked devices are signed out. Profiles, favourites and boards stay on this phone.';
+  }
+
+  @override
+  String get accountDeleteAction => 'Delete permanently';
+
+  @override
+  String get accountDeleted => 'Account deleted';
+
+  @override
+  String get phraseAdded => 'Phrase added';
+
+  @override
+  String get phraseDeleted => 'Phrase deleted';
+
+  @override
+  String get boardSaved => 'Board saved';
+
+  @override
   String get profileSwitchTitle => 'Who is talking?';
 
   @override
@@ -492,4 +564,92 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get licenseDeviceRevoked =>
       'This device was removed from the account.';
+
+  @override
+  String get boardTabGrid => 'Board';
+
+  @override
+  String get boardTabRoutines => 'Routines';
+
+  @override
+  String get routineNew => 'New routine';
+
+  @override
+  String get routineEmpty =>
+      'No routines yet. A routine shows, in one row, the steps of a moment of the day.';
+
+  @override
+  String get routineName => 'Routine name';
+
+  @override
+  String get routineNameHint => 'For example: Morning';
+
+  @override
+  String get routineSave => 'Save';
+
+  @override
+  String get routineRename => 'Rename';
+
+  @override
+  String get routineEditSteps => 'Edit steps';
+
+  @override
+  String get routineDelete => 'Delete';
+
+  @override
+  String routineDeleteConfirm(String name) {
+    return 'Delete the routine \"$name\"?';
+  }
+
+  @override
+  String get routineRestart => 'Start over';
+
+  @override
+  String routineProgress(int done, int total) {
+    return '$done of $total';
+  }
+
+  @override
+  String get routineFinished => 'Routine done, well done!';
+
+  @override
+  String get routineNoSteps => 'No steps yet.';
+
+  @override
+  String get routineAddStep => 'Add a step';
+
+  @override
+  String get routineStepDone => 'Done';
+
+  @override
+  String routineStep(int index, int total, String label) {
+    return 'Step $index of $total: $label';
+  }
+
+  @override
+  String routineRemoveStep(String label) {
+    return 'Remove $label';
+  }
+
+  @override
+  String routineStepsTitle(String name) {
+    return 'Steps of \"$name\"';
+  }
+
+  @override
+  String routineOptions(String name) {
+    return 'Options for $name';
+  }
+
+  @override
+  String get loadingContent => 'Loading…';
+
+  @override
+  String get errorTitle => 'This screen couldn\'t be shown';
+
+  @override
+  String get errorHint => 'Nothing was lost. Try again in a moment.';
+
+  @override
+  String get errorRetry => 'Try again';
 }

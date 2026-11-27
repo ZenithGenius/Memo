@@ -15,8 +15,8 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 # Back-office : qualité du code, puis image construite et scannée telle
-# qu'elle sera déployée. Une faille HIGH/CRITICAL corrigeable bloque : on
-# met à jour, on ne la masque pas dans .trivyignore.
+# qu'elle sera déployée. Toute faille, quelle que soit sa gravité, corrigée ou
+# non, bloque : on met à jour, on ne la masque pas dans .trivyignore.
 jobs:
   quality:
     runs-on: ubuntu-24.04
@@ -36,9 +36,9 @@ jobs:
       - run: npx eslint . --max-warnings 0
       - run: npx vitest run
       - run: npx vite build
-      - uses: aquasecurity/setup-trivy@v0.3.1
-      - name: Dépendances npm (failles HIGH/CRITICAL)
-        run: trivy fs --no-progress --exit-code 1 --scanners vuln --severity HIGH,CRITICAL --ignore-unfixed package-lock.json
+      - uses: aquasecurity/setup-trivy@81e514348e19b6112ce2a7e3ecbafe19c1e1f567 # v0.3.1
+      - name: Dépendances npm (aucune faille tolérée)
+        run: trivy fs --no-progress --exit-code 1 --scanners vuln --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL package-lock.json
 
   image:
     runs-on: ubuntu-24.04
@@ -60,11 +60,11 @@ jobs:
           SUPABASE_ANON_KEY: ci-placeholder
       - name: Build image
         run: docker build -t memo-admin:ci .
-      - uses: aquasecurity/setup-trivy@v0.3.1
+      - uses: aquasecurity/setup-trivy@81e514348e19b6112ce2a7e3ecbafe19c1e1f567 # v0.3.1
       - name: Trivy image scan
         run: >-
           trivy image --no-progress --exit-code 1
-          --scanners vuln,secret --severity HIGH,CRITICAL --ignore-unfixed
+          --scanners vuln,secret --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
           memo-admin:ci
       - name: SBOM
         run: trivy image --no-progress --format spdx-json --output memo-admin.sbom.spdx.json memo-admin:ci

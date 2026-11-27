@@ -35,6 +35,7 @@ class DriftProfileRepository implements ProfileRepository {
     required ProfileType type,
     required Level level,
     String language = 'fr',
+    Gender gender = Gender.unspecified,
   }) async {
     final id = await _db
         .into(_db.profiles)
@@ -44,6 +45,7 @@ class DriftProfileRepository implements ProfileRepository {
             type: type.name,
             level: level.index,
             language: Value(language),
+            gender: Value(gender.name),
           ),
         );
     await _db
@@ -107,5 +109,6 @@ class DriftProfileRepository implements ProfileRepository {
     type: ProfileType.values.byName(row.type),
     level: Level.values[row.level],
     language: row.language,
+    gender: Gender.values.asNameMap()[row.gender] ?? Gender.unspecified,
   );
 }

@@ -22,6 +22,7 @@ class Profile extends Equatable {
     required this.type,
     required this.level,
     required this.language,
+    this.gender = Gender.unspecified,
   });
 
   final int id;
@@ -29,7 +30,8 @@ class Profile extends Equatable {
   final ProfileType type;
   final Level level;
   final String language;
+  final Gender gender;
 
   @override
-  List<Object?> get props => [id, name, type, level, language];
+  List<Object?> get props => [id, name, type, level, language, gender];
 }

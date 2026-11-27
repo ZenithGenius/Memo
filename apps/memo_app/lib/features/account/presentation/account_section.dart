@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:memo/core/theme/app_colors.dart';
+import 'package:memo/core/ui/action_feedback.dart';
 import 'package:memo/features/account/data/auth_api.dart';
 import 'package:memo/features/account/presentation/account_providers.dart';
 import 'package:memo/features/caregiver/presentation/caregiver_gate.dart';
@@ -22,14 +23,18 @@ class _AccountSectionState extends ConsumerState<AccountSection> {
   bool _busy = false;
   String? _message;
 
+  /// Information sans erreur (lien de réinitialisation envoyé).
+  String? _info;
+
   /// Les opérations durent (réseau) : on garde le conteneur, pas le widget,
   /// qui peut être détruit entre-temps.
-  Future<void> _run(Future<Entitlement?> Function() action) async {
+  Future<bool> _run(Future<Entitlement?> Function() action) async {
     final l10n = AppLocalizations.of(context);
     final container = ProviderScope.containerOf(context, listen: false);
     setState(() {
       _busy = true;
       _message = null;
+      _info = null;
     });
     String? message;
     try {
@@ -48,6 +53,7 @@ class _AccountSectionState extends ConsumerState<AccountSection> {
         _message = message;
       });
     }
+    return message == null;
   }
 
   Future<void> _signIn() async {
@@ -59,6 +65,16 @@ class _AccountSectionState extends ConsumerState<AccountSection> {
       builder: (_) => const _SignInDialog(),
     );
     if (credentials == null || !mounted) return;
+    if (credentials.forgot) {
+      final sent = await _run(() async {
+        await service.requestPasswordReset(credentials.email);
+        return null;
+      });
+      if (sent && mounted) {
+        setState(() => _info = AppLocalizations.of(context).accountResetSent);
+      }
+      return;
+    }
     await _run(
       () => credentials.create
           ? service.signUp(credentials.email, credentials.password)
@@ -74,6 +90,41 @@ class _AccountSectionState extends ConsumerState<AccountSection> {
       await service.signOut();
       return null;
     });
+  }
+
+  /// Exigée par les boutiques. Le code accompagnant puis une confirmation
+  /// explicite protègent d'une suppression par l'enfant ou par erreur.
+  Future<void> _deleteAccount(String email) async {
+    final service = ref.read(accountServiceProvider)!;
+    if (!await requireCaregiver(context, ref)) return;
+    if (!mounted) return;
+    final l10n = AppLocalizations.of(context);
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.accountDeleteTitle),
+        content: Text(l10n.accountDeleteWarning(email)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(l10n.cancel),
+          ),
+          FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor: const Color(0xFFB3261E),
+            ),
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text(l10n.accountDeleteAction),
+          ),
+        ],
+      ),
+    );
+    if (!(confirmed ?? false) || !mounted) return;
+    final done = await _run(() async {
+      await service.deleteAccount();
+      return null;
+    });
+    if (done && mounted) confirmAction(context, ref, l10n.accountDeleted);
   }
 
   @override
@@ -111,6 +162,11 @@ class _AccountSectionState extends ConsumerState<AccountSection> {
               ),
             ),
           ),
+        if (_info != null)
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: Semantics(liveRegion: true, child: Text(_info!)),
+          ),
         const SizedBox(height: 12),
         if (_busy)
           const Center(child: CircularProgressIndicator())
@@ -130,6 +186,13 @@ class _AccountSectionState extends ConsumerState<AccountSection> {
                 onPressed: _signOut,
                 child: Text(l10n.accountSignOut),
               ),
+              TextButton(
+                style: TextButton.styleFrom(
+                  foregroundColor: const Color(0xFFB3261E),
+                ),
+                onPressed: () => _deleteAccount(email),
+                child: Text(l10n.accountDelete),
+              ),
             ],
           ),
       ],
@@ -144,6 +207,7 @@ String authErrorText(AppLocalizations l10n, AuthError error) => switch (error) {
   AuthError.confirmationRequired => l10n.authConfirmationRequired,
   AuthError.sessionExpired => l10n.authSessionExpired,
   AuthError.offline => l10n.networkOffline,
+  AuthError.rateLimited => l10n.authRateLimited,
   AuthError.server => l10n.networkServer,
 };
 
@@ -158,10 +222,18 @@ String licenseErrorText(AppLocalizations l10n, LicenseApiError error) =>
     };
 
 class _Credentials {
-  const _Credentials(this.email, this.password, {required this.create});
+  const _Credentials(
+    this.email,
+    this.password, {
+    required this.create,
+    this.forgot = false,
+  });
   final String email;
   final String password;
   final bool create;
+
+  /// Mot de passe oublié : seule l'adresse est renseignée.
+  final bool forgot;
 }
 
 class _SignInDialog extends StatefulWidget {
@@ -221,6 +293,20 @@ class _SignInDialogState extends State<_SignInDialog> {
               onPressed: () => setState(() => _create = !_create),
               child: Text(_create ? l10n.accountHaveOne : l10n.accountNoneYet),
             ),
+            if (!_create)
+              TextButton(
+                onPressed: _email.text.contains('@')
+                    ? () => Navigator.of(context).pop(
+                        _Credentials(
+                          _email.text,
+                          '',
+                          create: false,
+                          forgot: true,
+                        ),
+                      )
+                    : null,
+                child: Text(l10n.accountForgotPassword),
+              ),
           ],
         ),
       ),

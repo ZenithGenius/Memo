@@ -1,4 +1,4 @@
-import { Coins, FileClock, LayoutDashboard, ShieldCheck, Smartphone, Tags, Users } from "lucide-react";
+import { Coins, FileClock, Images, LayoutDashboard, ShieldCheck, Smartphone, Tags, Users } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 export interface NavItem { to: string; label: string; icon: LucideIcon }
@@ -13,6 +13,7 @@ export const NAV: NavSection[] = [
       { to: "/abonnements", label: "Abonnements", icon: Coins },
       { to: "/offres", label: "Offres", icon: Tags },
       { to: "/appareils", label: "Appareils", icon: Smartphone },
+      { to: "/contenu", label: "Contenu", icon: Images },
     ],
   },
   {

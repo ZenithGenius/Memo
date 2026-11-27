@@ -4,8 +4,11 @@ import 'package:memo/features/catalog/domain/catalog.dart';
 import 'package:memo/features/catalog/domain/catalog_repository.dart';
 
 class DriftCatalogRepository implements CatalogRepository {
-  DriftCatalogRepository(this._db);
+  DriftCatalogRepository(this._db, {this.imageDir});
   final AppDatabase _db;
+
+  /// Dossier des images téléchargées (ImageStore) ; `null` sans serveur.
+  final String? imageDir;
 
   @override
   Stream<List<Category>> watchCategories(
@@ -62,8 +65,18 @@ class DriftCatalogRepository implements CatalogRepository {
             _tierFilter(_db.pictograms.tier, includePremium),
       )
       ..orderBy([OrderingTerm.asc(_db.pictograms.sortOrder)]);
-    return query.watch().map((rows) => _mapRows(rows, lang));
+    // Niveau débutant : uniquement des mots illustrés, jamais de case sans
+    // pictogramme (une image masquée dans une autre langue compte).
+    return query.watch().map(
+      (rows) => _mapRows(
+        maxLevel != Level.beginner ? rows : rows.where(_hasImage).toList(),
+        lang,
+      ),
+    );
   }
+
+  bool _hasImage(TypedResult r) =>
+      _imageOf(r) != null || _feminineOf(r) != null || _masculineOf(r) != null;
 
   @override
   Stream<List<Pictogram>> watchByIds(
@@ -110,15 +123,40 @@ class DriftCatalogRepository implements CatalogRepository {
   bool _showImage(TypedResult r, String lang) =>
       lang == 'fr' || !r.readTable(_db.pictograms).labelInImage;
 
+  /// Image téléchargée (chemin absolu) en priorité, sinon image embarquée.
+  /// Tant que le téléchargement n'a pas eu lieu, la tuile affiche l'icône.
+  String? _imageOf(TypedResult r) {
+    final p = r.readTable(_db.pictograms);
+    return _downloaded(p.imageSha256) ?? p.imageAsset;
+  }
+
+  /// Variantes de genre (#19) : téléchargée en priorité, sinon embarquée.
+  String? _feminineOf(TypedResult r) {
+    final p = r.readTable(_db.pictograms);
+    return _downloaded(p.imageFeminineSha256) ?? p.imageFeminine;
+  }
+
+  String? _masculineOf(TypedResult r) {
+    final p = r.readTable(_db.pictograms);
+    return _downloaded(p.imageMasculineSha256) ?? p.imageMasculine;
+  }
+
+  String? _downloaded(String? sha256) {
+    final dir = imageDir;
+    return sha256 == null || dir == null ? null : '$dir/$sha256';
+  }
+
   List<Pictogram> _mapRows(List<TypedResult> rows, String lang) => [
     for (final r in rows)
       Pictogram(
         id: r.readTable(_db.pictograms).id,
         code: r.readTable(_db.pictograms).code,
         categoryId: r.readTable(_db.pictograms).categoryId,
-        imageAsset: _showImage(r, lang)
-            ? r.readTable(_db.pictograms).imageAsset
-            : null,
+        imageAsset: _showImage(r, lang) ? _imageOf(r) : null,
+        // Comme l'image commune : masquées dans une autre langue si le mot
+        // y est écrit.
+        imageFeminine: _showImage(r, lang) ? _feminineOf(r) : null,
+        imageMasculine: _showImage(r, lang) ? _masculineOf(r) : null,
         minLevel: Level.values[r.readTable(_db.pictograms).minLevel],
         audience: Audience.values.byName(r.readTable(_db.pictograms).audience),
         sortOrder: r.readTable(_db.pictograms).sortOrder,

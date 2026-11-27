@@ -36,9 +36,27 @@ Sur le projet hébergé (Authentication), indispensables à la sécurité :
   adresse dès l'inscription ;
 - MFA TOTP activé (Multi-Factor) : les administrateurs ne peuvent rien faire
   sans second facteur (ADR-010).
+- envoi d'e-mails par un serveur SMTP réel (section `[auth.email.smtp]`, mot
+  de passe fourni par variable d'environnement) : le serveur intégré de
+  Supabase est limité à quelques e-mails par heure et réservé aux essais ;
+- `site_url` égal à l'adresse publique du back-office, et cette adresse suivie
+  de `/` dans `additional_redirect_urls` : les liens de réinitialisation du
+  mot de passe, y compris ceux demandés depuis l'application, y mènent ;
+- modèles d'e-mail en français (`supabase/templates/`) : réinitialisation du
+  mot de passe et avis de changement.
 
 La configuration locale (`supabase/config.toml`) garde la confirmation
 désactivée pour les tests de bout en bout.
+
+## Stockage objet (ADR-012)
+
+Les images du contenu sont dans Supabase Storage, compartiment privé
+`content-images`, créé par les migrations. En local, Storage les garde sur
+disque. En production, il s'appuie sur SeaweedFS (passerelle S3) :
+`backend/storage/docker-compose.yml` décrit le service, les variables à donner
+au service Storage et la création du compartiment `memo-storage`. Les clés
+sont dans `backend/storage/s3.json`, à créer depuis `s3.example.json` (ignoré
+par Git). Sauvegarder le volume `seaweedfs-data` en même temps que la base.
 
 ## Tests
 

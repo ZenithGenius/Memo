@@ -1,13 +1,14 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:memo/core/theme/app_theme.dart';
 import 'package:memo/data/db/app_database.dart';
 import 'package:memo/features/catalog/presentation/catalog_providers.dart';
 import 'package:memo/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:memo/features/profiles/data/drift_profile_repository.dart';
 import 'package:memo/l10n/app_localizations.dart';
+import 'package:memo/l10n/localization_delegates.dart';
 
 import '../support/pump_app.dart';
 import '../support/seed.dart';
@@ -60,9 +61,9 @@ void main() {
     final app = await AppHarness.start(tester);
     await tester.tap(find.text('Mes besoins'));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Je veux').first);
+    await tester.tap(find.bySemanticsLabel('Encore').first);
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Fini').first);
+    await tester.tap(find.bySemanticsLabel('Oui').first);
     await tester.pumpAndSettle();
     await loadImages(tester);
     await shot('category_with_message.png');
@@ -83,7 +84,7 @@ void main() {
     final app = await AppHarness.start(tester);
     await tester.tap(find.text('Mes besoins'));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Je veux').first);
+    await tester.tap(find.bySemanticsLabel('Encore').first);
     await tester.pumpAndSettle();
     await tester.tap(find.text('Lire le message'));
     await tester.pumpAndSettle();
@@ -116,7 +117,7 @@ void main() {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: buildAppTheme(),
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          localizationsDelegates: appLocalizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
           home: const OnboardingScreen(),
         ),
@@ -126,6 +127,18 @@ void main() {
     await tester.tap(find.text('Enfant'));
     await tester.pumpAndSettle();
     await shot('onboarding.png');
+
+    // Dernière étape : prénom et genre (facultatifs).
+    await tester.tap(find.text('Suivant'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Débutant'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Suivant'));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField), 'Amina');
+    await tester.tap(find.text('Fille'));
+    await tester.pumpAndSettle();
+    await shot('onboarding_name.png');
     await disposeWidgetTestDb(tester, container, db);
   });
 }
