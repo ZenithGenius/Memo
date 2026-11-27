@@ -5,6 +5,7 @@ import { useAuth, useSession } from "@/app/auth";
 import { ROLE_LABEL } from "@/lib/roles";
 import { cn } from "@/components/ui/cn";
 import { NAV, titleFor } from "./nav";
+import { IdleGuard } from "./idle-guard";
 
 function Brand() {
   return (
@@ -49,6 +50,7 @@ export function Shell({ children }: { children: ReactNode }) {
 
   return (
     <div className="flex min-h-screen">
+      <IdleGuard />
       {navOpen && <div className="fixed inset-0 z-35 bg-overlay lg:hidden" onClick={() => { setNavOpen(false); }} aria-hidden />}
       <aside
         className={cn(

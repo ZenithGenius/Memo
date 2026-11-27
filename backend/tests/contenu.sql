@@ -8,7 +8,7 @@ begin;
 create function pg_temp.as_user(uid uuid, aal text default 'aal2') returns void language plpgsql as $$
 begin
   perform set_config('request.jwt.claims',
-    json_build_object('sub', uid, 'role', 'authenticated', 'aal', aal)::text, true);
+    json_build_object('sub', uid, 'role', 'authenticated', 'aal', aal, 'amr', json_build_array(json_build_object('method', 'totp', 'timestamp', extract(epoch from now())::bigint)))::text, true);
   execute 'set local role authenticated';
 end $$;
 

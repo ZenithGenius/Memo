@@ -7,7 +7,7 @@ begin;
 create function pg_temp.as_user(uid uuid, aal text) returns void language plpgsql as $$
 begin
   perform set_config('request.jwt.claims',
-    json_build_object('sub', uid, 'role', 'authenticated', 'aal', aal)::text, true);
+    json_build_object('sub', uid, 'role', 'authenticated', 'aal', aal, 'amr', json_build_array(json_build_object('method', 'totp', 'timestamp', extract(epoch from now())::bigint)))::text, true);
   execute 'set local role authenticated';
 end $$;
 
@@ -73,6 +73,24 @@ select pg_temp.assert_eq(public.is_super_admin(), false, 'claim aal absent : pas
 select pg_temp.as_user('00000000-0000-0000-0000-0000000000a1', 'aal2');
 select pg_temp.assert_eq(public.is_super_admin(), true, 'droits ouverts en aal2');
 select pg_temp.assert_eq((public.admin_dashboard() ? 'accounts_total'), true, 'tableau de bord lisible en aal2');
+
+-- Session de plus de 24 heures (second facteur vérifié il y a 25 h) : droits fermés.
+select set_config('request.jwt.claims', json_build_object(
+  'sub', '00000000-0000-0000-0000-0000000000a1', 'role', 'authenticated', 'aal', 'aal2',
+  'amr', json_build_array(json_build_object('method', 'totp',
+    'timestamp', extract(epoch from now() - interval '25 hours')::bigint)))::text, true);
+select pg_temp.assert_eq(public.is_super_admin(), false, 'session de plus de 24 h : pas de droits');
+select pg_temp.assert_eq(public.is_admin(), false, 'session de plus de 24 h : pas administrateur');
+-- aal2 sans horodatage du second facteur : droits fermés.
+select set_config('request.jwt.claims',
+  '{"sub":"00000000-0000-0000-0000-0000000000a1","role":"authenticated","aal":"aal2"}', true);
+select pg_temp.assert_eq(public.is_super_admin(), false, 'aal2 sans horodatage : pas de droits');
+-- Vérifié il y a 23 h : encore valable.
+select set_config('request.jwt.claims', json_build_object(
+  'sub', '00000000-0000-0000-0000-0000000000a1', 'role', 'authenticated', 'aal', 'aal2',
+  'amr', json_build_array(json_build_object('method', 'totp',
+    'timestamp', extract(epoch from now() - interval '23 hours')::bigint)))::text, true);
+select pg_temp.assert_eq(public.is_super_admin(), true, 'session de 23 h : droits ouverts');
 
 -- Un client reste chez lui, avec ou sans second facteur.
 select pg_temp.as_user('00000000-0000-0000-0000-0000000000c1', 'aal2');

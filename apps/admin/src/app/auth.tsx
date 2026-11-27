@@ -4,6 +4,7 @@ import { report } from "@/lib/errors";
 import { mfaStep } from "@/lib/mfa";
 import type { AuthLink } from "@/lib/recovery";
 import { isAdminRole, type AdminRole } from "@/lib/roles";
+import { MAX_SIGNED_OUT, sessionExpired } from "@/lib/session";
 import type { Db } from "@/lib/supabase";
 import { useDb } from "./db-context";
 
@@ -21,7 +22,8 @@ type AuthState =
 interface AuthApi {
   state: AuthState;
   signIn: (email: string, password: string) => Promise<string | null>;
-  signOut: () => Promise<void>;
+  /** Ferme la session ; `notice` s'affiche ensuite sur l'écran de connexion. */
+  signOut: (notice?: string) => Promise<void>;
   /** À appeler après la vérification d'un code : relit la session (aal2). */
   completeMfa: () => Promise<void>;
   /** Envoie le lien par e-mail. Même réponse que l'adresse existe ou non. */
@@ -48,7 +50,13 @@ async function stateFor(db: Db, session: Session | null): Promise<AuthState> {
   const { data: aal, error: aalError } = await db.auth.mfa.getAuthenticatorAssuranceLevel();
   if (aalError) report("niveau d'authentification", aalError);
   const step = mfaStep(aal?.currentLevel ?? null, aal?.nextLevel ?? null);
-  return step === "done" ? { status: "signed-in", session, role } : { status: "mfa", step, role };
+  if (step !== "done") return { status: "mfa", step, role };
+  // Plus de 24 heures depuis le second facteur : la base refuserait tout.
+  if (sessionExpired(session.access_token, Date.now())) {
+    await db.auth.signOut();
+    return { status: "signed-out", notice: MAX_SIGNED_OUT };
+  }
+  return { status: "signed-in", session, role };
 }
 
 export function AuthProvider({ children, link = null }: { children: ReactNode; link?: AuthLink }) {
@@ -74,8 +82,13 @@ export function AuthProvider({ children, link = null }: { children: ReactNode; l
     const { data: sub } = db.auth.onAuthStateChange((event, session) => {
       if (event === "PASSWORD_RECOVERY") setState({ status: "recovery" });
       if (event === "SIGNED_OUT") setState((s) => (s.status === "signed-out" ? s : { status: "signed-out" }));
-      if (event === "TOKEN_REFRESHED" && session)
+      if (event === "TOKEN_REFRESHED" && session) {
+        if (sessionExpired(session.access_token, Date.now())) {
+          void db.auth.signOut().then(() => { setState({ status: "signed-out", notice: MAX_SIGNED_OUT }); });
+          return;
+        }
         setState((s) => (s.status === "signed-in" ? { ...s, session } : s));
+      }
     });
     return () => {
       cancelled = true;
@@ -97,9 +110,9 @@ export function AuthProvider({ children, link = null }: { children: ReactNode; l
       setState(next);
       return next.status === "signed-out" ? (next.reason ?? NO_ACCESS) : null;
     },
-    signOut: async () => {
+    signOut: async (notice) => {
       await db.auth.signOut();
-      setState({ status: "signed-out" });
+      setState(notice ? { status: "signed-out", notice } : { status: "signed-out" });
     },
     completeMfa: refresh,
     requestReset: async (email) => {
