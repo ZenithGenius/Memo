@@ -6,6 +6,7 @@ export type Db = ReturnType<typeof createDb>;
 
 export function createDb(config: AppConfig) {
   return createClient<Database>(config.supabaseUrl, config.supabaseAnonKey, {
-    auth: { persistSession: true, autoRefreshToken: true },
+    // Session gardée dans l'onglet : la fermer déconnecte (sessionStorage).
+    auth: { persistSession: true, autoRefreshToken: true, storage: globalThis.sessionStorage },
   });
 }

@@ -9,8 +9,14 @@ import { MfaPage } from "./MfaPage";
 type Factor = { id: string; factor_type: string; status: string };
 
 /** Client Supabase factice : rôle, niveau d'authentification et facteurs choisis par le test. */
-function fakeDb(opts: { role: string | null; current: string; next: string; factors?: Factor[] }) {
-  const session = { user: { email: "admin@test.local" } };
+/** Jeton dont le second facteur a été vérifié il y a `ageMs`. */
+function tokenVerified(ageMs: number) {
+  const b64 = (o: unknown) => btoa(JSON.stringify(o)).replace(/=+$/, "");
+  return `${b64({ alg: "HS256" })}.${b64({ amr: [{ method: "totp", timestamp: Math.floor((Date.now() - ageMs) / 1000) }] })}.sig`;
+}
+
+function fakeDb(opts: { role: string | null; current: string; next: string; factors?: Factor[]; mfaAgeMs?: number }) {
+  const session = { user: { email: "admin@test.local" }, access_token: tokenVerified(opts.mfaAgeMs ?? 60_000) };
   let current = opts.current;
   const factors = opts.factors ?? [];
   const mfa = {
@@ -28,16 +34,17 @@ function fakeDb(opts: { role: string | null; current: string; next: string; fact
       return Promise.resolve({ data: {}, error: null });
     }),
   };
+  const signOut = vi.fn(() => Promise.resolve({ error: null }));
   const db = {
     rpc: vi.fn(() => Promise.resolve({ data: opts.role, error: null })),
     auth: {
       getSession: vi.fn(() => Promise.resolve({ data: { session } })),
       onAuthStateChange: vi.fn(() => ({ data: { subscription: { unsubscribe: vi.fn() } } })),
-      signOut: vi.fn(() => Promise.resolve({ error: null })),
+      signOut,
       mfa,
     },
   };
-  return { db: db as unknown as Db, mfa };
+  return { db: db as unknown as Db, mfa, signOut };
 }
 
 function Status() {
@@ -71,6 +78,13 @@ describe("double authentification des administrateurs", () => {
     const { db } = fakeDb({ role: "support", current: "aal2", next: "aal2" });
     renderApp(db);
     await waitFor(() => { expect(screen.getByTestId("status")).toHaveTextContent("signed-in"); });
+  });
+
+  it("une session de plus de 24 heures renvoie à la connexion", async () => {
+    const { db, signOut } = fakeDb({ role: "super_admin", current: "aal2", next: "aal2", mfaAgeMs: 25 * 60 * 60 * 1000 });
+    renderApp(db);
+    await waitFor(() => { expect(screen.getByTestId("status")).toHaveTextContent("signed-out"); });
+    expect(signOut).toHaveBeenCalled();
   });
 
   it("un compte sans rôle est déconnecté, même avec un second facteur", async () => {
